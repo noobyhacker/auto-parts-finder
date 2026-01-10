@@ -1,33 +1,49 @@
 // Mock data for development - simulates Strapi API responses
 import type { Brand, Model, Category, Part, Vehicle } from "@/types";
 
+// Only Korean car brands
 export const mockBrands: Brand[] = [
   { id: 1, name: "Hyundai", slug: "hyundai" },
   { id: 2, name: "Kia", slug: "kia" },
-  { id: 3, name: "Toyota", slug: "toyota" },
-  { id: 4, name: "Honda", slug: "honda" },
-  { id: 5, name: "Nissan", slug: "nissan" },
-  { id: 6, name: "Mazda", slug: "mazda" },
-  { id: 7, name: "Mitsubishi", slug: "mitsubishi" },
-  { id: 8, name: "Subaru", slug: "subaru" },
+  { id: 3, name: "Genesis", slug: "genesis" },
+  { id: 4, name: "SsangYong", slug: "ssangyong" },
 ];
 
 export const mockModels: Model[] = [
+  // Hyundai models
   { id: 1, name: "Sonata", slug: "sonata", brand: mockBrands[0] },
   { id: 2, name: "Elantra", slug: "elantra", brand: mockBrands[0] },
   { id: 3, name: "Tucson", slug: "tucson", brand: mockBrands[0] },
   { id: 4, name: "Santa Fe", slug: "santa-fe", brand: mockBrands[0] },
-  { id: 5, name: "Optima", slug: "optima", brand: mockBrands[1] },
-  { id: 6, name: "Sportage", slug: "sportage", brand: mockBrands[1] },
-  { id: 7, name: "Sorento", slug: "sorento", brand: mockBrands[1] },
-  { id: 8, name: "Camry", slug: "camry", brand: mockBrands[2] },
-  { id: 9, name: "Corolla", slug: "corolla", brand: mockBrands[2] },
-  { id: 10, name: "RAV4", slug: "rav4", brand: mockBrands[2] },
+  { id: 5, name: "Palisade", slug: "palisade", brand: mockBrands[0] },
+  { id: 6, name: "Kona", slug: "kona", brand: mockBrands[0] },
+  { id: 7, name: "Accent", slug: "accent", brand: mockBrands[0] },
+  { id: 8, name: "Ioniq 5", slug: "ioniq-5", brand: mockBrands[0] },
+  // Kia models
+  { id: 9, name: "K5 (Optima)", slug: "k5-optima", brand: mockBrands[1] },
+  { id: 10, name: "Sportage", slug: "sportage", brand: mockBrands[1] },
+  { id: 11, name: "Sorento", slug: "sorento", brand: mockBrands[1] },
+  { id: 12, name: "Telluride", slug: "telluride", brand: mockBrands[1] },
+  { id: 13, name: "Carnival", slug: "carnival", brand: mockBrands[1] },
+  { id: 14, name: "Seltos", slug: "seltos", brand: mockBrands[1] },
+  { id: 15, name: "Rio", slug: "rio", brand: mockBrands[1] },
+  { id: 16, name: "EV6", slug: "ev6", brand: mockBrands[1] },
+  // Genesis models
+  { id: 17, name: "G70", slug: "g70", brand: mockBrands[2] },
+  { id: 18, name: "G80", slug: "g80", brand: mockBrands[2] },
+  { id: 19, name: "G90", slug: "g90", brand: mockBrands[2] },
+  { id: 20, name: "GV70", slug: "gv70", brand: mockBrands[2] },
+  { id: 21, name: "GV80", slug: "gv80", brand: mockBrands[2] },
+  // SsangYong models
+  { id: 22, name: "Rexton", slug: "rexton", brand: mockBrands[3] },
+  { id: 23, name: "Korando", slug: "korando", brand: mockBrands[3] },
+  { id: 24, name: "Tivoli", slug: "tivoli", brand: mockBrands[3] },
+  { id: 25, name: "Musso", slug: "musso", brand: mockBrands[3] },
 ];
 
-export const mockYears = [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];
+export const mockYears = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];
 
-export const mockEngines = ["2.0L GDI", "2.4L GDI", "1.6L Turbo", "2.5L Hybrid"];
+export const mockEngines = ["2.0L GDI", "2.4L GDI", "1.6L Turbo", "2.5L Turbo", "3.5L V6", "2.2L CRDi Diesel", "Electric"];
 
 export const mockCategories: Category[] = [
   { id: 1, name: "Engine Parts", slug: "engine-parts", partCount: 245 },
