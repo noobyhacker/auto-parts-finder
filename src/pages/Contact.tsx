@@ -7,17 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { getMockPart } from "@/lib/mock-data";
+import { useLanguage } from "@/hooks/useLanguage";
 import { z } from "zod";
-
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  contact: z.string().trim().min(1, "Email or phone is required").max(255),
-  message: z.string().trim().min(1, "Message is required").max(2000),
-});
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
   const partSlug = searchParams.get("part");
+  const { t } = useLanguage();
+
+  const contactSchema = z.object({
+    name: z.string().trim().min(1, t.contactPage.formName + " is required").max(100),
+    contact: z.string().trim().min(1, t.contactPage.formContact + " is required").max(255),
+    message: z.string().trim().min(1, t.contactPage.formMessage + " is required").max(2000),
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -35,12 +37,12 @@ const Contact = () => {
         if (part) {
           setFormData((prev) => ({
             ...prev,
-            message: `Hi, I'm interested in the following part:\n\n${part.name}\nArticle: ${part.articleNumber}\nPrice: $${part.price.toFixed(2)}\n\nPlease let me know about availability and shipping options.`,
+            message: `${t.contactPage.partInquiry}\n\n${part.name}\nArticle: ${part.articleNumber}\n${t.common.price}: $${part.price.toFixed(2)}\n\n${t.contactPage.availabilityRequest}`,
           }));
         }
       });
     }
-  }, [partSlug]);
+  }, [partSlug, t]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -87,12 +89,12 @@ const Contact = () => {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/20">
             <CheckCircle2 className="h-8 w-8 text-success" />
           </div>
-          <h1 className="mt-6 font-display text-2xl font-bold">Message Sent!</h1>
+          <h1 className="mt-6 font-display text-2xl font-bold">{t.contactPage.successTitle}</h1>
           <p className="mt-2 max-w-md text-muted-foreground">
-            Thank you for your inquiry. We'll get back to you within 24 hours with more information.
+            {t.contactPage.successMessage}
           </p>
           <Button className="mt-6" onClick={() => setIsSuccess(false)}>
-            Send Another Message
+            {t.common.sendAnother}
           </Button>
         </div>
       </Layout>
@@ -104,9 +106,9 @@ const Contact = () => {
       <div className="container-custom py-8 md:py-12">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <h1 className="font-display text-3xl font-bold md:text-4xl">Contact Us</h1>
+            <h1 className="font-display text-3xl font-bold md:text-4xl">{t.contactPage.title}</h1>
             <p className="mt-2 text-muted-foreground">
-              Have a question or need help finding a part? Get in touch with our team.
+              {t.contactPage.subtitle}
             </p>
           </div>
 
@@ -119,7 +121,7 @@ const Contact = () => {
                     <Phone className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Phone</h3>
+                    <h3 className="font-semibold">{t.contactPage.phone}</h3>
                     <a
                       href="tel:+1234567890"
                       className="mt-1 block text-sm text-muted-foreground hover:text-primary"
@@ -127,7 +129,7 @@ const Contact = () => {
                       +1 (234) 567-890
                     </a>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Mon-Fri 9am-6pm EST
+                      {t.contactPage.phoneHours}
                     </p>
                   </div>
                 </div>
@@ -139,15 +141,15 @@ const Contact = () => {
                     <Mail className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Email</h3>
+                    <h3 className="font-semibold">{t.contactPage.email}</h3>
                     <a
-                      href="mailto:info@autoparts.com"
+                      href="mailto:info@koreanparts.com"
                       className="mt-1 block text-sm text-muted-foreground hover:text-primary"
                     >
-                      info@autoparts.com
+                      info@koreanparts.com
                     </a>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      We reply within 24 hours
+                      {t.contactPage.emailReply}
                     </p>
                   </div>
                 </div>
@@ -159,7 +161,7 @@ const Contact = () => {
                     <MapPin className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Address</h3>
+                    <h3 className="font-semibold">{t.contactPage.address}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
                       123 Auto Street<br />
                       Motor City, MC 12345
@@ -175,13 +177,13 @@ const Contact = () => {
                 <div className="space-y-6">
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Name *</Label>
+                      <Label htmlFor="name">{t.contactPage.formName} *</Label>
                       <Input
                         id="name"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="Your name"
+                        placeholder={t.contactPage.formNamePlaceholder}
                         className={errors.name ? "border-destructive" : ""}
                       />
                       {errors.name && (
@@ -190,13 +192,13 @@ const Contact = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="contact">Email or Phone *</Label>
+                      <Label htmlFor="contact">{t.contactPage.formContact} *</Label>
                       <Input
                         id="contact"
                         name="contact"
                         value={formData.contact}
                         onChange={handleChange}
-                        placeholder="your@email.com or +1234567890"
+                        placeholder={t.contactPage.formContactPlaceholder}
                         className={errors.contact ? "border-destructive" : ""}
                       />
                       {errors.contact && (
@@ -206,13 +208,13 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message *</Label>
+                    <Label htmlFor="message">{t.contactPage.formMessage} *</Label>
                     <Textarea
                       id="message"
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell us what you're looking for..."
+                      placeholder={t.contactPage.formMessagePlaceholder}
                       rows={6}
                       className={errors.message ? "border-destructive" : ""}
                     />
@@ -227,11 +229,11 @@ const Contact = () => {
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
-                      "Sending..."
+                      t.common.sending
                     ) : (
                       <>
                         <Send className="h-4 w-4" />
-                        Send Message
+                        {t.common.sendMessage}
                       </>
                     )}
                   </Button>

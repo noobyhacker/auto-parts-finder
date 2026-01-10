@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Package } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
 
 interface PartCardProps {
@@ -8,6 +9,8 @@ interface PartCardProps {
 }
 
 export const PartCard = memo(function PartCard({ part }: PartCardProps) {
+  const { t } = useLanguage();
+
   return (
     <Link to={`/part/${part.slug}`} className={`part-card group block ${!part.inStock ? 'opacity-60' : ''}`}>
       {/* Image */}
@@ -29,7 +32,7 @@ export const PartCard = memo(function PartCard({ part }: PartCardProps) {
         {/* Stock Badge */}
         <div className="absolute right-2 top-2">
           <span className={`stock-badge ${part.inStock ? 'in-stock' : 'out-of-stock'}`}>
-            {part.inStock ? 'In Stock' : 'Out of Stock'}
+            {part.inStock ? t.common.inStock : t.common.outOfStock}
           </span>
         </div>
       </div>
