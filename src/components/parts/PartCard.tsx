@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Package } from "lucide-react";
 import type { Part } from "@/types";
@@ -6,7 +7,7 @@ interface PartCardProps {
   part: Part;
 }
 
-export function PartCard({ part }: PartCardProps) {
+export const PartCard = memo(function PartCard({ part }: PartCardProps) {
   return (
     <Link to={`/part/${part.slug}`} className={`part-card group block ${!part.inStock ? 'opacity-60' : ''}`}>
       {/* Image */}
@@ -15,6 +16,8 @@ export function PartCard({ part }: PartCardProps) {
           <img
             src={part.images[0].url}
             alt={part.name}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
@@ -42,4 +45,6 @@ export function PartCard({ part }: PartCardProps) {
       </div>
     </Link>
   );
-}
+});
+
+PartCard.displayName = "PartCard";
