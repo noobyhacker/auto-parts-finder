@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
+import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-border/50 bg-card/50">
       <div className="container-custom py-12">
@@ -10,28 +14,38 @@ export function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                <span className="font-display text-lg font-bold text-primary-foreground">AP</span>
+                <span className="font-display text-lg font-bold text-primary-foreground">KP</span>
               </div>
               <span className="font-display text-xl font-bold">
-                Auto<span className="text-primary">Parts</span>
+                Korean<span className="text-primary">Parts</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Quality auto parts for Korean, Japanese, and American vehicles. Fast shipping and excellent customer service.
+              {t.footer.description}
             </p>
+            <div className="flex items-center gap-2">
+              <KoreanFlagMini className="h-4 w-6 rounded shadow-sm" />
+              <span className="text-xs text-muted-foreground">🇰🇷 🇬🇧 🇷🇺</span>
+            </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-              Quick Links
+              {t.footer.quickLinks}
             </h4>
             <nav className="flex flex-col gap-2">
               <Link to="/catalog" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                Parts Catalog
+                {t.nav.catalog}
+              </Link>
+              <Link to="/about" className="text-sm text-muted-foreground transition-colors hover:text-primary">
+                {t.nav.about}
+              </Link>
+              <Link to="/faq" className="text-sm text-muted-foreground transition-colors hover:text-primary">
+                {t.nav.faq}
               </Link>
               <Link to="/contact" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                Contact Us
+                {t.nav.contact}
               </Link>
             </nav>
           </div>
@@ -39,20 +53,20 @@ export function Footer() {
           {/* Categories */}
           <div className="space-y-4">
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-              Categories
+              {t.footer.categories}
             </h4>
             <nav className="flex flex-col gap-2">
               <Link to="/catalog?category=engine-parts" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                Engine Parts
+                {t.categories.engine}
               </Link>
               <Link to="/catalog?category=brake-system" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                Brake System
+                {t.categories.brake}
               </Link>
               <Link to="/catalog?category=suspension" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                Suspension
+                {t.categories.suspension}
               </Link>
               <Link to="/catalog?category=filters" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                Filters
+                {t.categories.filters}
               </Link>
             </nav>
           </div>
@@ -60,16 +74,16 @@ export function Footer() {
           {/* Contact */}
           <div className="space-y-4">
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-              Contact
+              {t.footer.contact}
             </h4>
             <div className="flex flex-col gap-3">
               <a href="tel:+1234567890" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
                 <Phone className="h-4 w-4 text-primary" />
                 +1 (234) 567-890
               </a>
-              <a href="mailto:info@autoparts.com" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
+              <a href="mailto:info@koreanparts.com" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
                 <Mail className="h-4 w-4 text-primary" />
-                info@autoparts.com
+                info@koreanparts.com
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 text-primary mt-0.5" />
@@ -82,7 +96,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 border-t border-border/50 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} AutoParts. All rights reserved.
+            © {new Date().getFullYear()} KoreanParts. {t.footer.rights}
           </p>
         </div>
       </div>
