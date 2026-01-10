@@ -6,6 +6,7 @@ import { PartFiltersComponent } from "@/components/parts/PartFilters";
 import { PartSort } from "@/components/parts/PartSort";
 import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
 import { getMockParts } from "@/lib/mock-data";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Part, PartFilters, VehicleSelection } from "@/types";
 
 const Catalog = () => {
@@ -15,12 +16,11 @@ const Catalog = () => {
   const [total, setTotal] = useState(0);
   const [sort, setSort] = useState("createdAt:desc");
   const [filters, setFilters] = useState<PartFilters>({});
+  const { t } = useLanguage();
 
   // Parse initial filters from URL
   useEffect(() => {
     const categorySlug = searchParams.get("category");
-    // In a real app, you'd look up the category ID from the slug
-    // For now, we'll just set it if present
     if (categorySlug) {
       const categoryMap: Record<string, number> = {
         "engine-parts": 1,
@@ -58,7 +58,6 @@ const Catalog = () => {
     if (selection.year) params.set("year", selection.year.toString());
     if (selection.engine) params.set("engine", selection.engine);
     setSearchParams(params);
-    // In real app, would filter parts by vehicle
   };
 
   return (
@@ -66,16 +65,16 @@ const Catalog = () => {
       <div className="container-custom py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-display text-3xl font-bold">Parts Catalog</h1>
+          <h1 className="font-display text-3xl font-bold">{t.catalogPage.title}</h1>
           <p className="mt-1 text-muted-foreground">
-            Browse our selection of quality auto parts
+            {t.catalogPage.subtitle}
           </p>
         </div>
 
         {/* Vehicle Selector */}
         <div className="mb-8 rounded-lg border border-border/50 bg-card/50 p-4">
           <h2 className="mb-4 text-sm font-semibold text-muted-foreground">
-            Filter by Vehicle
+            {t.vehicle.filterByVehicle}
           </h2>
           <VehicleSelector onSelect={handleVehicleSelect} showButton={false} />
         </div>
@@ -85,7 +84,7 @@ const Catalog = () => {
           {/* Sidebar Filters - Desktop */}
           <aside className="hidden w-64 shrink-0 lg:block">
             <div className="sticky top-24 rounded-lg border border-border/50 bg-card/50 p-4">
-              <h2 className="mb-4 text-sm font-semibold">Filters</h2>
+              <h2 className="mb-4 text-sm font-semibold">{t.common.filters}</h2>
               <PartFiltersComponent filters={filters} onFiltersChange={setFilters} />
             </div>
           </aside>
@@ -100,7 +99,7 @@ const Catalog = () => {
                   <PartFiltersComponent filters={filters} onFiltersChange={setFilters} />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {total} {total === 1 ? "part" : "parts"} found
+                  {total} {total === 1 ? t.common.part : t.common.parts} {t.common.found}
                 </p>
               </div>
               <PartSort value={sort} onChange={setSort} />
