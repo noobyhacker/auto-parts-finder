@@ -16,6 +16,7 @@ import {
   TransmissionIcon,
 } from "@/components/icons/CategoryIcons";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { VehicleSelection, Vehicle } from "@/types";
 
 // Memoized feature card for performance
@@ -51,17 +52,6 @@ const CategoryCard = memo(({ name, Icon, slug, delay }: { name: string; Icon: an
 
 CategoryCard.displayName = "CategoryCard";
 
-const categories = [
-  { name: "Engine Parts", Icon: EngineIcon, slug: "engine-parts" },
-  { name: "Brake System", Icon: BrakeIcon, slug: "brake-system" },
-  { name: "Suspension", Icon: SuspensionIcon, slug: "suspension" },
-  { name: "Filters", Icon: FilterIcon, slug: "filters" },
-  { name: "Electrical", Icon: ElectricalIcon, slug: "electrical" },
-  { name: "Body Parts", Icon: BodyIcon, slug: "body-parts" },
-  { name: "Cooling System", Icon: CoolingIcon, slug: "cooling-system" },
-  { name: "Transmission", Icon: TransmissionIcon, slug: "transmission" },
-];
-
 const brands = [
   { name: "Hyundai", models: "Sonata, Tucson, Santa Fe, Palisade, Ioniq" },
   { name: "Kia", models: "K5, Sportage, Sorento, Telluride, EV6" },
@@ -71,6 +61,7 @@ const brands = [
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleVehicleSelect = (selection: VehicleSelection) => {
     const params = new URLSearchParams();
@@ -86,6 +77,17 @@ const Index = () => {
     params.set("vehicleId", vehicle.id.toString());
     navigate(`/catalog?${params.toString()}`);
   };
+
+  const categories = [
+    { name: t.categories.engine, Icon: EngineIcon, slug: "engine-parts" },
+    { name: t.categories.brake, Icon: BrakeIcon, slug: "brake-system" },
+    { name: t.categories.suspension, Icon: SuspensionIcon, slug: "suspension" },
+    { name: t.categories.filters, Icon: FilterIcon, slug: "filters" },
+    { name: t.categories.electrical, Icon: ElectricalIcon, slug: "electrical" },
+    { name: t.categories.body, Icon: BodyIcon, slug: "body-parts" },
+    { name: t.categories.cooling, Icon: CoolingIcon, slug: "cooling-system" },
+    { name: t.categories.transmission, Icon: TransmissionIcon, slug: "transmission" },
+  ];
 
   return (
     <Layout>
@@ -108,16 +110,15 @@ const Index = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              Specialists in Korean Auto Parts
+              {t.hero.badge}
             </div>
             
             <h1 className="font-display text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Find Quality Parts for
-              <span className="block text-gradient mt-2">Hyundai • Kia • Genesis</span>
+              {t.hero.title}
+              <span className="block text-gradient mt-2">{t.hero.titleBrands}</span>
             </h1>
             <p className="mt-4 text-lg text-muted-foreground md:text-xl animate-slide-up" style={{ animationDelay: "0.2s" }}>
-              OEM and aftermarket parts for all Korean vehicles. 
-              Fast delivery and expert technical support.
+              {t.hero.subtitle}
             </p>
           </div>
 
@@ -128,11 +129,11 @@ const Index = () => {
                 <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-secondary">
                   <TabsTrigger value="vehicle" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
                     <Car className="h-4 w-4" />
-                    Select Vehicle
+                    {t.hero.selectVehicle}
                   </TabsTrigger>
                   <TabsTrigger value="vin" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
                     <Search className="h-4 w-4" />
-                    VIN Search
+                    {t.hero.vinSearch}
                   </TabsTrigger>
                 </TabsList>
 
@@ -158,28 +159,21 @@ const Index = () => {
             <div className="animate-fade-in">
               <div className="flex items-center gap-3 mb-4">
                 <KoreanFlagMini className="h-5 w-8 rounded shadow-sm" />
-                <span className="text-sm text-primary font-medium">Made for Korean Vehicles</span>
+                <span className="text-sm text-primary font-medium">{t.about.badge}</span>
               </div>
               <h2 className="font-display text-2xl font-bold md:text-3xl lg:text-4xl">
-                Your Trusted Korean
-                <span className="text-gradient block">Auto Parts Specialist</span>
+                {t.about.title}
+                <span className="text-gradient block">{t.about.titleHighlight}</span>
               </h2>
               <div className="mt-6 space-y-4 text-muted-foreground">
-                <p>
-                  Since 2010, we've been the go-to source for quality Hyundai, Kia, Genesis, 
-                  and SsangYong parts. Our deep expertise in Korean automotive engineering 
-                  means we understand exactly what your vehicle needs.
-                </p>
-                <p>
-                  We work directly with OEM manufacturers and certified suppliers, ensuring 
-                  every part meets the highest standards of quality and reliability.
-                </p>
+                <p>{t.about.description1}</p>
+                <p>{t.about.description2}</p>
               </div>
               <a
                 href="/about"
                 className="mt-6 inline-flex items-center gap-2 text-primary font-medium hover:underline"
               >
-                Learn more about us
+                {t.about.learnMore}
                 <ChevronRight className="h-4 w-4" />
               </a>
             </div>
@@ -190,28 +184,28 @@ const Index = () => {
                   <Award className="h-6 w-6 text-primary" />
                 </div>
                 <div className="text-3xl font-display font-bold text-primary">14+</div>
-                <div className="mt-1 text-sm text-muted-foreground">Years Experience</div>
+                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.years}</div>
               </div>
               <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.2s" }}>
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
                   <Car className="h-6 w-6 text-primary" />
                 </div>
                 <div className="text-3xl font-display font-bold text-primary">100K+</div>
-                <div className="mt-1 text-sm text-muted-foreground">Parts in Stock</div>
+                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.parts}</div>
               </div>
               <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div className="text-3xl font-display font-bold text-primary">50K+</div>
-                <div className="mt-1 text-sm text-muted-foreground">Happy Customers</div>
+                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.customers}</div>
               </div>
               <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.4s" }}>
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
                   <Clock className="h-6 w-6 text-primary" />
                 </div>
                 <div className="text-3xl font-display font-bold text-primary">24h</div>
-                <div className="mt-1 text-sm text-muted-foreground">Fast Dispatch</div>
+                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.dispatch}</div>
               </div>
             </div>
           </div>
@@ -224,10 +218,10 @@ const Index = () => {
         
         <div className="container-custom relative">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <FeatureCard Icon={Truck} title="Fast Shipping" desc="Same-day dispatch on orders placed before 2 PM" delay="0s" />
-            <FeatureCard Icon={Shield} title="Quality Guaranteed" desc="OEM quality parts with warranty included" delay="0.1s" />
-            <FeatureCard Icon={Headphones} title="Expert Support" desc="Technical assistance from automotive specialists" delay="0.2s" />
-            <FeatureCard Icon={Car} title="100K+ Parts" desc="Extensive catalog for Korean vehicles" delay="0.3s" />
+            <FeatureCard Icon={Truck} title={t.features.shipping} desc={t.features.shippingDesc} delay="0s" />
+            <FeatureCard Icon={Shield} title={t.features.quality} desc={t.features.qualityDesc} delay="0.1s" />
+            <FeatureCard Icon={Headphones} title={t.features.support} desc={t.features.supportDesc} delay="0.2s" />
+            <FeatureCard Icon={Car} title={t.features.catalog} desc={t.features.catalogDesc} delay="0.3s" />
           </div>
         </div>
       </section>
@@ -238,8 +232,8 @@ const Index = () => {
         
         <div className="container-custom relative">
           <div className="text-center">
-            <h2 className="font-display text-2xl font-bold md:text-3xl">Browse by Category</h2>
-            <p className="mt-2 text-muted-foreground">Find exactly what you need</p>
+            <h2 className="font-display text-2xl font-bold md:text-3xl">{t.categories.title}</h2>
+            <p className="mt-2 text-muted-foreground">{t.categories.subtitle}</p>
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -260,10 +254,10 @@ const Index = () => {
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 mb-3">
               <KoreanFlagMini className="h-4 w-6 rounded shadow-sm" />
-              <span className="text-sm text-muted-foreground">100% Korean Focus</span>
+              <span className="text-sm text-muted-foreground">{t.brands.badge}</span>
             </div>
-            <h2 className="font-display text-2xl font-bold md:text-3xl">Korean Brands We Serve</h2>
-            <p className="mt-2 text-muted-foreground">Specialized expertise for all major Korean manufacturers</p>
+            <h2 className="font-display text-2xl font-bold md:text-3xl">{t.brands.title}</h2>
+            <p className="mt-2 text-muted-foreground">{t.brands.subtitle}</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -291,29 +285,29 @@ const Index = () => {
         
         <div className="container-custom relative text-center">
           <h2 className="font-display text-2xl font-bold md:text-3xl">
-            Have Questions?
+            {t.cta.title}
           </h2>
           <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
-            Our team of Korean vehicle specialists is ready to help you find the right parts
+            {t.cta.subtitle}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/about"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 hover:border-primary/50 transition-all"
             >
-              About Us
+              {t.cta.aboutUs}
             </a>
             <a
               href="/faq"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 hover:border-primary/50 transition-all"
             >
-              FAQ
+              {t.cta.faq}
             </a>
             <a
               href="/contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium btn-glow hover:opacity-90 transition-opacity"
             >
-              Contact Us
+              {t.cta.contactUs}
             </a>
           </div>
         </div>

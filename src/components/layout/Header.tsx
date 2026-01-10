@@ -3,17 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { Search, Menu, X, Phone, Building2, HelpCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchDialog } from "@/components/search/SearchDialog";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const navLinks = [
-    { to: "/catalog", label: "Catalog" },
-    { to: "/about", label: "About", icon: Building2 },
-    { to: "/faq", label: "FAQ", icon: HelpCircle },
-    { to: "/contact", label: "Contact", icon: Mail },
+    { to: "/catalog", label: t.nav.catalog },
+    { to: "/about", label: t.nav.about, icon: Building2 },
+    { to: "/faq", label: t.nav.faq, icon: HelpCircle },
+    { to: "/contact", label: t.nav.contact, icon: Mail },
   ];
 
   return (
@@ -46,6 +49,9 @@ export function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+
               {/* Search Button */}
               <Button 
                 variant="ghost" 
@@ -54,7 +60,7 @@ export function Header() {
                 onClick={() => setIsSearchOpen(true)}
               >
                 <Search className="h-5 w-5" />
-                <span className="sr-only">Search</span>
+                <span className="sr-only">{t.common.search}</span>
               </Button>
 
               {/* Phone - Desktop */}
@@ -71,7 +77,7 @@ export function Header() {
                 className="hidden sm:flex btn-glow" 
                 onClick={() => navigate("/catalog")}
               >
-                Find Parts
+                {t.nav.findParts}
               </Button>
 
               {/* Mobile Menu Toggle */}
@@ -109,7 +115,7 @@ export function Header() {
                   <span>+1 (234) 567-890</span>
                 </a>
                 <Button className="w-full btn-glow" onClick={() => { navigate("/catalog"); setIsMenuOpen(false); }}>
-                  Find Parts
+                  {t.nav.findParts}
                 </Button>
               </nav>
             </div>
