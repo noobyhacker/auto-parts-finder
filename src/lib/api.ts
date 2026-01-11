@@ -1,6 +1,7 @@
-// API service layer for Strapi REST API
-// All endpoints are placeholder URLs - replace with actual Strapi instance
+// API service layer for Sanity CMS
+// Configure your Sanity project ID and dataset in environment variables
 
+import { createClient } from "@sanity/client";
 import type {
   Brand,
   Model,
@@ -11,87 +12,111 @@ import type {
   SearchResult,
   ContactFormData,
   PartFilters,
-  ApiResponse,
 } from "@/types";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+// Sanity client configuration
+const client = createClient({
+  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || "your-project-id",
+  dataset: import.meta.env.VITE_SANITY_DATASET || "production",
+  apiVersion: "2024-01-01",
+  useCdn: true,
+});
 
-async function fetchApi<T>(
-  endpoint: string,
-  options?: RequestInit
-): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
-    ...options,
-  });
-
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
-  }
-
-  return response.json();
+// Helper to transform Sanity image to URL
+function imageUrl(image: any): string {
+  if (!image?.asset?._ref) return "/placeholder.svg";
+  const [, id, dimensions, format] = image.asset._ref.split("-");
+  return `https://cdn.sanity.io/images/${client.config().projectId}/${client.config().dataset}/${id}-${dimensions}.${format}`;
 }
 
 // Brands
 export async function getBrands(): Promise<Brand[]> {
-  const response = await fetchApi<ApiResponse<Brand[]>>("/brands?sort=name");
-  return response.data;
+  const query = `*[_type == "brand"] | order(name asc) {
+    "id": _id,
+    name,
+    "slug": slug.current,
+    "logo": logo.asset->url
+  }`;
+  return client.fetch(query);
 }
 
 // Models (filtered by brand)
-export async function getModels(brandId: number): Promise<Model[]> {
-  const response = await fetchApi<ApiResponse<Model[]>>(
-    `/models?filters[brand][id][$eq]=${brandId}&sort=name`
-  );
-  return response.data;
+export async function getModels(brandId: string): Promise<Model[]> {
+  const query = `*[_type == "model" && brand._ref == $brandId] | order(name asc) {
+    "id": _id,
+    name,
+    "slug": slug.current,
+    "brandId": brand._ref
+  }`;
+  return client.fetch(query, { brandId });
 }
 
 // Years (for a specific model)
-export async function getYears(modelId: number): Promise<number[]> {
-  const response = await fetchApi<ApiResponse<Vehicle[]>>(
-    `/vehicles?filters[model][id][$eq]=${modelId}&fields=year`
-  );
-  const years = [...new Set(response.data.map((v) => v.year))];
-  return years.sort((a, b) => b - a);
+export async function getYears(modelId: string): Promise<number[]> {
+  const query = `*[_type == "vehicle" && model._ref == $modelId].year`;
+  const years: number[] = await client.fetch(query, { modelId });
+  return [...new Set(years)].sort((a, b) => b - a);
 }
 
 // Engines (for a specific model and year)
 export async function getEngines(
-  modelId: number,
+  modelId: string,
   year: number
 ): Promise<string[]> {
-  const response = await fetchApi<ApiResponse<Vehicle[]>>(
-    `/vehicles?filters[model][id][$eq]=${modelId}&filters[year][$eq]=${year}&fields=engine`
-  );
-  const engines = response.data
-    .map((v) => v.engine)
-    .filter((e): e is string => !!e);
-  return [...new Set(engines)];
+  const query = `*[_type == "vehicle" && model._ref == $modelId && year == $year].engine`;
+  const engines: (string | null)[] = await client.fetch(query, { modelId, year });
+  return [...new Set(engines.filter((e): e is string => !!e))];
 }
 
 // Get vehicle by selection
 export async function getVehicle(
-  modelId: number,
+  modelId: string,
   year: number,
   engine?: string
 ): Promise<Vehicle | null> {
-  let endpoint = `/vehicles?filters[model][id][$eq]=${modelId}&filters[year][$eq]=${year}&populate=*`;
-  if (engine) {
-    endpoint += `&filters[engine][$eq]=${encodeURIComponent(engine)}`;
-  }
-  const response = await fetchApi<ApiResponse<Vehicle[]>>(endpoint);
-  return response.data[0] || null;
+  const query = engine
+    ? `*[_type == "vehicle" && model._ref == $modelId && year == $year && engine == $engine][0] {
+        "id": _id,
+        year,
+        engine,
+        "brand": brand->{
+          "id": _id,
+          name,
+          "slug": slug.current
+        },
+        "model": model->{
+          "id": _id,
+          name,
+          "slug": slug.current
+        }
+      }`
+    : `*[_type == "vehicle" && model._ref == $modelId && year == $year][0] {
+        "id": _id,
+        year,
+        engine,
+        "brand": brand->{
+          "id": _id,
+          name,
+          "slug": slug.current
+        },
+        "model": model->{
+          "id": _id,
+          name,
+          "slug": slug.current
+        }
+      }`;
+  return client.fetch(query, { modelId, year, engine });
 }
 
 // Categories
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetchApi<ApiResponse<Category[]>>(
-    "/categories?sort=name"
-  );
-  return response.data;
+  const query = `*[_type == "category"] | order(name asc) {
+    "id": _id,
+    name,
+    "slug": slug.current,
+    icon
+  }`;
+  return client.fetch(query);
 }
 
 // Parts
@@ -101,84 +126,181 @@ export async function getParts(
   page = 1,
   pageSize = 12
 ): Promise<{ parts: Part[]; total: number }> {
-  let endpoint = `/parts?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+
+  // Build filter conditions
+  const conditions: string[] = ['_type == "part"'];
+  const params: Record<string, any> = {};
 
   if (filters?.categoryId) {
-    endpoint += `&filters[category][id][$eq]=${filters.categoryId}`;
+    conditions.push("category._ref == $categoryId");
+    params.categoryId = filters.categoryId;
   }
   if (filters?.minPrice) {
-    endpoint += `&filters[price][$gte]=${filters.minPrice}`;
+    conditions.push("price >= $minPrice");
+    params.minPrice = filters.minPrice;
   }
   if (filters?.maxPrice) {
-    endpoint += `&filters[price][$lte]=${filters.maxPrice}`;
+    conditions.push("price <= $maxPrice");
+    params.maxPrice = filters.maxPrice;
   }
   if (filters?.inStockOnly) {
-    endpoint += `&filters[inStock][$eq]=true`;
+    conditions.push("inStock == true");
   }
   if (filters?.vehicleId) {
-    endpoint += `&filters[compatibleVehicles][id][$eq]=${filters.vehicleId}`;
+    conditions.push("$vehicleId in compatibleVehicles[]._ref");
+    params.vehicleId = filters.vehicleId;
   }
 
-  if (sort) {
-    endpoint += `&sort=${sort}`;
-  }
+  const filterQuery = conditions.join(" && ");
 
-  const response = await fetchApi<ApiResponse<Part[]>>(endpoint);
+  // Sort mapping
+  let orderBy = "name asc";
+  if (sort === "price:asc") orderBy = "price asc";
+  else if (sort === "price:desc") orderBy = "price desc";
+  else if (sort === "name:asc") orderBy = "name asc";
+  else if (sort === "name:desc") orderBy = "name desc";
+  else if (sort === "createdAt:desc") orderBy = "_createdAt desc";
+
+  const query = `{
+    "parts": *[${filterQuery}] | order(${orderBy}) [$start...$end] {
+      "id": _id,
+      name,
+      "slug": slug.current,
+      articleNumber,
+      oemNumber,
+      price,
+      description,
+      inStock,
+      stockQuantity,
+      "images": images[].asset->url,
+      "category": category->{
+        "id": _id,
+        name,
+        "slug": slug.current
+      },
+      "compatibleVehicles": compatibleVehicles[]->{
+        "id": _id,
+        year,
+        engine,
+        "brand": brand->{name},
+        "model": model->{name}
+      }
+    },
+    "total": count(*[${filterQuery}])
+  }`;
+
+  const result = await client.fetch(query, { ...params, start, end });
   return {
-    parts: response.data,
-    total: response.meta?.pagination?.total || 0,
+    parts: result.parts.map((p: any) => ({
+      ...p,
+      images: p.images || ["/placeholder.svg"],
+    })),
+    total: result.total,
   };
 }
 
 // Single part
 export async function getPart(slug: string): Promise<Part | null> {
-  const response = await fetchApi<ApiResponse<Part[]>>(
-    `/parts?filters[slug][$eq]=${slug}&populate=*`
-  );
-  return response.data[0] || null;
+  const query = `*[_type == "part" && slug.current == $slug][0] {
+    "id": _id,
+    name,
+    "slug": slug.current,
+    articleNumber,
+    oemNumber,
+    price,
+    description,
+    inStock,
+    stockQuantity,
+    "images": images[].asset->url,
+    "category": category->{
+      "id": _id,
+      name,
+      "slug": slug.current
+    },
+    "compatibleVehicles": compatibleVehicles[]->{
+      "id": _id,
+      year,
+      engine,
+      "brand": brand->{name},
+      "model": model->{name}
+    }
+  }`;
+  const part = await client.fetch(query, { slug });
+  if (!part) return null;
+  return {
+    ...part,
+    images: part.images || ["/placeholder.svg"],
+  };
 }
 
 // Search parts
 export async function searchParts(query: string): Promise<SearchResult> {
-  const response = await fetchApi<ApiResponse<Part[]>>(
-    `/parts?filters[$or][0][name][$containsi]=${encodeURIComponent(query)}&filters[$or][1][articleNumber][$containsi]=${encodeURIComponent(query)}&populate=*&pagination[pageSize]=10`
-  );
+  const searchQuery = `{
+    "parts": *[_type == "part" && (name match $search || articleNumber match $search)] [0...10] {
+      "id": _id,
+      name,
+      "slug": slug.current,
+      articleNumber,
+      oemNumber,
+      price,
+      inStock,
+      "images": images[].asset->url,
+      "category": category->{
+        "id": _id,
+        name,
+        "slug": slug.current
+      }
+    },
+    "total": count(*[_type == "part" && (name match $search || articleNumber match $search)])
+  }`;
+  const result = await client.fetch(searchQuery, { search: `*${query}*` });
   return {
-    parts: response.data,
-    total: response.meta?.pagination?.total || 0,
+    parts: result.parts.map((p: any) => ({
+      ...p,
+      images: p.images || ["/placeholder.svg"],
+    })),
+    total: result.total,
   };
 }
 
-// VIN decode
+// VIN decode - requires external API or custom backend
 export async function decodeVIN(vin: string): Promise<VINDecodeResult> {
-  try {
-    const response = await fetchApi<VINDecodeResult>("/decode-vin", {
-      method: "POST",
-      body: JSON.stringify({ vin }),
-    });
-    return response;
-  } catch {
-    return { success: false, error: "Failed to decode VIN" };
-  }
+  // This would typically call an external VIN decoder API
+  // For now, return a placeholder response
+  console.log("VIN decode requested for:", vin);
+  return { success: false, error: "VIN decoder not configured" };
 }
 
-// Submit contact form
+// Submit contact form - Sanity mutations require write token
+// Consider using a serverless function for this
 export async function submitContactForm(
   data: ContactFormData
 ): Promise<{ success: boolean }> {
-  await fetchApi("/contact-requests", {
-    method: "POST",
-    body: JSON.stringify({ data }),
-  });
+  // For production, use a serverless function with write token
+  // This is a placeholder that logs the data
+  console.log("Contact form submitted:", data);
+  
+  // If you have a write token configured:
+  // const writeClient = createClient({
+  //   ...client.config(),
+  //   token: import.meta.env.VITE_SANITY_WRITE_TOKEN,
+  //   useCdn: false,
+  // });
+  // await writeClient.create({
+  //   _type: "contactRequest",
+  //   ...data,
+  //   submittedAt: new Date().toISOString(),
+  // });
+  
   return { success: true };
 }
 
 // Validate VIN format
 export function isValidVIN(vin: string): boolean {
   if (vin.length !== 17) return false;
-  // VIN cannot contain I, O, or Q
   if (/[IOQ]/i.test(vin)) return false;
-  // VIN must be alphanumeric
   if (!/^[A-HJ-NPR-Z0-9]+$/i.test(vin)) return false;
   return true;
 }
