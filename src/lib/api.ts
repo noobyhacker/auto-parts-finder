@@ -264,12 +264,67 @@ export async function searchParts(query: string): Promise<SearchResult> {
   };
 }
 
-// VIN decode - requires external API or custom backend
+// VIN decode using free NHTSA API
 export async function decodeVIN(vin: string): Promise<VINDecodeResult> {
-  // This would typically call an external VIN decoder API
-  // For now, return a placeholder response
-  console.log("VIN decode requested for:", vin);
-  return { success: false, error: "VIN decoder not configured" };
+  try {
+    const response = await fetch(
+      `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${vin}?format=json`
+    );
+    
+    if (!response.ok) {
+      return { success: false, error: "Failed to decode VIN" };
+    }
+    
+    const data = await response.json();
+    const results = data.Results as Array<{ Variable: string; Value: string | null }>;
+    
+    const getValue = (variable: string): string | null => {
+      const item = results.find(r => r.Variable === variable);
+      return item?.Value || null;
+    };
+    
+    const year = getValue("Model Year");
+    const make = getValue("Make");
+    const model = getValue("Model");
+    const engine = getValue("Displacement (L)");
+    const engineCylinders = getValue("Engine Number of Cylinders");
+    const errorCode = getValue("Error Code");
+    
+    // Check for errors (error codes 1-4 indicate issues)
+    if (errorCode && !["0", "6"].includes(errorCode.split(",")[0])) {
+      return { success: false, error: "Invalid VIN or vehicle not found" };
+    }
+    
+    if (!year || !make || !model) {
+      return { success: false, error: "Could not decode vehicle information" };
+    }
+    
+    // Build engine string
+    let engineStr: string | undefined;
+    if (engine) {
+      engineStr = `${engine}L`;
+      if (engineCylinders) {
+        engineStr += ` ${engineCylinders}-cyl`;
+      }
+    }
+    
+    const brandSlug = make.toLowerCase().replace(/\s+/g, "-");
+    const modelSlug = model.toLowerCase().replace(/\s+/g, "-");
+    
+    return {
+      success: true,
+      vehicle: {
+        id: `vin-${vin}`,
+        year: parseInt(year),
+        engine: engineStr,
+        brand: { id: make.toLowerCase(), name: make, slug: brandSlug },
+        model: { id: modelSlug, name: model, slug: modelSlug },
+      },
+    };
+  } catch (error) {
+    console.error("VIN decode error:", error);
+    return { success: false, error: "Failed to connect to VIN decoder" };
+  }
 }
 
 // Submit contact form - Sanity mutations require write token
