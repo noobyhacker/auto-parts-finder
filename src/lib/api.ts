@@ -34,8 +34,7 @@ export async function getBrands(): Promise<Brand[]> {
   const query = `*[_type == "brand"] | order(name asc) {
     "id": _id,
     name,
-    "slug": slug.current,
-    "logo": logo.asset->url
+    "slug": slug.current
   }`;
   return client.fetch(query);
 }
