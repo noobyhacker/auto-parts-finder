@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { getMockCategories } from "@/lib/mock-data";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Category, PartFilters } from "@/types";
 
 interface PartFiltersProps {
@@ -17,9 +18,22 @@ interface PartFiltersProps {
   onFiltersChange: (filters: PartFilters) => void;
 }
 
+// Map category slugs to translation keys
+const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
+  "engine-parts": "engine",
+  "brake-system": "brake",
+  "suspension": "suspension",
+  "filters": "filters",
+  "electrical": "electrical",
+  "body-parts": "body",
+  "cooling-system": "cooling",
+  "transmission": "transmission",
+};
+
 export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     getMockCategories().then(setCategories);
@@ -45,11 +59,19 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
 
   const hasActiveFilters = filters.categoryId || filters.inStockOnly;
 
+  const getCategoryName = (category: Category) => {
+    const key = categoryTranslationMap[category.slug];
+    if (key && t.categories[key]) {
+      return t.categories[key];
+    }
+    return category.name;
+  };
+
   const FilterContent = () => (
     <div className="space-y-6">
       {/* Categories */}
       <div>
-        <h4 className="mb-3 text-sm font-semibold">Categories</h4>
+        <h4 className="mb-3 text-sm font-semibold">{t.footer.categories}</h4>
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => (
             <button
@@ -57,7 +79,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
               onClick={() => handleCategoryClick(category.id)}
               className={`filter-chip ${filters.categoryId === category.id ? 'active' : ''}`}
             >
-              {category.name}
+              {getCategoryName(category)}
             </button>
           ))}
         </div>
@@ -65,7 +87,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
 
       {/* Availability */}
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-semibold">In Stock Only</h4>
+        <h4 className="text-sm font-semibold">{t.common.inStockOnly}</h4>
         <Switch
           checked={filters.inStockOnly || false}
           onCheckedChange={handleStockToggle}
@@ -76,7 +98,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
       {hasActiveFilters && (
         <Button variant="outline" className="w-full gap-2" onClick={handleClearAll}>
           <X className="h-4 w-4" />
-          Clear All Filters
+          {t.common.clearAllFilters}
         </Button>
       )}
     </div>
@@ -95,7 +117,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
           <SheetTrigger asChild>
             <Button variant="outline" className="gap-2">
               <SlidersHorizontal className="h-4 w-4" />
-              Filters
+              {t.common.filters}
               {hasActiveFilters && (
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                   !
@@ -105,7 +127,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
           </SheetTrigger>
           <SheetContent side="left">
             <SheetHeader>
-              <SheetTitle>Filters</SheetTitle>
+              <SheetTitle>{t.common.filters}</SheetTitle>
             </SheetHeader>
             <div className="mt-6">
               <FilterContent />

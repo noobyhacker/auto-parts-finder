@@ -4,7 +4,32 @@ import { ChevronLeft, Package, Check, Car, Send, MessageCircle, Phone } from "lu
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { getMockPart, mockVehicle } from "@/lib/mock-data";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
+
+// Map category slugs to translation keys
+const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
+  "engine-parts": "engine",
+  "brake-system": "brake",
+  "suspension": "suspension",
+  "filters": "filters",
+  "electrical": "electrical",
+  "body-parts": "body",
+  "cooling-system": "cooling",
+  "transmission": "transmission",
+};
+
+// Map part slugs to translation keys
+const partNameTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.partNames> = {
+  "engine-oil-filter-263203c30a": "engineOilFilter",
+  "front-brake-pads-581012ta00": "frontBrakePadsSet",
+  "air-filter-281133x000": "airFilterElement",
+  "shock-absorber-front-546513s500": "shockAbsorberFrontLeft",
+  "spark-plug-set-1884611070": "sparkPlugSet",
+  "timing-belt-kit-243122g400": "timingBeltKit",
+  "radiator-assembly-253103s050": "radiatorAssembly",
+  "alternator-373002g150": "alternator",
+};
 
 const PartDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -12,6 +37,7 @@ const PartDetail = () => {
   const [part, setPart] = useState<Part | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchPart = async () => {
@@ -26,6 +52,22 @@ const PartDetail = () => {
     };
     fetchPart();
   }, [slug]);
+
+  const getCategoryName = (categorySlug: string) => {
+    const key = categoryTranslationMap[categorySlug];
+    if (key && t.categories[key]) {
+      return t.categories[key];
+    }
+    return categorySlug;
+  };
+
+  const getPartName = (partSlug: string, fallbackName: string) => {
+    const key = partNameTranslationMap[partSlug];
+    if (key && t.partNames[key]) {
+      return t.partNames[key];
+    }
+    return fallbackName;
+  };
 
   if (isLoading) {
     return (
@@ -53,17 +95,19 @@ const PartDetail = () => {
       <Layout>
         <div className="container-custom flex min-h-[50vh] flex-col items-center justify-center py-16 text-center">
           <Package className="h-16 w-16 text-muted-foreground/30" />
-          <h1 className="mt-4 font-display text-2xl font-bold">Part Not Found</h1>
+          <h1 className="mt-4 font-display text-2xl font-bold">{t.common.partNotFound}</h1>
           <p className="mt-2 text-muted-foreground">
-            The part you're looking for doesn't exist or has been removed.
+            {t.common.partNotFoundDesc}
           </p>
           <Button className="mt-6" onClick={() => navigate("/catalog")}>
-            Browse Catalog
+            {t.common.browseCatalog}
           </Button>
         </div>
       </Layout>
     );
   }
+
+  const partName = getPartName(part.slug, part.name);
 
   // Mock compatible vehicles
   const compatibleVehicles = [
@@ -81,7 +125,7 @@ const PartDetail = () => {
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ChevronLeft className="h-4 w-4" />
-          Back to Catalog
+          {t.common.backToCatalog}
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-2">
@@ -91,7 +135,7 @@ const PartDetail = () => {
               {part.images[selectedImage] ? (
                 <img
                   src={part.images[selectedImage].url}
-                  alt={part.name}
+                  alt={partName}
                   className="h-full w-full object-cover"
                 />
               ) : (
@@ -113,7 +157,7 @@ const PartDetail = () => {
                   >
                     <img
                       src={image.url}
-                      alt={`${part.name} ${index + 1}`}
+                      alt={`${partName} ${index + 1}`}
                       className="h-full w-full object-cover"
                     />
                   </button>
@@ -125,19 +169,19 @@ const PartDetail = () => {
           {/* Details */}
           <div className="space-y-6">
             <div>
-              <p className="text-sm font-medium text-primary">{part.category.name}</p>
-              <h1 className="mt-1 font-display text-2xl font-bold md:text-3xl">{part.name}</h1>
+              <p className="text-sm font-medium text-primary">{getCategoryName(part.category.slug)}</p>
+              <h1 className="mt-1 font-display text-2xl font-bold md:text-3xl">{partName}</h1>
             </div>
 
             {/* Article Numbers */}
             <div className="flex flex-wrap gap-4">
               <div>
-                <p className="text-xs text-muted-foreground">Article Number</p>
+                <p className="text-xs text-muted-foreground">{t.common.articleNumber}</p>
                 <p className="font-mono text-sm font-semibold">{part.articleNumber}</p>
               </div>
               {part.oemNumber && (
                 <div>
-                  <p className="text-xs text-muted-foreground">OEM Number</p>
+                  <p className="text-xs text-muted-foreground">{t.common.oemNumber}</p>
                   <p className="font-mono text-sm font-semibold">{part.oemNumber}</p>
                 </div>
               )}
@@ -149,10 +193,10 @@ const PartDetail = () => {
                 {part.inStock ? (
                   <>
                     <Check className="h-3 w-3" />
-                    In Stock
+                    {t.common.inStock}
                   </>
                 ) : (
-                  "Out of Stock"
+                  t.common.outOfStock
                 )}
               </span>
             </div>
@@ -160,7 +204,7 @@ const PartDetail = () => {
             {/* Description */}
             {part.description && (
               <div>
-                <h3 className="mb-2 text-sm font-semibold">Description</h3>
+                <h3 className="mb-2 text-sm font-semibold">{t.common.description}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {part.description}
                 </p>
@@ -169,12 +213,12 @@ const PartDetail = () => {
 
             {/* Contact Actions */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold">Contact Us About This Part</h3>
+              <h3 className="text-sm font-semibold">{t.common.contactAboutPart}</h3>
               <div className="flex flex-wrap gap-3">
                 <Button 
                   className="gap-2 bg-[#0088cc] hover:bg-[#0088cc]/90"
                   onClick={() => {
-                    const message = encodeURIComponent(`Hi! I'm interested in: ${part.name} (Article: ${part.articleNumber})`);
+                    const message = encodeURIComponent(`Hi! I'm interested in: ${partName} (Article: ${part.articleNumber})`);
                     window.open(`https://t.me/your_telegram_handle?text=${message}`, '_blank');
                   }}
                 >
@@ -184,7 +228,7 @@ const PartDetail = () => {
                 <Button 
                   className="gap-2 bg-[#25D366] hover:bg-[#25D366]/90"
                   onClick={() => {
-                    const message = encodeURIComponent(`Hi! I'm interested in: ${part.name} (Article: ${part.articleNumber})`);
+                    const message = encodeURIComponent(`Hi! I'm interested in: ${partName} (Article: ${part.articleNumber})`);
                     window.open(`https://wa.me/your_phone_number?text=${message}`, '_blank');
                   }}
                 >
@@ -195,7 +239,7 @@ const PartDetail = () => {
                   variant="outline"
                   className="gap-2"
                   onClick={() => {
-                    const message = encodeURIComponent(`Hi! I'm interested in: ${part.name} (Article: ${part.articleNumber})`);
+                    const message = encodeURIComponent(`Hi! I'm interested in: ${partName} (Article: ${part.articleNumber})`);
                     window.open(`https://max.com/your_max_handle?text=${message}`, '_blank');
                   }}
                 >
@@ -209,7 +253,7 @@ const PartDetail = () => {
             <div className="rounded-lg border border-border/50 bg-card/50 p-4">
               <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
                 <Car className="h-4 w-4 text-primary" />
-                Compatible Vehicles
+                {t.common.compatibleVehicles}
               </h3>
               <div className="space-y-2">
                 {compatibleVehicles.map((vehicle) => (
