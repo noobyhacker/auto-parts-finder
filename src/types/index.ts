@@ -37,13 +37,13 @@ export interface PartImage {
 }
 
 export interface Part {
-  id: number;
+  id: number | string;
   name: string;
   slug: string;
   articleNumber: string;
   oemNumber?: string;
   price: number;
-  images: PartImage[];
+  images: (string | PartImage)[];
   description?: string;
   inStock: boolean;
   stockQuantity?: number;

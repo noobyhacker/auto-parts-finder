@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getMockBrands, getMockModels, getMockYears, getMockEngines } from "@/lib/mock-data";
+import { getBrands, getModels, getYears, getEngines } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Brand, Model, VehicleSelection } from "@/types";
 
@@ -33,14 +33,14 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
 
   // Load brands on mount
   useEffect(() => {
-    getMockBrands().then(setBrands);
+    getBrands().then(setBrands);
   }, []);
 
   // Load models when brand changes
   useEffect(() => {
     if (selectedBrand) {
       setIsLoading(true);
-      getMockModels(selectedBrand).then((data) => {
+      getModels(String(selectedBrand)).then((data) => {
         setModels(data);
         setIsLoading(false);
       });
@@ -56,7 +56,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   useEffect(() => {
     if (selectedModel) {
       setIsLoading(true);
-      getMockYears().then((data) => {
+      getYears(String(selectedModel)).then((data) => {
         setYears(data);
         setIsLoading(false);
       });
@@ -71,7 +71,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   useEffect(() => {
     if (selectedYear) {
       setIsLoading(true);
-      getMockEngines().then((data) => {
+      getEngines(String(selectedModel), selectedYear).then((data) => {
         setEngines(data);
         setIsLoading(false);
       });

@@ -51,13 +51,23 @@ export const PartCard = memo(function PartCard({ part }: PartCardProps) {
     return part.name;
   };
 
+  // Get image URL - handle both string and object format
+  const getImageUrl = () => {
+    const img = part.images[0];
+    if (!img) return null;
+    if (typeof img === 'string') return img;
+    return img.url;
+  };
+
+  const imageUrl = getImageUrl();
+
   return (
     <Link to={`/part/${part.slug}`} className={`part-card group block ${!part.inStock ? 'opacity-60' : ''}`}>
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-secondary">
-        {part.images[0] ? (
+        {imageUrl ? (
           <img
-            src={part.images[0].url}
+            src={imageUrl}
             alt={getPartName()}
             loading="lazy"
             decoding="async"

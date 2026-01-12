@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { getMockPart } from "@/lib/mock-data";
+import { getPart } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
 import { z } from "zod";
 
@@ -33,7 +33,7 @@ const Contact = () => {
   // Auto-fill part info
   useEffect(() => {
     if (partSlug) {
-      getMockPart(partSlug).then((part) => {
+      getPart(partSlug).then((part) => {
         if (part) {
           setFormData((prev) => ({
             ...prev,

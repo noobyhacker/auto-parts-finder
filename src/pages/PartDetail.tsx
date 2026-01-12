@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { ChevronLeft, Package, Check, Car, Send, MessageCircle, Phone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { getMockPart, mockVehicle } from "@/lib/mock-data";
+import { getPart } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
 
@@ -44,7 +44,7 @@ const PartDetail = () => {
       if (!slug) return;
       setIsLoading(true);
       try {
-        const data = await getMockPart(slug);
+        const data = await getPart(slug);
         setPart(data);
       } finally {
         setIsLoading(false);
@@ -109,12 +109,14 @@ const PartDetail = () => {
 
   const partName = getPartName(part.slug, part.name);
 
-  // Mock compatible vehicles
-  const compatibleVehicles = [
-    { ...mockVehicle, id: 1 },
-    { ...mockVehicle, id: 2, year: 2020 },
-    { ...mockVehicle, id: 3, year: 2019 },
-  ];
+  // Use compatible vehicles from Sanity or empty array
+  const compatibleVehicles = part.compatibleVehicles || [];
+
+  // Helper to get image URL
+  const getImageUrl = (img: string | { id: number; url: string; alt?: string }) => {
+    if (typeof img === 'string') return img;
+    return img.url;
+  };
 
   return (
     <Layout>
@@ -134,7 +136,7 @@ const PartDetail = () => {
             <div className="aspect-square overflow-hidden rounded-lg border border-border/50 bg-card">
               {part.images[selectedImage] ? (
                 <img
-                  src={part.images[selectedImage].url}
+                  src={getImageUrl(part.images[selectedImage])}
                   alt={partName}
                   className="h-full w-full object-cover"
                 />
@@ -149,14 +151,14 @@ const PartDetail = () => {
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {part.images.map((image, index) => (
                   <button
-                    key={image.id}
+                    key={index}
                     onClick={() => setSelectedImage(index)}
                     className={`h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-colors ${
                       selectedImage === index ? "border-primary" : "border-border/50"
                     }`}
                   >
                     <img
-                      src={image.url}
+                      src={getImageUrl(image)}
                       alt={`${partName} ${index + 1}`}
                       className="h-full w-full object-cover"
                     />
