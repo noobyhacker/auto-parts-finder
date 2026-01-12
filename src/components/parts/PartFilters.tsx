@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { getMockCategories } from "@/lib/mock-data";
+import { getCategories } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Category, PartFilters } from "@/types";
 
@@ -36,7 +36,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
   const { t } = useLanguage();
 
   useEffect(() => {
-    getMockCategories().then(setCategories);
+    getCategories().then(setCategories);
   }, []);
 
   const handleCategoryClick = (categoryId: number) => {

@@ -6,7 +6,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { searchMockParts } from "@/lib/mock-data";
+import { searchParts } from "@/lib/api";
 import type { Part } from "@/types";
 
 interface SearchDialogProps {
@@ -29,8 +29,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const data = await searchMockParts(query);
-        setResults(data);
+        const result = await searchParts(query);
+        setResults(result.parts);
       } finally {
         setIsLoading(false);
       }
@@ -73,7 +73,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
                       {part.images[0] ? (
                         <img 
-                          src={part.images[0].url} 
+                          src={typeof part.images[0] === 'string' ? part.images[0] : part.images[0].url} 
                           alt={part.name}
                           className="h-10 w-10 rounded-lg object-cover"
                         />

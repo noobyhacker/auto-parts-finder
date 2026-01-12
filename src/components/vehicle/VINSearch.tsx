@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Search, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { isValidVIN } from "@/lib/api";
-import { mockVehicle, delay } from "@/lib/mock-data";
+import { isValidVIN, decodeVIN } from "@/lib/api";
 import type { Vehicle } from "@/types";
 
 interface VINSearchProps {
@@ -36,11 +35,12 @@ export function VINSearch({ onVehicleFound }: VINSearchProps) {
     setError(null);
 
     try {
-      // Simulate API call
-      await delay(1000);
-      
-      // Mock: always return a vehicle for demo
-      setFoundVehicle(mockVehicle);
+      const result = await decodeVIN(vin);
+      if (result.success && result.vehicle) {
+        setFoundVehicle(result.vehicle);
+      } else {
+        setError(result.error || "Could not decode VIN");
+      }
     } catch {
       setError("Failed to decode VIN. Please try again.");
     } finally {

@@ -5,7 +5,7 @@ import { PartGrid } from "@/components/parts/PartGrid";
 import { PartFiltersComponent } from "@/components/parts/PartFilters";
 import { PartSort } from "@/components/parts/PartSort";
 import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
-import { getMockParts } from "@/lib/mock-data";
+import { getParts } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Part, PartFilters, VehicleSelection } from "@/types";
 
@@ -41,7 +41,7 @@ const Catalog = () => {
     const fetchParts = async () => {
       setIsLoading(true);
       try {
-        const result = await getMockParts(filters, sort);
+        const result = await getParts(filters, sort);
         setParts(result.parts);
         setTotal(result.total);
       } finally {
