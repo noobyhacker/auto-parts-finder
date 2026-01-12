@@ -44,7 +44,7 @@ export const PartCard = memo(function PartCard({ part }: PartCardProps) {
           {part.name}
         </h3>
         <p className="mt-1 font-mono text-xs text-muted-foreground">{part.articleNumber}</p>
-        <p className="mt-2 font-display text-lg font-bold text-primary">${part.price.toFixed(2)}</p>
+        <p className="mt-2 text-sm font-medium text-primary">{t.common.contactForPrice}</p>
       </div>
     </Link>
   );
