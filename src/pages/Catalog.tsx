@@ -20,19 +20,9 @@ const Catalog = () => {
 
   // Parse initial filters from URL
   useEffect(() => {
-    const categorySlug = searchParams.get("category");
-    if (categorySlug) {
-      const categoryMap: Record<string, number> = {
-        "engine-parts": 1,
-        "brake-system": 2,
-        "suspension": 3,
-        "filters": 4,
-        "electrical": 5,
-        "body-parts": 6,
-        "cooling-system": 7,
-        "transmission": 8,
-      };
-      setFilters((f) => ({ ...f, categoryId: categoryMap[categorySlug] }));
+    const categoryId = searchParams.get("category");
+    if (categoryId) {
+      setFilters((f) => ({ ...f, categoryId }));
     }
   }, [searchParams]);
 

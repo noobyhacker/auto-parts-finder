@@ -1,21 +1,21 @@
 // Data models matching Strapi structure
 
 export interface Brand {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   logo?: string;
 }
 
 export interface Model {
-  id: number;
+  id: string;
   name: string;
   slug: string;
-  brand: Brand;
+  brandId?: string;
 }
 
 export interface Vehicle {
-  id: number;
+  id: string;
   brand: Brand;
   model: Model;
   year: number;
@@ -23,7 +23,7 @@ export interface Vehicle {
 }
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   icon?: string;
@@ -58,18 +58,18 @@ export interface VINDecodeResult {
 }
 
 export interface VehicleSelection {
-  brandId?: number;
-  modelId?: number;
+  brandId?: string;
+  modelId?: string;
   year?: number;
   engine?: string;
 }
 
 export interface PartFilters {
-  categoryId?: number;
+  categoryId?: string;
   minPrice?: number;
   maxPrice?: number;
   inStockOnly?: boolean;
-  vehicleId?: number;
+  vehicleId?: string;
 }
 
 export interface PartSortOption {
