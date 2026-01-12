@@ -39,7 +39,7 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
     getCategories().then(setCategories);
   }, []);
 
-  const handleCategoryClick = (categoryId: number) => {
+  const handleCategoryClick = (categoryId: string) => {
     onFiltersChange({
       ...filters,
       categoryId: filters.categoryId === categoryId ? undefined : categoryId,

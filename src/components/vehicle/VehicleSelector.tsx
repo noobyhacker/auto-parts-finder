@@ -23,8 +23,8 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   const [years, setYears] = useState<number[]>([]);
   const [engines, setEngines] = useState<string[]>([]);
 
-  const [selectedBrand, setSelectedBrand] = useState<number | null>(null);
-  const [selectedModel, setSelectedModel] = useState<number | null>(null);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedEngine, setSelectedEngine] = useState<string | null>(null);
 
@@ -40,7 +40,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   useEffect(() => {
     if (selectedBrand) {
       setIsLoading(true);
-      getModels(String(selectedBrand)).then((data) => {
+      getModels(selectedBrand).then((data) => {
         setModels(data);
         setIsLoading(false);
       });
@@ -56,7 +56,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   useEffect(() => {
     if (selectedModel) {
       setIsLoading(true);
-      getYears(String(selectedModel)).then((data) => {
+      getYears(selectedModel).then((data) => {
         setYears(data);
         setIsLoading(false);
       });
@@ -69,9 +69,9 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
 
   // Load engines when year changes
   useEffect(() => {
-    if (selectedYear) {
+    if (selectedYear && selectedModel) {
       setIsLoading(true);
-      getEngines(String(selectedModel), selectedYear).then((data) => {
+      getEngines(selectedModel, selectedYear).then((data) => {
         setEngines(data);
         setIsLoading(false);
       });
@@ -79,7 +79,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
       setEngines([]);
     }
     setSelectedEngine(null);
-  }, [selectedYear]);
+  }, [selectedYear, selectedModel]);
 
   const handleReset = () => {
     setSelectedBrand(null);
@@ -122,15 +122,15 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             {t.vehicle.brand}
           </label>
           <Select
-            value={selectedBrand?.toString() || ""}
-            onValueChange={(v) => setSelectedBrand(Number(v))}
+            value={selectedBrand || ""}
+            onValueChange={setSelectedBrand}
           >
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectBrand} />
             </SelectTrigger>
             <SelectContent>
               {brands.map((brand) => (
-                <SelectItem key={brand.id} value={brand.id.toString()}>
+                <SelectItem key={brand.id} value={brand.id}>
                   {brand.name}
                 </SelectItem>
               ))}
@@ -150,8 +150,8 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             {t.vehicle.model}
           </label>
           <Select
-            value={selectedModel?.toString() || ""}
-            onValueChange={(v) => setSelectedModel(Number(v))}
+            value={selectedModel || ""}
+            onValueChange={setSelectedModel}
             disabled={!selectedBrand}
           >
             <SelectTrigger className="bg-input">
@@ -159,7 +159,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             </SelectTrigger>
             <SelectContent>
               {models.map((model) => (
-                <SelectItem key={model.id} value={model.id.toString()}>
+                <SelectItem key={model.id} value={model.id}>
                   {model.name}
                 </SelectItem>
               ))}
