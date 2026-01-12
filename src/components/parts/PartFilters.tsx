@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
 import {
   Sheet,
   SheetContent,
@@ -20,7 +19,6 @@ interface PartFiltersProps {
 
 export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersProps) {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [priceRange, setPriceRange] = useState([0, 500]);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -34,18 +32,6 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
     });
   };
 
-  const handlePriceChange = (value: number[]) => {
-    setPriceRange(value);
-  };
-
-  const handlePriceCommit = () => {
-    onFiltersChange({
-      ...filters,
-      minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
-      maxPrice: priceRange[1] < 500 ? priceRange[1] : undefined,
-    });
-  };
-
   const handleStockToggle = (checked: boolean) => {
     onFiltersChange({
       ...filters,
@@ -54,11 +40,10 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
   };
 
   const handleClearAll = () => {
-    setPriceRange([0, 500]);
     onFiltersChange({});
   };
 
-  const hasActiveFilters = filters.categoryId || filters.minPrice || filters.maxPrice || filters.inStockOnly;
+  const hasActiveFilters = filters.categoryId || filters.inStockOnly;
 
   const FilterContent = () => (
     <div className="space-y-6">
@@ -75,26 +60,6 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
               {category.name}
             </button>
           ))}
-        </div>
-      </div>
-
-      {/* Price Range */}
-      <div>
-        <h4 className="mb-3 text-sm font-semibold">Price Range</h4>
-        <div className="px-2">
-          <Slider
-            value={priceRange}
-            onValueChange={handlePriceChange}
-            onValueCommit={handlePriceCommit}
-            min={0}
-            max={500}
-            step={10}
-            className="my-4"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}+</span>
-          </div>
         </div>
       </div>
 

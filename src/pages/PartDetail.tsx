@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ChevronLeft, Package, MessageSquare, Check, Car } from "lucide-react";
+import { ChevronLeft, Package, Check, Car, Send, MessageCircle, Phone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { getMockPart, mockVehicle } from "@/lib/mock-data";
@@ -143,11 +143,8 @@ const PartDetail = () => {
               )}
             </div>
 
-            {/* Price & Stock */}
+            {/* Stock Status */}
             <div className="flex items-center gap-4">
-              <p className="font-display text-3xl font-bold text-primary">
-                ${part.price.toFixed(2)}
-              </p>
               <span className={`stock-badge ${part.inStock ? 'in-stock' : 'out-of-stock'}`}>
                 {part.inStock ? (
                   <>
@@ -170,15 +167,42 @@ const PartDetail = () => {
               </div>
             )}
 
-            {/* Actions */}
-            <div className="flex flex-wrap gap-3">
-              <Button 
-                className="gap-2 btn-glow"
-                onClick={() => navigate(`/contact?part=${part.slug}`)}
-              >
-                <MessageSquare className="h-4 w-4" />
-                Request This Part
-              </Button>
+            {/* Contact Actions */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold">Contact Us About This Part</h3>
+              <div className="flex flex-wrap gap-3">
+                <Button 
+                  className="gap-2 bg-[#0088cc] hover:bg-[#0088cc]/90"
+                  onClick={() => {
+                    const message = encodeURIComponent(`Hi! I'm interested in: ${part.name} (Article: ${part.articleNumber})`);
+                    window.open(`https://t.me/your_telegram_handle?text=${message}`, '_blank');
+                  }}
+                >
+                  <Send className="h-4 w-4" />
+                  Telegram
+                </Button>
+                <Button 
+                  className="gap-2 bg-[#25D366] hover:bg-[#25D366]/90"
+                  onClick={() => {
+                    const message = encodeURIComponent(`Hi! I'm interested in: ${part.name} (Article: ${part.articleNumber})`);
+                    window.open(`https://wa.me/your_phone_number?text=${message}`, '_blank');
+                  }}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    const message = encodeURIComponent(`Hi! I'm interested in: ${part.name} (Article: ${part.articleNumber})`);
+                    window.open(`https://max.com/your_max_handle?text=${message}`, '_blank');
+                  }}
+                >
+                  <Phone className="h-4 w-4" />
+                  MAX
+                </Button>
+              </div>
             </div>
 
             {/* Compatible Vehicles */}

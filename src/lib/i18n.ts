@@ -139,6 +139,7 @@ export const translations = {
       sendMessage: "Send Message",
       sending: "Sending...",
       sendAnother: "Send Another Message",
+      contactForPrice: "Contact for Price",
     },
     // Catalog page
     catalogPage: {
@@ -365,6 +366,7 @@ export const translations = {
       sendMessage: "메시지 보내기",
       sending: "전송 중...",
       sendAnother: "다른 메시지 보내기",
+      contactForPrice: "가격 문의",
     },
     // Catalog page
     catalogPage: {
@@ -591,6 +593,7 @@ export const translations = {
       sendMessage: "Отправить сообщение",
       sending: "Отправка...",
       sendAnother: "Отправить ещё",
+      contactForPrice: "Цена по запросу",
     },
     // Catalog page
     catalogPage: {
