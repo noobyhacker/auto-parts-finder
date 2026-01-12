@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getMockBrands, getMockModels, getMockYears, getMockEngines } from "@/lib/mock-data";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Brand, Model, VehicleSelection } from "@/types";
 
 interface VehicleSelectorProps {
@@ -28,6 +29,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   const [selectedEngine, setSelectedEngine] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useLanguage();
 
   // Load brands on mount
   useEffect(() => {
@@ -117,14 +119,14 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             }`}>
               {getStepStatus(1) === "completed" ? <Check className="h-3 w-3" /> : "1"}
             </span>
-            Brand
+            {t.vehicle.brand}
           </label>
           <Select
             value={selectedBrand?.toString() || ""}
             onValueChange={(v) => setSelectedBrand(Number(v))}
           >
             <SelectTrigger className="bg-input">
-              <SelectValue placeholder="Select brand..." />
+              <SelectValue placeholder={t.vehicle.selectBrand} />
             </SelectTrigger>
             <SelectContent>
               {brands.map((brand) => (
@@ -145,7 +147,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             }`}>
               {getStepStatus(2) === "completed" ? <Check className="h-3 w-3" /> : "2"}
             </span>
-            Model
+            {t.vehicle.model}
           </label>
           <Select
             value={selectedModel?.toString() || ""}
@@ -153,7 +155,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             disabled={!selectedBrand}
           >
             <SelectTrigger className="bg-input">
-              <SelectValue placeholder="Select model..." />
+              <SelectValue placeholder={t.vehicle.selectModel} />
             </SelectTrigger>
             <SelectContent>
               {models.map((model) => (
@@ -174,7 +176,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             }`}>
               {getStepStatus(3) === "completed" ? <Check className="h-3 w-3" /> : "3"}
             </span>
-            Year
+            {t.vehicle.year}
           </label>
           <Select
             value={selectedYear?.toString() || ""}
@@ -182,7 +184,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             disabled={!selectedModel}
           >
             <SelectTrigger className="bg-input">
-              <SelectValue placeholder="Select year..." />
+              <SelectValue placeholder={t.vehicle.selectYear} />
             </SelectTrigger>
             <SelectContent>
               {years.map((year) => (
@@ -203,8 +205,8 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             }`}>
               {getStepStatus(4) === "completed" ? <Check className="h-3 w-3" /> : "4"}
             </span>
-            Engine
-            <span className="text-xs text-muted-foreground">(optional)</span>
+            {t.vehicle.engine}
+            <span className="text-xs text-muted-foreground">({t.vehicle.optional})</span>
           </label>
           <Select
             value={selectedEngine || ""}
@@ -212,7 +214,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             disabled={!selectedYear}
           >
             <SelectTrigger className="bg-input">
-              <SelectValue placeholder="Select engine..." />
+              <SelectValue placeholder={t.vehicle.selectEngine} />
             </SelectTrigger>
             <SelectContent>
               {engines.map((engine) => (
@@ -234,14 +236,14 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             className="gap-2 btn-glow"
           >
             <Car className="h-4 w-4" />
-            Find Parts
+            {t.vehicle.findParts}
             <ChevronRight className="h-4 w-4" />
           </Button>
 
           {(selectedBrand || selectedModel || selectedYear) && (
             <Button variant="ghost" size="sm" onClick={handleReset} className="gap-2 text-muted-foreground">
               <RotateCcw className="h-4 w-4" />
-              Reset
+              {t.vehicle.reset}
             </Button>
           )}
         </div>
