@@ -17,7 +17,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         return saved;
       }
     }
-    return "en";
+    return "ru"; // Default to Russian
   });
 
   const setLanguage = (lang: Language) => {
