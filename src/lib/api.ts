@@ -39,6 +39,37 @@ export async function getBrands(): Promise<Brand[]> {
   return client.fetch(query);
 }
 
+// Find vehicle by brand name, model name, year (for VIN matching)
+export async function findVehicleByDetails(
+  brandName: string,
+  modelName: string,
+  year: number
+): Promise<Vehicle | null> {
+  const query = `*[_type == "vehicle" && 
+    brand->name match $brandName && 
+    model->name match $modelName && 
+    year == $year][0] {
+      "id": _id,
+      year,
+      engine,
+      "brand": brand->{
+        "id": _id,
+        name,
+        "slug": slug.current
+      },
+      "model": model->{
+        "id": _id,
+        name,
+        "slug": slug.current
+      }
+    }`;
+  return client.fetch(query, { 
+    brandName: `*${brandName}*`, 
+    modelName: `*${modelName}*`, 
+    year 
+  });
+}
+
 // Models (filtered by brand)
 export async function getModels(brandId: string): Promise<Model[]> {
   const query = `*[_type == "model" && brand._ref == $brandId] | order(name asc) {
