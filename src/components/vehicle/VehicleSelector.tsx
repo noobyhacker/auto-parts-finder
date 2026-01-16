@@ -38,47 +38,98 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
 
   // Load models when brand changes
   useEffect(() => {
-    if (selectedBrand) {
+    let cancelled = false;
+
+    const run = async () => {
+      // Reset downstream selections whenever brand changes
+      setSelectedModel(null);
+      setSelectedYear(null);
+      setSelectedEngine(null);
+
+      if (!selectedBrand) {
+        setModels([]);
+        return;
+      }
+
       setIsLoading(true);
-      getModels(selectedBrand).then((data) => {
-        setModels(data);
-        setIsLoading(false);
-      });
-    } else {
-      setModels([]);
-    }
-    setSelectedModel(null);
-    setSelectedYear(null);
-    setSelectedEngine(null);
+      try {
+        const data = await getModels(selectedBrand);
+        if (!cancelled) setModels(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load models:", err);
+        if (!cancelled) setModels([]);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    run();
+    return () => {
+      cancelled = true;
+    };
   }, [selectedBrand]);
 
   // Load years when model changes
   useEffect(() => {
-    if (selectedModel) {
+    let cancelled = false;
+
+    const run = async () => {
+      // Reset downstream selections whenever model changes
+      setSelectedYear(null);
+      setSelectedEngine(null);
+
+      if (!selectedModel) {
+        setYears([]);
+        return;
+      }
+
       setIsLoading(true);
-      getYears(selectedModel).then((data) => {
-        setYears(data);
-        setIsLoading(false);
-      });
-    } else {
-      setYears([]);
-    }
-    setSelectedYear(null);
-    setSelectedEngine(null);
+      try {
+        const data = await getYears(selectedModel);
+        if (!cancelled) setYears(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load years:", err);
+        if (!cancelled) setYears([]);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    run();
+    return () => {
+      cancelled = true;
+    };
   }, [selectedModel]);
 
   // Load engines when year changes
   useEffect(() => {
-    if (selectedYear && selectedModel) {
+    let cancelled = false;
+
+    const run = async () => {
+      // Reset downstream selection whenever year/model changes
+      setSelectedEngine(null);
+
+      if (!selectedYear || !selectedModel) {
+        setEngines([]);
+        return;
+      }
+
       setIsLoading(true);
-      getEngines(selectedModel, selectedYear).then((data) => {
-        setEngines(data);
-        setIsLoading(false);
-      });
-    } else {
-      setEngines([]);
-    }
-    setSelectedEngine(null);
+      try {
+        const data = await getEngines(selectedModel, selectedYear);
+        if (!cancelled) setEngines(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load engines:", err);
+        if (!cancelled) setEngines([]);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    run();
+    return () => {
+      cancelled = true;
+    };
   }, [selectedYear, selectedModel]);
 
   const handleReset = () => {
