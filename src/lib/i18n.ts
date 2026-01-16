@@ -112,9 +112,10 @@ export const translations = {
       findParts: "Find Parts",
       reset: "Reset",
       filterByVehicle: "Filter by Vehicle",
-      enterOEM: "Enter article/OEM number...",
-      oemHint: "Search by article number (OEM) or part name",
+      enterOEM: "Search by name or OEM number...",
+      oemHint: "Enter part name or article number (OEM)",
       searchByOEM: "Search by Article Number",
+      loadMore: "Load More",
     },
     // VIN Search
     vin: {
@@ -377,9 +378,10 @@ export const translations = {
       findParts: "부품 찾기",
       reset: "초기화",
       filterByVehicle: "차량별 필터",
-      enterOEM: "품번/OEM 번호 입력...",
-      oemHint: "품번(OEM) 또는 부품명으로 검색",
+      enterOEM: "이름 또는 OEM 번호로 검색...",
+      oemHint: "부품명 또는 품번(OEM) 입력",
       searchByOEM: "품번으로 검색",
+      loadMore: "더 보기",
     },
     // VIN Search
     vin: {
@@ -642,9 +644,10 @@ export const translations = {
       findParts: "Найти запчасти",
       reset: "Сбросить",
       filterByVehicle: "Фильтр по автомобилю",
-      enterOEM: "Введите артикул/OEM номер...",
-      oemHint: "Поиск по артикулу (OEM) или названию детали",
+      enterOEM: "Поиск по названию или OEM номеру...",
+      oemHint: "Введите название детали или артикул (OEM)",
       searchByOEM: "Поиск по артикулу",
+      loadMore: "Загрузить ещё",
     },
     // VIN Search
     vin: {
