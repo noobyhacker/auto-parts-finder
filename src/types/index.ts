@@ -69,6 +69,7 @@ export interface PartFilters {
   maxPrice?: number;
   inStockOnly?: boolean;
   vehicleId?: string;
+  searchTerm?: string;
 }
 
 export interface PartSortOption {

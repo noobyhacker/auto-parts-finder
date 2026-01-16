@@ -182,6 +182,10 @@ export async function getParts(
     conditions.push("$vehicleId in compatibleVehicles[]._ref");
     params.vehicleId = filters.vehicleId;
   }
+  if (filters?.searchTerm) {
+    conditions.push("(name match $searchTerm || oemNumber match $searchTerm || articleNumber match $searchTerm)");
+    params.searchTerm = `*${filters.searchTerm}*`;
+  }
 
   const filterQuery = conditions.join(" && ");
 
