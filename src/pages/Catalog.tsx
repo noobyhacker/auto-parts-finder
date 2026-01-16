@@ -184,7 +184,7 @@ const Catalog = () => {
                       {t.common.loading}
                     </>
                   ) : (
-                    `Load More (${parts.length}/${total})`
+                    `${t.vehicle.loadMore} (${parts.length}/${total})`
                   )}
                 </Button>
               </div>
