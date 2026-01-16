@@ -180,15 +180,15 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
           </label>
           <Select
             value={selectedYear?.toString() || ""}
-            onValueChange={(v) => setSelectedYear(v ? Number(v) : null)}
+            onValueChange={(v) => setSelectedYear(Number(v))}
             disabled={!selectedModel}
           >
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectYear} />
             </SelectTrigger>
             <SelectContent>
-              {years.filter(y => !isNaN(y)).map((year) => (
-                <SelectItem key={year} value={String(year)}>
+              {years.map((year) => (
+                <SelectItem key={year} value={year.toString()}>
                   {year}
                 </SelectItem>
               ))}
