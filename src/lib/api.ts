@@ -84,12 +84,15 @@ export async function getModels(brandId: string): Promise<Model[]> {
 // Years (for a specific model)
 export async function getYears(modelId: string): Promise<number[]> {
   const query = `*[_type == "vehicle" && model._ref == $modelId].year`;
+  console.log("getYears called with modelId:", modelId);
   const raw: Array<number | string | null> = await client.fetch(query, { modelId });
+  console.log("getYears raw result:", raw);
 
   const years = raw
     .map((y) => (typeof y === "string" ? Number.parseInt(y, 10) : y))
     .filter((y): y is number => typeof y === "number" && Number.isFinite(y));
 
+  console.log("getYears parsed years:", years);
   return [...new Set(years)].sort((a, b) => b - a);
 }
 
