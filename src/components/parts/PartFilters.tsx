@@ -18,16 +18,29 @@ interface PartFiltersProps {
   onFiltersChange: (filters: PartFilters) => void;
 }
 
-// Map category slugs to translation keys
+// Map category slugs/names to translation keys
 const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
+  // Slug variations
   "engine-parts": "engine",
+  "engine": "engine",
   "brake-system": "brake",
+  "brake": "brake",
+  "brakes": "brake",
   "suspension": "suspension",
   "filters": "filters",
+  "filter": "filters",
   "electrical": "electrical",
+  "electric": "electrical",
   "body-parts": "body",
+  "body": "body",
   "cooling-system": "cooling",
+  "cooling": "cooling",
   "transmission": "transmission",
+  // Name variations (lowercase)
+  "engine parts": "engine",
+  "brake system": "brake",
+  "body parts": "body",
+  "cooling system": "cooling",
 };
 
 export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersProps) {
@@ -60,7 +73,13 @@ export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersPr
   const hasActiveFilters = filters.categoryId || filters.inStockOnly;
 
   const getCategoryName = (category: Category) => {
-    const key = categoryTranslationMap[category.slug];
+    // Try matching by slug first
+    let key = categoryTranslationMap[category.slug];
+    if (key && t.categories[key]) {
+      return t.categories[key];
+    }
+    // Try matching by lowercase name
+    key = categoryTranslationMap[category.name.toLowerCase()];
     if (key && t.categories[key]) {
       return t.categories[key];
     }
