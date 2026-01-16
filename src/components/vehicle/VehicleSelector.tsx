@@ -128,7 +128,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectBrand} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" className="max-h-[300px]">
               {brands.map((brand) => (
                 <SelectItem key={brand.id} value={brand.id}>
                   {brand.name}
@@ -157,7 +157,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectModel} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" className="max-h-[300px]">
               {models.map((model) => (
                 <SelectItem key={model.id} value={model.id}>
                   {model.name}
@@ -186,7 +186,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectYear} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" className="max-h-[300px]">
               {years.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
                   {year}
@@ -216,7 +216,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectEngine} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" className="max-h-[300px]">
               {engines.map((engine) => (
                 <SelectItem key={engine} value={engine}>
                   {engine}
