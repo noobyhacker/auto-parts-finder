@@ -13,12 +13,14 @@ export function PartGrid({ parts, isLoading }: PartGridProps) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className="part-card animate-pulse">
-            <div className="aspect-square bg-secondary" />
             <div className="space-y-2 p-4">
-              <div className="h-3 w-16 rounded bg-secondary" />
+              <div className="flex items-center justify-between">
+                <div className="h-3 w-16 rounded bg-secondary" />
+                <div className="h-5 w-16 rounded bg-secondary" />
+              </div>
               <div className="h-4 w-full rounded bg-secondary" />
               <div className="h-3 w-24 rounded bg-secondary" />
-              <div className="h-6 w-16 rounded bg-secondary" />
+              <div className="h-5 w-20 rounded bg-secondary" />
             </div>
           </div>
         ))}

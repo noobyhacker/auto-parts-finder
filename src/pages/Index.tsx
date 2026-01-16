@@ -1,10 +1,8 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Car, Shield, Truck, Headphones, ChevronRight, Award, Users, Clock } from "lucide-react";
+import { Car, Shield, Truck, Headphones, ChevronRight, Award, Users, Clock } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
-import { VINSearch } from "@/components/vehicle/VINSearch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   EngineIcon,
   BrakeIcon,
@@ -17,7 +15,7 @@ import {
 } from "@/components/icons/CategoryIcons";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
-import type { VehicleSelection, Vehicle } from "@/types";
+import type { VehicleSelection } from "@/types";
 
 // Memoized feature card for performance
 const FeatureCard = memo(({ Icon, title, desc, delay }: { Icon: any; title: string; desc: string; delay: string }) => (
@@ -72,12 +70,6 @@ const Index = () => {
     navigate(`/catalog?${params.toString()}`);
   };
 
-  const handleVINVehicleFound = (vehicle: Vehicle) => {
-    const params = new URLSearchParams();
-    params.set("vehicleId", vehicle.id.toString());
-    navigate(`/catalog?${params.toString()}`);
-  };
-
   const categories = [
     { name: t.categories.engine, Icon: EngineIcon, slug: "engine-parts" },
     { name: t.categories.brake, Icon: BrakeIcon, slug: "brake-system" },
@@ -122,29 +114,10 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Vehicle Selector / VIN Search */}
+          {/* Vehicle Selector */}
           <div className="mx-auto mt-10 max-w-4xl animate-slide-up" style={{ animationDelay: "0.3s" }}>
             <div className="glass-card p-6 md:p-8 border-primary/20">
-              <Tabs defaultValue="vehicle" className="space-y-6">
-                <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-secondary">
-                  <TabsTrigger value="vehicle" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
-                    <Car className="h-4 w-4" />
-                    {t.hero.selectVehicle}
-                  </TabsTrigger>
-                  <TabsTrigger value="vin" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
-                    <Search className="h-4 w-4" />
-                    {t.hero.vinSearch}
-                  </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="vehicle" className="mt-6">
-                  <VehicleSelector onSelect={handleVehicleSelect} />
-                </TabsContent>
-
-                <TabsContent value="vin" className="mt-6">
-                  <VINSearch onVehicleFound={handleVINVehicleFound} />
-                </TabsContent>
-              </Tabs>
+              <VehicleSelector onSelect={handleVehicleSelect} />
             </div>
           </div>
         </div>

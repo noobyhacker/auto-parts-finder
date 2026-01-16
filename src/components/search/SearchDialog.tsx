@@ -71,15 +71,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                     className="flex w-full items-center gap-3 rounded-lg p-3 text-left transition-colors hover:bg-accent"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                      {part.images[0] ? (
-                        <img 
-                          src={typeof part.images[0] === 'string' ? part.images[0] : part.images[0].url} 
-                          alt={part.name}
-                          className="h-10 w-10 rounded-lg object-cover"
-                        />
-                      ) : (
-                        <Package className="h-5 w-5 text-muted-foreground" />
-                      )}
+                      <Package className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div className="flex-1 overflow-hidden">
                       <p className="truncate text-sm font-medium">{part.name}</p>
