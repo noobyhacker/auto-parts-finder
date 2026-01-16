@@ -22,6 +22,29 @@ const client = createClient({
   useCdn: true,
 });
 
+// Helper to normalize year data (handles both numbers and strings from Sanity)
+function normalizeYear(year: any): number | null {
+  if (typeof year === "number" && !isNaN(year)) {
+    return year;
+  }
+  if (typeof year === "string") {
+    // Remove any non-numeric characters and parse
+    const cleaned = year.replace(/[^0-9]/g, "");
+    if (cleaned.length >= 4) {
+      const parsed = parseInt(cleaned.slice(0, 4), 10);
+      if (!isNaN(parsed) && parsed >= 1900 && parsed <= 2100) {
+        return parsed;
+      }
+    }
+    // Try parsing the whole string as a number
+    const directParse = parseInt(year, 10);
+    if (!isNaN(directParse) && directParse >= 1900 && directParse <= 2100) {
+      return directParse;
+    }
+  }
+  return null;
+}
+
 // Helper to transform Sanity image to URL
 function imageUrl(image: any): string {
   if (!image?.asset?._ref) return "/placeholder.svg";
@@ -81,11 +104,17 @@ export async function getModels(brandId: string): Promise<Model[]> {
   return client.fetch(query, { brandId });
 }
 
-// Years (for a specific model)
+// Years (for a specific model) - handles both number and string years from Sanity
 export async function getYears(modelId: string): Promise<number[]> {
   const query = `*[_type == "vehicle" && model._ref == $modelId].year`;
-  const years: number[] = await client.fetch(query, { modelId });
-  return [...new Set(years)].sort((a, b) => b - a);
+  const rawYears: (number | string)[] = await client.fetch(query, { modelId });
+  
+  // Normalize all years to numbers, filter out invalid ones
+  const normalizedYears = rawYears
+    .map(normalizeYear)
+    .filter((y): y is number => y !== null);
+  
+  return [...new Set(normalizedYears)].sort((a, b) => b - a);
 }
 
 // Engines (for a specific model and year)
@@ -216,7 +245,7 @@ export async function getParts(
       },
       "compatibleVehicles": compatibleVehicles[]->{
         "id": _id,
-        year,
+        "year": year,
         engine,
         "brand": brand->{name},
         "model": model->{name}
@@ -230,6 +259,11 @@ export async function getParts(
     parts: result.parts.map((p: any) => ({
       ...p,
       images: p.images || ["/placeholder.svg"],
+      // Normalize years in compatible vehicles
+      compatibleVehicles: p.compatibleVehicles?.map((v: any) => ({
+        ...v,
+        year: normalizeYear(v.year) || v.year,
+      })),
     })),
     total: result.total,
   };
@@ -266,6 +300,11 @@ export async function getPart(slug: string): Promise<Part | null> {
   return {
     ...part,
     images: part.images || ["/placeholder.svg"],
+    // Normalize years in compatible vehicles
+    compatibleVehicles: part.compatibleVehicles?.map((v: any) => ({
+      ...v,
+      year: normalizeYear(v.year) || v.year,
+    })),
   };
 }
 
