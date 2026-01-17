@@ -1,5 +1,6 @@
 import { PartCard } from "./PartCard";
 import { Package } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
 
 interface PartGridProps {
@@ -8,6 +9,8 @@ interface PartGridProps {
 }
 
 export function PartGrid({ parts, isLoading }: PartGridProps) {
+  const { t } = useLanguage();
+
   if (isLoading) {
     return (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -32,9 +35,9 @@ export function PartGrid({ parts, isLoading }: PartGridProps) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <Package className="h-16 w-16 text-muted-foreground/30" />
-        <h3 className="mt-4 font-display text-lg font-semibold">No Parts Found</h3>
+        <h3 className="mt-4 font-display text-lg font-semibold">{t.common.noPartsFound}</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Try adjusting your filters or search criteria
+          {t.common.noPartsFoundDesc}
         </p>
       </div>
     );

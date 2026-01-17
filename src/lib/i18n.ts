@@ -160,6 +160,10 @@ export const translations = {
       partNotFound: "Part Not Found",
       partNotFoundDesc: "The part you're looking for doesn't exist or has been removed.",
       browseCatalog: "Browse Catalog",
+      noPartsFound: "No Parts Found",
+      noPartsFoundDesc: "Try adjusting your filters or search criteria",
+      noPartsFoundFor: "No parts found for",
+      searchPlaceholder: "Search parts by name or article number...",
     },
     // Sort options
     sort: {
@@ -426,6 +430,10 @@ export const translations = {
       partNotFound: "부품을 찾을 수 없음",
       partNotFoundDesc: "찾고 계신 부품이 존재하지 않거나 삭제되었습니다.",
       browseCatalog: "카탈로그 검색",
+      noPartsFound: "부품을 찾을 수 없음",
+      noPartsFoundDesc: "필터 또는 검색 조건을 조정해 보세요",
+      noPartsFoundFor: "부품을 찾을 수 없음:",
+      searchPlaceholder: "이름 또는 품번으로 부품 검색...",
     },
     // Sort options
     sort: {
@@ -692,6 +700,10 @@ export const translations = {
       partNotFound: "Запчасть не найдена",
       partNotFoundDesc: "Запчасть, которую вы ищете, не существует или была удалена.",
       browseCatalog: "Смотреть каталог",
+      noPartsFound: "Запчасти не найдены",
+      noPartsFoundDesc: "Попробуйте изменить фильтры или условия поиска",
+      noPartsFoundFor: "Запчасти не найдены по запросу",
+      searchPlaceholder: "Поиск запчастей по названию или артикулу...",
     },
     // Sort options
     sort: {
