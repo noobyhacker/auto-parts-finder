@@ -98,7 +98,7 @@ export async function getEngines(
   modelId: string,
   year: number
 ): Promise<string[]> {
-  const query = `*[_type == "vehicle" && model._ref == $modelId && year == $year].engine`;
+  const query = `*[_type == "vehicle" && model._ref == $modelId && yearFrom == $year].engines`;
   const engines: (string | null)[] = await client.fetch(query, { modelId, year });
   return [...new Set(engines.filter((e): e is string => !!e))];
 }
