@@ -242,6 +242,7 @@ export async function getParts(
 
 // Single part
 export async function getPart(slug: string): Promise<Part | null> {
+  console.log("getPart called with slug:", slug);
   const query = `*[_type == "part" && slug.current == $slug][0] {
     "id": _id,
     name,
@@ -267,6 +268,7 @@ export async function getPart(slug: string): Promise<Part | null> {
     }
   }`;
   const part = await client.fetch(query, { slug });
+  console.log("getPart result:", part);
   if (!part) return null;
   return {
     ...part,
