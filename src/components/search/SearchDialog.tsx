@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { searchParts } from "@/lib/api";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
 
 interface SearchDialogProps {
@@ -19,6 +20,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const [results, setResults] = useState<Part[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!query.trim()) {
@@ -53,7 +55,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search parts by name or article number..."
+            placeholder={t.common.searchPlaceholder}
             className="border-0 bg-transparent px-3 py-4 text-base focus-visible:ring-0"
             autoFocus
           />
@@ -80,7 +82,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                     <div className="text-right">
                       <p className="text-sm font-semibold text-primary">${part.price.toFixed(2)}</p>
                       <p className={`text-xs ${part.inStock ? 'text-success' : 'text-destructive'}`}>
-                        {part.inStock ? 'In Stock' : 'Out of Stock'}
+                        {part.inStock ? t.common.inStock : t.common.outOfStock}
                       </p>
                     </div>
                   </button>
@@ -89,7 +91,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             ) : !isLoading && (
               <div className="flex flex-col items-center gap-2 py-8 text-center">
                 <Package className="h-10 w-10 text-muted-foreground/50" />
-                <p className="text-sm text-muted-foreground">No parts found for "{query}"</p>
+                <p className="text-sm text-muted-foreground">{t.common.noPartsFoundFor} "{query}"</p>
               </div>
             )}
           </div>
