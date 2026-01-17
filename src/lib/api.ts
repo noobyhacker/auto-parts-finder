@@ -206,7 +206,7 @@ export async function getParts(
     "parts": *[${filterQuery}] | order(${orderBy}) [$start...$end] {
       "id": _id,
       name,
-      "slug": slug.current,
+      "slug": coalesce(slug.current, _id),
       articleNumber,
       oemNumber,
       price,
@@ -240,13 +240,13 @@ export async function getParts(
   };
 }
 
-// Single part
-export async function getPart(slug: string): Promise<Part | null> {
-  console.log("getPart called with slug:", slug);
-  const query = `*[_type == "part" && slug.current == $slug][0] {
+// Single part (supports both slug and _id lookup)
+export async function getPart(slugOrId: string): Promise<Part | null> {
+  console.log("getPart called with slugOrId:", slugOrId);
+  const query = `*[_type == "part" && (slug.current == $slugOrId || _id == $slugOrId)][0] {
     "id": _id,
     name,
-    "slug": slug.current,
+    "slug": coalesce(slug.current, _id),
     articleNumber,
     oemNumber,
     price,
@@ -267,7 +267,7 @@ export async function getPart(slug: string): Promise<Part | null> {
       "model": model->{name}
     }
   }`;
-  const part = await client.fetch(query, { slug });
+  const part = await client.fetch(query, { slugOrId });
   console.log("getPart result:", part);
   if (!part) return null;
   return {
