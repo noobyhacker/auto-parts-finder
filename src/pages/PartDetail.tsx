@@ -132,41 +132,37 @@ const PartDetail = () => {
 
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Image Gallery */}
-          <div className="space-y-4">
-            <div className="aspect-square overflow-hidden rounded-lg border border-border/50 bg-card">
-              {part.images[selectedImage] ? (
+          {part.images.length > 0 && part.images[0] !== "/placeholder.svg" && (
+            <div className="space-y-4">
+              <div className="aspect-square overflow-hidden rounded-lg border border-border/50 bg-card">
                 <img
                   src={getImageUrl(part.images[selectedImage])}
                   alt={partName}
                   className="h-full w-full object-cover"
                 />
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <Package className="h-24 w-24 text-muted-foreground/30" />
+              </div>
+              
+              {part.images.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {part.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-colors ${
+                        selectedImage === index ? "border-primary" : "border-border/50"
+                      }`}
+                    >
+                      <img
+                        src={getImageUrl(image)}
+                        alt={`${partName} ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
-            
-            {part.images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
-                {part.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-colors ${
-                      selectedImage === index ? "border-primary" : "border-border/50"
-                    }`}
-                  >
-                    <img
-                      src={getImageUrl(image)}
-                      alt={`${partName} ${index + 1}`}
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          )}
 
           {/* Details */}
           <div className="space-y-6">
