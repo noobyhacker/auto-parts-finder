@@ -36,6 +36,17 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
     getBrands().then(setBrands);
   }, []);
 
+  // Notify parent of selection changes immediately (for instant filtering)
+  useEffect(() => {
+    // Only call onSelect if at least one filter is set, or if we're resetting
+    onSelect({
+      brandId: selectedBrand || undefined,
+      modelId: selectedModel || undefined,
+      year: selectedYear || undefined,
+      engine: selectedEngine || undefined,
+    });
+  }, [selectedBrand, selectedModel, selectedYear, selectedEngine]);
+
   // Load models when brand changes
   useEffect(() => {
     let cancelled = false;
@@ -45,9 +56,11 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
       setSelectedModel(null);
       setSelectedYear(null);
       setSelectedEngine(null);
+      setModels([]);
+      setYears([]);
+      setEngines([]);
 
       if (!selectedBrand) {
-        setModels([]);
         return;
       }
 
@@ -77,9 +90,10 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
       // Reset downstream selections whenever model changes
       setSelectedYear(null);
       setSelectedEngine(null);
+      setYears([]);
+      setEngines([]);
 
       if (!selectedModel) {
-        setYears([]);
         return;
       }
 
@@ -108,9 +122,9 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
     const run = async () => {
       // Reset downstream selection whenever year/model changes
       setSelectedEngine(null);
+      setEngines([]);
 
       if (!selectedYear || !selectedModel) {
-        setEngines([]);
         return;
       }
 
@@ -137,17 +151,6 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
     setSelectedModel(null);
     setSelectedYear(null);
     setSelectedEngine(null);
-  };
-
-  const handleSubmit = () => {
-    if (selectedBrand && selectedModel && selectedYear) {
-      onSelect({
-        brandId: selectedBrand,
-        modelId: selectedModel,
-        year: selectedYear,
-        engine: selectedEngine || undefined,
-      });
-    }
   };
 
   const getStepStatus = (step: number) => {
@@ -262,10 +265,10 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
           <Select
             value={selectedEngine || ""}
             onValueChange={setSelectedEngine}
-            disabled={!selectedYear}
+            disabled={!selectedYear || engines.length === 0}
           >
             <SelectTrigger className="bg-input">
-              <SelectValue placeholder={t.vehicle.selectEngine} />
+              <SelectValue placeholder={engines.length === 0 && selectedYear ? "—" : t.vehicle.selectEngine} />
             </SelectTrigger>
             <SelectContent position="popper" className="max-h-[300px]">
               {engines.map((engine) => (
@@ -282,8 +285,13 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
       {showButton && (
         <div className="flex items-center gap-3">
           <Button 
-            onClick={handleSubmit}
-            disabled={!selectedBrand || !selectedModel || !selectedYear || isLoading}
+            onClick={() => onSelect({
+              brandId: selectedBrand || undefined,
+              modelId: selectedModel || undefined,
+              year: selectedYear || undefined,
+              engine: selectedEngine || undefined,
+            })}
+            disabled={!selectedBrand || isLoading}
             className="gap-2 btn-glow"
           >
             <Car className="h-4 w-4" />
@@ -297,6 +305,16 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
               {t.vehicle.reset}
             </Button>
           )}
+        </div>
+      )}
+
+      {/* Reset button when showButton is false */}
+      {!showButton && (selectedBrand || selectedModel || selectedYear) && (
+        <div className="flex justify-end">
+          <Button variant="ghost" size="sm" onClick={handleReset} className="gap-2 text-muted-foreground">
+            <RotateCcw className="h-4 w-4" />
+            {t.vehicle.reset}
+          </Button>
         </div>
       )}
     </div>
