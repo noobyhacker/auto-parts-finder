@@ -187,6 +187,26 @@ export async function getParts(
     conditions.push("$vehicleId in compatibleVehicles[]._ref");
     params.vehicleId = filters.vehicleId;
   }
+  // Filter by brand (parts that have compatible vehicles with this brand)
+  if (filters?.brandId) {
+    conditions.push("count(compatibleVehicles[@->brand._ref == $brandId]) > 0");
+    params.brandId = filters.brandId;
+  }
+  // Filter by model
+  if (filters?.modelId) {
+    conditions.push("count(compatibleVehicles[@->model._ref == $modelId]) > 0");
+    params.modelId = filters.modelId;
+  }
+  // Filter by year
+  if (filters?.year) {
+    conditions.push("count(compatibleVehicles[@->yearFrom == $year]) > 0");
+    params.year = filters.year;
+  }
+  // Filter by engine
+  if (filters?.engine) {
+    conditions.push("count(compatibleVehicles[@->engines == $engine]) > 0");
+    params.engine = filters.engine;
+  }
   if (filters?.searchTerm) {
     conditions.push("(name match $searchTerm || oemNumber match $searchTerm || articleNumber match $searchTerm)");
     params.searchTerm = `*${filters.searchTerm}*`;

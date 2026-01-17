@@ -30,6 +30,10 @@ const Catalog = () => {
   useEffect(() => {
     const categoryId = searchParams.get("category");
     const searchTerm = searchParams.get("search");
+    const brandId = searchParams.get("brand");
+    const modelId = searchParams.get("model");
+    const year = searchParams.get("year");
+    const engine = searchParams.get("engine");
     
     const newFilters: PartFilters = {};
     if (categoryId) newFilters.categoryId = categoryId;
@@ -37,6 +41,10 @@ const Catalog = () => {
       newFilters.searchTerm = searchTerm;
       setSearchInput(searchTerm);
     }
+    if (brandId) newFilters.brandId = brandId;
+    if (modelId) newFilters.modelId = modelId;
+    if (year) newFilters.year = parseInt(year, 10);
+    if (engine) newFilters.engine = engine;
     
     setFilters(newFilters);
   }, [searchParams]);
@@ -73,12 +81,14 @@ const Catalog = () => {
   }, [isLoadingMore, parts.length, total, page, filters, sort]);
 
   const handleVehicleSelect = (selection: VehicleSelection) => {
-    const params = new URLSearchParams(searchParams);
-    if (selection.brandId) params.set("brand", selection.brandId.toString());
-    if (selection.modelId) params.set("model", selection.modelId.toString());
-    if (selection.year) params.set("year", selection.year.toString());
-    if (selection.engine) params.set("engine", selection.engine);
-    setSearchParams(params);
+    // Update filters directly for instant filtering
+    setFilters((prev) => ({
+      ...prev,
+      brandId: selection.brandId,
+      modelId: selection.modelId,
+      year: selection.year,
+      engine: selection.engine,
+    }));
   };
 
   const handleSearch = () => {
