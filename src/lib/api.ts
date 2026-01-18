@@ -31,12 +31,17 @@ function imageUrl(image: any): string {
 
 // Brands
 export async function getBrands(): Promise<Brand[]> {
-  const query = `*[_type == "brand"] | order(name asc) {
-    "id": _id,
-    name,
-    "slug": slug.current
-  }`;
-  return client.fetch(query);
+  try {
+    const query = `*[_type == "brand"] | order(name asc) {
+      "id": _id,
+      name,
+      "slug": slug.current
+    }`;
+    return await client.fetch(query);
+  } catch (error) {
+    console.warn("Failed to fetch brands:", error);
+    return [];
+  }
 }
 
 // Find vehicle by brand name, model name, year (for VIN matching)
@@ -72,25 +77,35 @@ export async function findVehicleByDetails(
 
 // Models (filtered by brand)
 export async function getModels(brandId: string): Promise<Model[]> {
-  const query = `*[_type == "model" && brand._ref == $brandId] | order(name asc) {
-    "id": _id,
-    name,
-    "slug": slug.current,
-    "brandId": brand._ref
-  }`;
-  return client.fetch(query, { brandId });
+  try {
+    const query = `*[_type == "model" && brand._ref == $brandId] | order(name asc) {
+      "id": _id,
+      name,
+      "slug": slug.current,
+      "brandId": brand._ref
+    }`;
+    return await client.fetch(query, { brandId });
+  } catch (error) {
+    console.warn("Failed to fetch models:", error);
+    return [];
+  }
 }
 
 // Years (for a specific model)
 export async function getYears(modelId: string): Promise<number[]> {
-  const query = `*[_type == "vehicle" && model._ref == $modelId].yearFrom`;
-  const raw: Array<number | string | null> = await client.fetch(query, { modelId });
+  try {
+    const query = `*[_type == "vehicle" && model._ref == $modelId].yearFrom`;
+    const raw: Array<number | string | null> = await client.fetch(query, { modelId });
 
-  const years = raw
-    .map((y) => (typeof y === "string" ? Number.parseInt(y, 10) : y))
-    .filter((y): y is number => typeof y === "number" && Number.isFinite(y));
+    const years = raw
+      .map((y) => (typeof y === "string" ? Number.parseInt(y, 10) : y))
+      .filter((y): y is number => typeof y === "number" && Number.isFinite(y));
 
-  return [...new Set(years)].sort((a, b) => b - a);
+    return [...new Set(years)].sort((a, b) => b - a);
+  } catch (error) {
+    console.warn("Failed to fetch years:", error);
+    return [];
+  }
 }
 
 // Engines (for a specific model and year)
@@ -98,9 +113,14 @@ export async function getEngines(
   modelId: string,
   year: number
 ): Promise<string[]> {
-  const query = `*[_type == "vehicle" && model._ref == $modelId && yearFrom == $year].engines`;
-  const engines: (string | null)[] = await client.fetch(query, { modelId, year });
-  return [...new Set(engines.filter((e): e is string => !!e))];
+  try {
+    const query = `*[_type == "vehicle" && model._ref == $modelId && yearFrom == $year].engines`;
+    const engines: (string | null)[] = await client.fetch(query, { modelId, year });
+    return [...new Set(engines.filter((e): e is string => !!e))];
+  } catch (error) {
+    console.warn("Failed to fetch engines:", error);
+    return [];
+  }
 }
 
 // Get vehicle by selection
@@ -145,13 +165,18 @@ export async function getVehicle(
 
 // Categories
 export async function getCategories(): Promise<Category[]> {
-  const query = `*[_type == "category"] | order(name asc) {
-    "id": _id,
-    name,
-    "slug": slug.current,
-    icon
-  }`;
-  return client.fetch(query);
+  try {
+    const query = `*[_type == "category"] | order(name asc) {
+      "id": _id,
+      name,
+      "slug": slug.current,
+      icon
+    }`;
+    return await client.fetch(query);
+  } catch (error) {
+    console.warn("Failed to fetch categories:", error);
+    return [];
+  }
 }
 
 // Parts
@@ -161,103 +186,108 @@ export async function getParts(
   page = 1,
   pageSize = 12
 ): Promise<{ parts: Part[]; total: number }> {
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
+  try {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
 
-  // Build filter conditions
-  const conditions: string[] = ['_type == "part"'];
-  const params: Record<string, any> = {};
+    // Build filter conditions
+    const conditions: string[] = ['_type == "part"'];
+    const params: Record<string, any> = {};
 
-  if (filters?.categoryId) {
-    conditions.push("category._ref == $categoryId");
-    params.categoryId = filters.categoryId;
-  }
-  if (filters?.minPrice) {
-    conditions.push("price >= $minPrice");
-    params.minPrice = filters.minPrice;
-  }
-  if (filters?.maxPrice) {
-    conditions.push("price <= $maxPrice");
-    params.maxPrice = filters.maxPrice;
-  }
-  if (filters?.inStockOnly) {
-    conditions.push("inStock == true");
-  }
-  if (filters?.vehicleId) {
-    conditions.push("$vehicleId in compatibleVehicles[]._ref");
-    params.vehicleId = filters.vehicleId;
-  }
-  // Filter by brand (parts that have compatible vehicles with this brand)
-  if (filters?.brandId) {
-    conditions.push("count(compatibleVehicles[@->brand._ref == $brandId]) > 0");
-    params.brandId = filters.brandId;
-  }
-  // Filter by model
-  if (filters?.modelId) {
-    conditions.push("count(compatibleVehicles[@->model._ref == $modelId]) > 0");
-    params.modelId = filters.modelId;
-  }
-  // Filter by year
-  if (filters?.year) {
-    conditions.push("count(compatibleVehicles[@->yearFrom == $year]) > 0");
-    params.year = filters.year;
-  }
-  // Filter by engine
-  if (filters?.engine) {
-    conditions.push("count(compatibleVehicles[@->engines == $engine]) > 0");
-    params.engine = filters.engine;
-  }
-  if (filters?.searchTerm) {
-    conditions.push("(name match $searchTerm || oemNumber match $searchTerm || articleNumber match $searchTerm)");
-    params.searchTerm = `*${filters.searchTerm}*`;
-  }
+    if (filters?.categoryId) {
+      conditions.push("category._ref == $categoryId");
+      params.categoryId = filters.categoryId;
+    }
+    if (filters?.minPrice) {
+      conditions.push("price >= $minPrice");
+      params.minPrice = filters.minPrice;
+    }
+    if (filters?.maxPrice) {
+      conditions.push("price <= $maxPrice");
+      params.maxPrice = filters.maxPrice;
+    }
+    if (filters?.inStockOnly) {
+      conditions.push("inStock == true");
+    }
+    if (filters?.vehicleId) {
+      conditions.push("$vehicleId in compatibleVehicles[]._ref");
+      params.vehicleId = filters.vehicleId;
+    }
+    // Filter by brand (parts that have compatible vehicles with this brand)
+    if (filters?.brandId) {
+      conditions.push("count(compatibleVehicles[@->brand._ref == $brandId]) > 0");
+      params.brandId = filters.brandId;
+    }
+    // Filter by model
+    if (filters?.modelId) {
+      conditions.push("count(compatibleVehicles[@->model._ref == $modelId]) > 0");
+      params.modelId = filters.modelId;
+    }
+    // Filter by year
+    if (filters?.year) {
+      conditions.push("count(compatibleVehicles[@->yearFrom == $year]) > 0");
+      params.year = filters.year;
+    }
+    // Filter by engine
+    if (filters?.engine) {
+      conditions.push("count(compatibleVehicles[@->engines == $engine]) > 0");
+      params.engine = filters.engine;
+    }
+    if (filters?.searchTerm) {
+      conditions.push("(name match $searchTerm || oemNumber match $searchTerm || articleNumber match $searchTerm)");
+      params.searchTerm = `*${filters.searchTerm}*`;
+    }
 
-  const filterQuery = conditions.join(" && ");
+    const filterQuery = conditions.join(" && ");
 
-  // Sort mapping
-  let orderBy = "name asc";
-  if (sort === "price:asc") orderBy = "price asc";
-  else if (sort === "price:desc") orderBy = "price desc";
-  else if (sort === "name:asc") orderBy = "name asc";
-  else if (sort === "name:desc") orderBy = "name desc";
-  else if (sort === "createdAt:desc") orderBy = "_createdAt desc";
+    // Sort mapping
+    let orderBy = "name asc";
+    if (sort === "price:asc") orderBy = "price asc";
+    else if (sort === "price:desc") orderBy = "price desc";
+    else if (sort === "name:asc") orderBy = "name asc";
+    else if (sort === "name:desc") orderBy = "name desc";
+    else if (sort === "createdAt:desc") orderBy = "_createdAt desc";
 
-  const query = `{
-    "parts": *[${filterQuery}] | order(${orderBy}) [$start...$end] {
-      "id": _id,
-      name,
-      "slug": coalesce(slug.current, _id),
-      articleNumber,
-      oemNumber,
-      price,
-      description,
-      inStock,
-      stockQuantity,
-      "images": images[].asset->url,
-      "category": category->{
+    const query = `{
+      "parts": *[${filterQuery}] | order(${orderBy}) [$start...$end] {
         "id": _id,
         name,
-        "slug": slug.current
+        "slug": coalesce(slug.current, _id),
+        articleNumber,
+        oemNumber,
+        price,
+        description,
+        inStock,
+        stockQuantity,
+        "images": images[].asset->url,
+        "category": category->{
+          "id": _id,
+          name,
+          "slug": slug.current
+        },
+        "compatibleVehicles": compatibleVehicles[]->{
+          "id": _id,
+          year,
+          engine,
+          "brand": brand->{name},
+          "model": model->{name}
+        }
       },
-      "compatibleVehicles": compatibleVehicles[]->{
-        "id": _id,
-        year,
-        engine,
-        "brand": brand->{name},
-        "model": model->{name}
-      }
-    },
-    "total": count(*[${filterQuery}])
-  }`;
+      "total": count(*[${filterQuery}])
+    }`;
 
-  const result = await client.fetch(query, { ...params, start, end });
-  return {
-    parts: result.parts.map((p: any) => ({
-      ...p,
-      images: p.images || ["/placeholder.svg"],
-    })),
-    total: result.total,
-  };
+    const result = await client.fetch(query, { ...params, start, end });
+    return {
+      parts: result.parts.map((p: any) => ({
+        ...p,
+        images: p.images || ["/placeholder.svg"],
+      })),
+      total: result.total,
+    };
+  } catch (error) {
+    console.warn("Failed to fetch parts:", error);
+    return { parts: [], total: 0 };
+  }
 }
 
 // Single part (supports both slug and _id lookup)
