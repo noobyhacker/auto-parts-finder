@@ -17,6 +17,7 @@ import {
 } from "@/components/icons/CategoryIcons";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
+import { CursorGlow } from "@/components/CursorGlow";
 import type { VehicleSelection } from "@/types";
 
 // Memoized feature card for performance
@@ -85,6 +86,8 @@ const Index = () => {
 
   return (
     <Layout>
+      <CursorGlow />
+      <div className="homepage-gradient absolute inset-0 -z-10" />
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-border/50">
         {/* Animated Background */}
