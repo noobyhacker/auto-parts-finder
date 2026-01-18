@@ -99,9 +99,14 @@ const PartDetail = () => {
           <p className="mt-2 text-muted-foreground">
             {t.common.partNotFoundDesc}
           </p>
-          <Button className="mt-6" onClick={() => navigate("/catalog")}>
-            {t.common.browseCatalog}
-          </Button>
+          <div className="mt-6 flex flex-wrap gap-3 justify-center">
+            <Button onClick={() => navigate("/catalog")}>
+              {t.common.browseCatalog}
+            </Button>
+            <Button variant="outline" onClick={() => navigate("/contact")}>
+              {t.common.orderPart}
+            </Button>
+          </div>
         </div>
       </Layout>
     );
