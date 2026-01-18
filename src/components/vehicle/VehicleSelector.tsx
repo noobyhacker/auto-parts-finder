@@ -36,16 +36,21 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
     getBrands().then(setBrands);
   }, []);
 
+  // Track if user has interacted with the selector
+  const [hasInteracted, setHasInteracted] = useState(false);
+
   // Notify parent of selection changes immediately (for instant filtering)
+  // Only trigger after user has interacted to prevent auto-navigation on mount
   useEffect(() => {
-    // Only call onSelect if at least one filter is set, or if we're resetting
+    if (!hasInteracted) return;
+    
     onSelect({
       brandId: selectedBrand || undefined,
       modelId: selectedModel || undefined,
       year: selectedYear || undefined,
       engine: selectedEngine || undefined,
     });
-  }, [selectedBrand, selectedModel, selectedYear, selectedEngine]);
+  }, [selectedBrand, selectedModel, selectedYear, selectedEngine, hasInteracted]);
 
   // Load models when brand changes
   useEffect(() => {
@@ -177,7 +182,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
           </label>
           <Select
             value={selectedBrand || ""}
-            onValueChange={setSelectedBrand}
+            onValueChange={(v) => { setHasInteracted(true); setSelectedBrand(v); }}
           >
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectBrand} />
@@ -205,7 +210,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
           </label>
           <Select
             value={selectedModel || ""}
-            onValueChange={setSelectedModel}
+            onValueChange={(v) => { setHasInteracted(true); setSelectedModel(v); }}
             disabled={!selectedBrand}
           >
             <SelectTrigger className="bg-input">
@@ -234,7 +239,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
           </label>
           <Select
             value={selectedYear?.toString() || ""}
-            onValueChange={(v) => setSelectedYear(Number(v))}
+            onValueChange={(v) => { setHasInteracted(true); setSelectedYear(Number(v)); }}
             disabled={!selectedModel}
           >
             <SelectTrigger className="bg-input">
@@ -264,7 +269,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
           </label>
           <Select
             value={selectedEngine || ""}
-            onValueChange={setSelectedEngine}
+            onValueChange={(v) => { setHasInteracted(true); setSelectedEngine(v); }}
             disabled={!selectedYear || engines.length === 0}
           >
             <SelectTrigger className="bg-input">
