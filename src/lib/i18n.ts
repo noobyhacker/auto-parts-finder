@@ -35,10 +35,10 @@ export const translations = {
     // About page
     aboutPage: {
       title: "About",
-      titleHighlight: "KoreanAutoParts",
+      titleHighlight: "AmurKor",
       subtitle: "Your trusted partner for quality Korean vehicle parts since 2010",
       storyTitle: "Our Story",
-      storyP1: "Founded in 2010, KoreanAutoParts started with a simple mission: to provide high-quality, genuine parts for Korean vehicles at competitive prices.",
+      storyP1: "Founded in 2010, AmurKor started with a simple mission: to provide high-quality, genuine parts for Korean vehicles at competitive prices.",
       storyP2: "What began as a small family operation has grown into one of the leading suppliers of Hyundai, Kia, Genesis, and SsangYong parts in the region. Our deep expertise in Korean automotive engineering sets us apart.",
       storyP3: "We work directly with OEM manufacturers and certified suppliers to ensure every part meets the highest standards of quality and reliability.",
       satisfaction: "Satisfaction Rate",
@@ -306,10 +306,10 @@ export const translations = {
     // About page
     aboutPage: {
       title: "회사 소개",
-      titleHighlight: "KoreanAutoParts",
+      titleHighlight: "AmurKor",
       subtitle: "2010년부터 고품질 한국 차량 부품의 신뢰할 수 있는 파트너",
       storyTitle: "우리의 이야기",
-      storyP1: "2010년에 설립된 KoreanAutoParts는 경쟁력 있는 가격으로 한국 차량을 위한 고품질 정품 부품을 제공하겠다는 간단한 사명으로 시작했습니다.",
+      storyP1: "2010년에 설립된 AmurKor는 경쟁력 있는 가격으로 한국 차량을 위한 고품질 정품 부품을 제공하겠다는 간단한 사명으로 시작했습니다.",
       storyP2: "작은 가족 사업으로 시작하여 이 지역 최고의 현대, 기아, 제네시스, 쌍용 부품 공급업체 중 하나로 성장했습니다. 한국 자동차 엔지니어링에 대한 깊은 전문 지식이 우리를 차별화합니다.",
       storyP3: "OEM 제조업체 및 인증 공급업체와 직접 협력하여 모든 부품이 최고 품질과 신뢰성 기준을 충족하도록 합니다.",
       satisfaction: "만족도",
@@ -577,10 +577,10 @@ export const translations = {
     // About page
     aboutPage: {
       title: "О компании",
-      titleHighlight: "KoreanAutoParts",
+      titleHighlight: "AmurKor",
       subtitle: "Ваш надёжный партнёр по качественным запчастям для корейских автомобилей с 2010 года",
       storyTitle: "Наша история",
-      storyP1: "Основанная в 2010 году, KoreanAutoParts начала свою деятельность с простой миссии: предоставлять высококачественные оригинальные запчасти для корейских автомобилей по конкурентным ценам.",
+      storyP1: "Основанная в 2010 году, AmurKor начала свою деятельность с простой миссии: предоставлять высококачественные оригинальные запчасти для корейских автомобилей по конкурентным ценам.",
       storyP2: "То, что началось как небольшой семейный бизнес, выросло в одного из ведущих поставщиков запчастей Hyundai, Kia, Genesis и SsangYong в регионе. Наш глубокий опыт в корейском автомобилестроении отличает нас от других.",
       storyP3: "Мы работаем напрямую с OEM производителями и сертифицированными поставщиками, чтобы каждая деталь соответствовала высочайшим стандартам качества и надёжности.",
       satisfaction: "Уровень удовлетворённости",

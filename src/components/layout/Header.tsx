@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Menu, X, Phone, Building2, HelpCircle, Mail } from "lucide-react";
+import { Menu, X, Phone, Building2, HelpCircle, Mail } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { SearchDialog } from "@/components/search/SearchDialog";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -25,13 +26,12 @@ export function Header() {
         <div className="container-custom">
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary group-hover:shadow-lg group-hover:shadow-primary/25 transition-shadow">
-                <span className="font-display text-lg font-bold text-primary-foreground">KP</span>
-              </div>
-              <span className="hidden font-display text-xl font-bold sm:block">
-                Korean<span className="text-primary">Parts</span>
-              </span>
+            <Link to="/" className="flex items-center group">
+              <img 
+                src={logo} 
+                alt="AmurKor" 
+                className="h-10 sm:h-12 w-auto"
+              />
             </Link>
 
             {/* Desktop Navigation */}
