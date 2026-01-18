@@ -16,18 +16,32 @@ interface VehicleSelectorProps {
   onSelect: (selection: VehicleSelection) => void;
   showButton?: boolean;
   instantFilter?: boolean;
+  initialValues?: {
+    brandId?: string;
+    modelId?: string;
+    year?: number;
+    engine?: string;
+  };
 }
 
-export function VehicleSelector({ onSelect, showButton = true, instantFilter = true }: VehicleSelectorProps) {
+export function VehicleSelector({ 
+  onSelect, 
+  showButton = true, 
+  instantFilter = true,
+  initialValues 
+}: VehicleSelectorProps) {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [models, setModels] = useState<Model[]>([]);
   const [years, setYears] = useState<number[]>([]);
   const [engines, setEngines] = useState<string[]>([]);
 
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [selectedEngine, setSelectedEngine] = useState<string | null>(null);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(initialValues?.brandId || null);
+  const [selectedModel, setSelectedModel] = useState<string | null>(initialValues?.modelId || null);
+  const [selectedYear, setSelectedYear] = useState<number | null>(initialValues?.year || null);
+  const [selectedEngine, setSelectedEngine] = useState<string | null>(initialValues?.engine || null);
+  
+  // Track if component was initialized with values
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useLanguage();
@@ -36,6 +50,31 @@ export function VehicleSelector({ onSelect, showButton = true, instantFilter = t
   useEffect(() => {
     getBrands().then(setBrands);
   }, []);
+
+  // Load initial data if initialValues provided
+  useEffect(() => {
+    if (isInitialized) return;
+    
+    const loadInitialData = async () => {
+      if (initialValues?.brandId) {
+        const modelsData = await getModels(initialValues.brandId);
+        setModels(Array.isArray(modelsData) ? modelsData : []);
+        
+        if (initialValues?.modelId) {
+          const yearsData = await getYears(initialValues.modelId);
+          setYears(Array.isArray(yearsData) ? yearsData : []);
+          
+          if (initialValues?.year) {
+            const enginesData = await getEngines(initialValues.modelId, initialValues.year);
+            setEngines(Array.isArray(enginesData) ? enginesData : []);
+          }
+        }
+      }
+      setIsInitialized(true);
+    };
+    
+    loadInitialData();
+  }, [initialValues, isInitialized]);
 
   // Track if user has interacted with the selector
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -53,8 +92,10 @@ export function VehicleSelector({ onSelect, showButton = true, instantFilter = t
     });
   }, [selectedBrand, selectedModel, selectedYear, selectedEngine, hasInteracted, instantFilter]);
 
-  // Load models when brand changes
+  // Load models when brand changes (only after initialization)
   useEffect(() => {
+    if (!isInitialized) return;
+    
     let cancelled = false;
 
     const run = async () => {
@@ -86,10 +127,12 @@ export function VehicleSelector({ onSelect, showButton = true, instantFilter = t
     return () => {
       cancelled = true;
     };
-  }, [selectedBrand]);
+  }, [selectedBrand, isInitialized]);
 
-  // Load years when model changes
+  // Load years when model changes (only after initialization)
   useEffect(() => {
+    if (!isInitialized) return;
+    
     let cancelled = false;
 
     const run = async () => {
@@ -119,10 +162,12 @@ export function VehicleSelector({ onSelect, showButton = true, instantFilter = t
     return () => {
       cancelled = true;
     };
-  }, [selectedModel]);
+  }, [selectedModel, isInitialized]);
 
-  // Load engines when year changes
+  // Load engines when year changes (only after initialization)
   useEffect(() => {
+    if (!isInitialized) return;
+    
     let cancelled = false;
 
     const run = async () => {
@@ -150,7 +195,7 @@ export function VehicleSelector({ onSelect, showButton = true, instantFilter = t
     return () => {
       cancelled = true;
     };
-  }, [selectedYear, selectedModel]);
+  }, [selectedYear, selectedModel, isInitialized]);
 
   const handleReset = () => {
     setSelectedBrand(null);

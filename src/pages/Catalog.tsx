@@ -146,7 +146,16 @@ const Catalog = () => {
           <h2 className="mb-4 text-sm font-semibold text-muted-foreground">
             {t.vehicle.filterByVehicle}
           </h2>
-          <VehicleSelector onSelect={handleVehicleSelect} showButton={false} />
+          <VehicleSelector 
+            onSelect={handleVehicleSelect} 
+            showButton={false}
+            initialValues={{
+              brandId: filters.brandId,
+              modelId: filters.modelId,
+              year: filters.year,
+              engine: filters.engine,
+            }}
+          />
         </div>
 
         {/* Main Content */}
