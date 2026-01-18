@@ -6,63 +6,64 @@
 
 @layer base {
   :root {
-    /* Automotive dark theme with amber accents */
-    --background: 220 20% 6%;
-    --foreground: 210 20% 95%;
+    /* AmurKor brand colors */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 20%;
 
-    --card: 220 18% 10%;
-    --card-foreground: 210 20% 95%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 20%;
 
-    --popover: 220 18% 10%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
 
-    /* Amber/orange accent - automotive signal color */
-    --primary: 38 95% 55%;
-    --primary-foreground: 220 20% 6%;
+    /* Primary - Dark Blue #033366 */
+    --primary: 212 95% 21%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 210 20% 95%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 220 15% 15%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 220 15% 20%;
-    --accent-foreground: 210 20% 95%;
+    /* Accent - Red #CC0033 */
+    --accent: 345 100% 40%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 345 100% 40%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 18%;
-    --ring: 38 95% 55%;
+    --border: 0 0% 88%;
+    --input: 0 0% 94%;
+    --ring: 212 95% 21%;
 
     --radius: 0.5rem;
 
     /* Custom tokens */
     --success: 142 70% 45%;
-    --success-foreground: 210 40% 98%;
+    --success-foreground: 0 0% 100%;
     --warning: 38 95% 55%;
-    --info: 210 100% 50%;
+    --info: 212 95% 21%;
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 20% 8%) 0%, hsl(220 18% 12%) 50%, hsl(220 15% 8%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(220 18% 12%) 0%, hsl(220 18% 10%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(38 95% 55%) 0%, hsl(30 95% 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 50%, hsl(0 0% 100%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(212 95% 21%) 0%, hsl(212 95% 30%) 100%);
     
     /* Shadows */
-    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
-    --shadow-md: 0 8px 24px -8px hsl(0 0% 0% / 0.4);
-    --shadow-lg: 0 16px 48px -16px hsl(0 0% 0% / 0.5);
-    --shadow-glow: 0 0 40px -10px hsl(38 95% 55% / 0.3);
+    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.1);
+    --shadow-md: 0 8px 24px -8px hsl(0 0% 0% / 0.15);
+    --shadow-lg: 0 16px 48px -16px hsl(0 0% 0% / 0.2);
+    --shadow-glow: 0 0 40px -10px hsl(212 95% 21% / 0.2);
 
-    --sidebar-background: 220 18% 10%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 38 95% 55%;
-    --sidebar-primary-foreground: 220 20% 6%;
-    --sidebar-accent: 220 15% 18%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 38 95% 55%;
+    --sidebar-background: 212 95% 21%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 345 100% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 212 95% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 212 95% 30%;
+    --sidebar-ring: 345 100% 40%;
   }
 }
 
@@ -92,7 +93,7 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 
   .btn-glow {
