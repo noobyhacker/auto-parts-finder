@@ -1,10 +1,6 @@
 import { memo } from "react";
-import { useNavigate } from "react-router-dom";
 import { Car, Shield, Truck, Headphones, ChevronRight, Award, Users, Clock } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
-import { OEMSearch } from "@/components/search/OEMSearch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   EngineIcon,
   BrakeIcon,
@@ -17,7 +13,6 @@ import {
 } from "@/components/icons/CategoryIcons";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
-import type { VehicleSelection } from "@/types";
 
 // Memoized feature card for performance
 const FeatureCard = memo(({ Icon, title, desc, delay }: { Icon: any; title: string; desc: string; delay: string }) => (
@@ -60,17 +55,7 @@ const brands = [
 ];
 
 const Index = () => {
-  const navigate = useNavigate();
   const { t } = useLanguage();
-
-  const handleVehicleSelect = (selection: VehicleSelection) => {
-    const params = new URLSearchParams();
-    if (selection.brandId) params.set("brand", selection.brandId.toString());
-    if (selection.modelId) params.set("model", selection.modelId.toString());
-    if (selection.year) params.set("year", selection.year.toString());
-    if (selection.engine) params.set("engine", selection.engine);
-    navigate(`/catalog?${params.toString()}`);
-  };
 
   const categories = [
     { name: t.categories.engine, Icon: EngineIcon, slug: "engine-parts" },
@@ -116,22 +101,16 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Vehicle Selector with Tabs */}
-          <div className="mx-auto mt-10 max-w-4xl animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <div className="glass-card p-6 md:p-8 border-primary/20">
-              <Tabs defaultValue="vehicle" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="vehicle">{t.hero.selectVehicle}</TabsTrigger>
-                  <TabsTrigger value="oem">{t.vehicle.searchByOEM}</TabsTrigger>
-                </TabsList>
-                <TabsContent value="vehicle">
-                  <VehicleSelector onSelect={handleVehicleSelect} />
-                </TabsContent>
-                <TabsContent value="oem">
-                  <OEMSearch />
-                </TabsContent>
-              </Tabs>
-            </div>
+          {/* CTA Button */}
+          <div className="mx-auto mt-10 animate-slide-up" style={{ animationDelay: "0.3s" }}>
+            <a
+              href="/catalog"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-primary text-primary-foreground font-medium text-lg btn-glow hover:opacity-90 transition-opacity"
+            >
+              <Car className="h-5 w-5" />
+              {t.nav.catalog}
+              <ChevronRight className="h-5 w-5" />
+            </a>
           </div>
         </div>
       </section>
