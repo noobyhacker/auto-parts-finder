@@ -91,13 +91,13 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-border/50">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
-        <div className="absolute inset-0 animated-grid opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-background" />
+        <div className="absolute inset-0 animated-grid opacity-40" />
         <div className="absolute inset-0 floating-particles" />
         
         {/* Glow Effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[96px] animate-pulse-slow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-[100px] animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent/20 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: "1s" }} />
 
         <div className="container-custom relative py-16 md:py-24">
           <div className="mx-auto max-w-3xl text-center">

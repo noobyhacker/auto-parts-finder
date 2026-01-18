@@ -118,23 +118,24 @@
   /* Mouse cursor gradient follower */
   .cursor-glow {
     position: fixed;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 0;
-    background: radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, hsl(var(--accent) / 0.08) 40%, transparent 70%);
+    z-index: 9999;
+    background: radial-gradient(circle, hsl(var(--primary) / 0.25) 0%, hsl(var(--accent) / 0.15) 30%, hsl(var(--primary) / 0.05) 50%, transparent 70%);
     transform: translate(-50%, -50%);
     transition: opacity 0.3s ease;
+    mix-blend-mode: multiply;
   }
 
   /* Homepage gradient background */
   .homepage-gradient {
     background: 
-      linear-gradient(135deg, hsl(var(--primary) / 0.03) 0%, transparent 50%),
-      linear-gradient(225deg, hsl(var(--accent) / 0.03) 0%, transparent 50%),
-      linear-gradient(315deg, hsl(var(--primary) / 0.02) 0%, transparent 50%),
-      hsl(var(--background));
+      linear-gradient(135deg, hsl(var(--primary) / 0.12) 0%, hsl(var(--primary) / 0.05) 30%, transparent 60%),
+      linear-gradient(225deg, hsl(var(--accent) / 0.10) 0%, hsl(var(--accent) / 0.03) 30%, transparent 60%),
+      linear-gradient(45deg, hsl(var(--primary) / 0.08) 0%, transparent 40%),
+      linear-gradient(to bottom, hsl(var(--primary) / 0.03) 0%, hsl(var(--background)) 100%);
   }
 
   .input-automotive {
