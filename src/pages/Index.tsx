@@ -121,7 +121,7 @@ const Index = () => {
 
           {/* Vehicle Selector with Tabs */}
           <div className="mx-auto mt-10 max-w-4xl animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <div className="glass-card p-6 md:p-8 border-primary/20">
+            <div className="glass-card p-6 md:p-8 border-primary/40 bg-white shadow-lg">
               <Tabs defaultValue="vehicle" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="vehicle">{t.hero.selectVehicle}</TabsTrigger>
