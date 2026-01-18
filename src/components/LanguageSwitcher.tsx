@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 const languages: { code: Language; label: string; flag: string; shortLabel: string }[] = [
-  { code: "en", label: "English", flag: "🇬🇧", shortLabel: "ENG" },
-  { code: "ko", label: "한국어", flag: "🇰🇷", shortLabel: "KO" },
+  { code: "en", label: "English", flag: "🇬🇧", shortLabel: "GB" },
+  { code: "ko", label: "한국어", flag: "🇰🇷", shortLabel: "KR" },
   { code: "ru", label: "Русский", flag: "🇷🇺", shortLabel: "RU" },
 ];
 
@@ -23,9 +23,9 @@ export const LanguageSwitcher = memo(function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{currentLang.shortLabel}</span>
+        <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-primary">
+          <span className="text-base">{currentLang.flag}</span>
+          <span className="text-xs">{languages.map(l => l.shortLabel).join(' ')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-card border-border">
