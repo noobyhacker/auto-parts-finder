@@ -36,7 +36,7 @@ export function PartGrid({ parts, isLoading }: PartGridProps) {
   if (parts.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <Package className="h-16 w-16 text-muted-foreground/30" />
+        <Package className="h-16 w-16 text-foreground/70" />
         <h3 className="mt-4 font-display text-lg font-semibold">{t.common.noPartsFound}</h3>
         <p className="mt-1 text-sm text-muted-foreground">
           {t.common.noPartsFoundDesc}
