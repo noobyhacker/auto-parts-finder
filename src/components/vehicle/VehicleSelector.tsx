@@ -290,17 +290,19 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
       {showButton && (
         <div className="flex items-center gap-3">
           <Button 
-            onClick={() => onSelect({
-              brandId: selectedBrand || undefined,
-              modelId: selectedModel || undefined,
-              year: selectedYear || undefined,
-              engine: selectedEngine || undefined,
-            })}
-            disabled={!selectedBrand || isLoading}
+            onClick={() => {
+              setHasInteracted(true);
+              onSelect({
+                brandId: selectedBrand || undefined,
+                modelId: selectedModel || undefined,
+                year: selectedYear || undefined,
+                engine: selectedEngine || undefined,
+              });
+            }}
             className="gap-2 btn-glow"
           >
             <Car className="h-4 w-4" />
-            {t.vehicle.findParts}
+            {t.nav.catalog}
             <ChevronRight className="h-4 w-4" />
           </Button>
 
