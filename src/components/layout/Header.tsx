@@ -52,17 +52,6 @@ export function Header() {
               {/* Language Switcher */}
               <LanguageSwitcher />
 
-              {/* Search Button */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-muted-foreground hover:text-primary"
-                onClick={() => setIsSearchOpen(true)}
-              >
-                <Search className="h-5 w-5" />
-                <span className="sr-only">{t.common.search}</span>
-              </Button>
-
               {/* Phone - Desktop */}
               <a 
                 href="tel:+1234567890" 
