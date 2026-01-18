@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-const languages: { code: Language; label: string; flag: string }[] = [
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "ko", label: "한국어", flag: "🇰🇷" },
-  { code: "ru", label: "Русский", flag: "🇷🇺" },
+const languages: { code: Language; label: string; flag: string; shortLabel: string }[] = [
+  { code: "en", label: "English", flag: "🇬🇧", shortLabel: "ENG" },
+  { code: "ko", label: "한국어", flag: "🇰🇷", shortLabel: "KO" },
+  { code: "ru", label: "Русский", flag: "🇷🇺", shortLabel: "RU" },
 ];
 
 export const LanguageSwitcher = memo(function LanguageSwitcher() {
@@ -25,7 +25,7 @@ export const LanguageSwitcher = memo(function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
           <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{currentLang.code.toUpperCase()}</span>
+          <span className="hidden sm:inline">{currentLang.shortLabel}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-card border-border">
