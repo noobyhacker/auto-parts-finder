@@ -213,7 +213,15 @@
   }
 
   .stock-badge.in-stock {
-    @apply bg-success/40 text-green-800 border border-success/50;
+    @apply bg-success/20 text-success-foreground border border-success/60;
+    background-color: hsl(var(--success) / 0.3);
+    color: hsl(142 70% 30%);
+  }
+
+  .dark .stock-badge.in-stock {
+    background-color: hsl(var(--success) / 0.25);
+    color: hsl(142 70% 70%);
+    border-color: hsl(var(--success) / 0.5);
   }
 
   .stock-badge.out-of-stock {
