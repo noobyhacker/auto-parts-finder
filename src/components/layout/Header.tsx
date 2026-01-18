@@ -72,13 +72,6 @@ export function Header() {
                 <span>+1 (234) 567-890</span>
               </a>
 
-              {/* CTA Button */}
-              <Button 
-                className="hidden sm:flex btn-glow" 
-                onClick={() => navigate("/catalog")}
-              >
-                {t.nav.findParts}
-              </Button>
 
               {/* Mobile Menu Toggle */}
               <Button 
@@ -114,9 +107,6 @@ export function Header() {
                   <Phone className="h-4 w-4" />
                   <span>+1 (234) 567-890</span>
                 </a>
-                <Button className="w-full btn-glow" onClick={() => { navigate("/catalog"); setIsMenuOpen(false); }}>
-                  {t.nav.findParts}
-                </Button>
               </nav>
             </div>
           )}
