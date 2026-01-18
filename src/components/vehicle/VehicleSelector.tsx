@@ -15,9 +15,10 @@ import type { Brand, Model, VehicleSelection } from "@/types";
 interface VehicleSelectorProps {
   onSelect: (selection: VehicleSelection) => void;
   showButton?: boolean;
+  instantFilter?: boolean;
 }
 
-export function VehicleSelector({ onSelect, showButton = true }: VehicleSelectorProps) {
+export function VehicleSelector({ onSelect, showButton = true, instantFilter = true }: VehicleSelectorProps) {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [models, setModels] = useState<Model[]>([]);
   const [years, setYears] = useState<number[]>([]);
@@ -40,9 +41,9 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
   const [hasInteracted, setHasInteracted] = useState(false);
 
   // Notify parent of selection changes immediately (for instant filtering)
-  // Only trigger after user has interacted to prevent auto-navigation on mount
+  // Only trigger if instantFilter is enabled and user has interacted
   useEffect(() => {
-    if (!hasInteracted) return;
+    if (!instantFilter || !hasInteracted) return;
     
     onSelect({
       brandId: selectedBrand || undefined,
@@ -50,7 +51,7 @@ export function VehicleSelector({ onSelect, showButton = true }: VehicleSelector
       year: selectedYear || undefined,
       engine: selectedEngine || undefined,
     });
-  }, [selectedBrand, selectedModel, selectedYear, selectedEngine, hasInteracted]);
+  }, [selectedBrand, selectedModel, selectedYear, selectedEngine, hasInteracted, instantFilter]);
 
   // Load models when brand changes
   useEffect(() => {
