@@ -65,6 +65,60 @@
     --sidebar-border: 212 95% 30%;
     --sidebar-ring: 345 100% 40%;
   }
+
+  .dark {
+    /* Dark mode - AmurKor brand colors */
+    --background: 220 20% 10%;
+    --foreground: 0 0% 95%;
+
+    --card: 220 20% 13%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 220 20% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Primary - Dark Blue #033366 - brighter for dark mode */
+    --primary: 212 90% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 20%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 220 15% 25%;
+    --muted-foreground: 0 0% 65%;
+
+    /* Accent - Red #CC0033 */
+    --accent: 345 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 345 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 212 60% 40%;
+    --input: 220 15% 25%;
+    --ring: 212 90% 50%;
+
+    /* Custom tokens */
+    --success: 142 70% 50%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 95% 60%;
+    --info: 212 90% 50%;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 8px 24px -8px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 16px 48px -16px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 40px -10px hsl(212 90% 50% / 0.3);
+
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 345 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 212 90% 40%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 212 60% 30%;
+    --sidebar-ring: 345 100% 50%;
+  }
 }
 
 @layer base {
