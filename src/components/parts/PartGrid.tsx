@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import { PartCard } from "./PartCard";
-import { Package } from "lucide-react";
+import { Package, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
 
@@ -39,6 +41,12 @@ export function PartGrid({ parts, isLoading }: PartGridProps) {
         <p className="mt-1 text-sm text-muted-foreground">
           {t.common.noPartsFoundDesc}
         </p>
+        <Link to="/contact" className="mt-6">
+          <Button className="gap-2">
+            <MessageCircle className="h-4 w-4" />
+            {t.common.orderPart}
+          </Button>
+        </Link>
       </div>
     );
   }
