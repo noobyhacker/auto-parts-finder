@@ -164,6 +164,7 @@ export const translations = {
       noPartsFoundDesc: "Try adjusting your filters or search criteria",
       noPartsFoundFor: "No parts found for",
       searchPlaceholder: "Search parts by name or article number...",
+      orderPart: "Order Part",
     },
     // Sort options
     sort: {
@@ -434,6 +435,7 @@ export const translations = {
       noPartsFoundDesc: "필터 또는 검색 조건을 조정해 보세요",
       noPartsFoundFor: "부품을 찾을 수 없음:",
       searchPlaceholder: "이름 또는 품번으로 부품 검색...",
+      orderPart: "부품 주문",
     },
     // Sort options
     sort: {
@@ -704,6 +706,7 @@ export const translations = {
       noPartsFoundDesc: "Попробуйте изменить фильтры или условия поиска",
       noPartsFoundFor: "Запчасти не найдены по запросу",
       searchPlaceholder: "Поиск запчастей по названию или артикулу...",
+      orderPart: "Заказать запчасть",
     },
     // Sort options
     sort: {
