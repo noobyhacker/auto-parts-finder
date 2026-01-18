@@ -20,11 +20,11 @@
     --primary: 212 95% 21%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
+    --secondary: 0 0% 90%;
     --secondary-foreground: 0 0% 20%;
 
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 0 0% 85%;
+    --muted-foreground: 0 0% 40%;
 
     /* Accent - Red #CC0033 */
     --accent: 345 100% 40%;
@@ -34,7 +34,7 @@
     --destructive-foreground: 0 0% 100%;
 
     --border: 212 95% 21%;
-    --input: 0 0% 94%;
+    --input: 0 0% 80%;
     --ring: 212 95% 21%;
 
     --radius: 0.5rem;
