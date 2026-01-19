@@ -123,10 +123,16 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold">{t.contactPage.phone}</h3>
                     <a
-                      href="tel:+1234567890"
+                      href="tel:+74162771307"
                       className="mt-1 block text-sm text-muted-foreground hover:text-primary"
                     >
-                      +1 (234) 567-890
+                      +7 (4162) 77-13-07
+                    </a>
+                    <a
+                      href="tel:+79145505217"
+                      className="mt-1 block text-sm text-muted-foreground hover:text-primary"
+                    >
+                      +7 (914) 550-52-17
                     </a>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {t.contactPage.phoneHours}
@@ -143,10 +149,10 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold">{t.contactPage.email}</h3>
                     <a
-                      href="mailto:info@amurkor.ru"
+                      href="mailto:rerekin@mail.ru"
                       className="mt-1 block text-sm text-muted-foreground hover:text-primary"
                     >
-                      info@amurkor.ru
+                      rerekin@mail.ru
                     </a>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {t.contactPage.emailReply}
@@ -163,8 +169,8 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold">{t.contactPage.address}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      123 Auto Street<br />
-                      Motor City, MC 12345
+                      Амурская обл., г. Благовещенск,<br />
+                      ул. Кольцевая 66, оф. 210
                     </p>
                   </div>
                 </div>

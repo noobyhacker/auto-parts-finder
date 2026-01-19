@@ -74,17 +74,21 @@ export function Footer() {
               {t.footer.contact}
             </h4>
             <div className="flex flex-col gap-3">
-              <a href="tel:+1234567890" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
+              <a href="tel:+74162771307" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
                 <Phone className="h-4 w-4 text-primary" />
-                +1 (234) 567-890
+                +7 (4162) 77-13-07
               </a>
-              <a href="mailto:info@amurkor.ru" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
+              <a href="tel:+79145505217" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
+                <Phone className="h-4 w-4 text-primary" />
+                +7 (914) 550-52-17
+              </a>
+              <a href="mailto:rerekin@mail.ru" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
                 <Mail className="h-4 w-4 text-primary" />
-                info@amurkor.ru
+                rerekin@mail.ru
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 text-primary mt-0.5" />
-                <span>123 Auto Street, Motor City, MC 12345</span>
+                <span>Амурская обл., г. Благовещенск,<br />ул. Кольцевая 66, оф. 210</span>
               </div>
             </div>
           </div>
