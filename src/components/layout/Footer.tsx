@@ -13,9 +13,6 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                <span className="font-display text-lg font-bold text-primary-foreground">AK</span>
-              </div>
               <span className="font-display text-xl font-bold">
                 Amur<span className="text-primary">Kor</span>
               </span>
