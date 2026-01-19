@@ -223,51 +223,51 @@ export const translations = {
       questions: [
         {
           question: "What brands do you carry parts for?",
-          answer: "We specialize exclusively in Korean vehicle brands: Hyundai, Kia, Genesis, and SsangYong. Our focus allows us to maintain deep expertise and extensive inventory for these manufacturers.",
+          answer: "We specialize in supplying auto parts for the following brands: HYUNDAI, KIA, SSANGYONG, DAEWOO BUS, TATA DAEWOO. We work with passenger cars, commercial vehicles, and buses of Korean manufacture.",
         },
         {
-          question: "Are your parts OEM or aftermarket?",
-          answer: "We offer both OEM (Original Equipment Manufacturer) and high-quality aftermarket parts. Each product listing clearly indicates whether it is an OEM or aftermarket part, allowing you to choose based on your needs and budget.",
+          question: "Do you sell OEM or aftermarket parts?",
+          answer: "We offer both OEM (original) parts and quality non-original replacements from trusted manufacturers. The type of part is selected individually — depending on the client's requirements and budget.",
         },
         {
           question: "How do I know if a part fits my vehicle?",
-          answer: "Use our vehicle selector or VIN search feature to find parts compatible with your specific vehicle. Each part listing shows compatible vehicles. If you are unsure, contact our team with your VIN and we will verify compatibility.",
+          answer: "Part selection is done exclusively by VIN code. You need to contact our consultant and provide the VIN code. This approach allows us to accurately determine compatibility with the equipment, year of manufacture, and technical specifications of the vehicle.",
         },
         {
-          question: "What is your return policy?",
-          answer: "We accept returns within 30 days of purchase for unused parts in original packaging. Electrical components and special-order items may have different terms. Contact us for return authorization before shipping.",
+          question: "What if the part I need is not in stock?",
+          answer: "If the part is not in stock, we can place a special order. Delivery times and costs are calculated individually after verifying the VIN code and order parameters.",
         },
         {
-          question: "How long does shipping take?",
-          answer: "Orders placed before 2 PM are dispatched same-day. Standard delivery takes 2-5 business days depending on location. Express shipping options are available at checkout for urgent orders.",
+          question: "How long does delivery take?",
+          answer: "Delivery times depend on: shipping method — air or sea transport; shipment format — individual order or consolidated cargo (container); delivery direction — where the goods are shipped from and to. Exact times are communicated to the client after placing the order.",
         },
         {
           question: "Do you ship internationally?",
-          answer: "Yes, we ship to many countries worldwide. International shipping rates and delivery times vary by destination. Contact us for a quote on international orders.",
+          answer: "Yes, delivery is possible outside the Russian Federation and the Republic of Korea. Conditions and possibility of international shipment are calculated individually depending on the destination country and type of cargo.",
         },
         {
           question: "How can I track my order?",
-          answer: "Once your order ships, you will receive an email with tracking information. You can use the tracking number on the carrier website to monitor your delivery status.",
+          answer: "Currently, an online order tracking system is not available. You can get current information about your order status by contacting our manager.",
         },
         {
           question: "What payment methods do you accept?",
-          answer: "We accept major credit cards (Visa, Mastercard, American Express), bank transfers, and cash for in-store purchases. All online transactions are secured with SSL encryption.",
+          answer: "In Russia: cash at the store; bank card transfer (Sberbank); payment via terminal at the store; bank transfer by invoice (for legal entities). In the Republic of Korea: SWIFT bank transfer to the company account (transfer possible from any country).",
         },
         {
-          question: "Do you offer warranty on parts?",
-          answer: "Yes, all our parts come with manufacturer warranty. OEM parts typically have 12-24 month warranty, while aftermarket parts vary by manufacturer. Warranty details are listed on each product page.",
+          question: "What is your return policy?",
+          answer: "Returns are possible under the following conditions: product appearance is preserved; no signs of installation or use; original packaging is preserved. Each return case is considered individually, taking into account the nature of the product and delivery conditions.",
         },
         {
-          question: "Can I visit your physical location?",
-          answer: "Absolutely! Our warehouse and showroom is open Monday to Saturday. You can browse parts, get expert advice, and pick up orders in person. See our Contact page for address and hours.",
+          question: "Do you provide warranty on parts?",
+          answer: "Warranty obligations are not provided. This is due to the specifics of deliveries, transportation conditions, and part installation.",
         },
         {
-          question: "What if I need a part you do not have in stock?",
-          answer: "We can special-order most parts directly from manufacturers. Special orders typically take 5-10 business days. Contact us with your part number or vehicle details for availability and pricing.",
+          question: "Can I visit your store in person?",
+          answer: "Yes, you can visit our store in person. We recommend contacting us in advance to check the availability of the parts you need.",
         },
         {
-          question: "Do you offer bulk or wholesale pricing?",
-          answer: "Yes, we offer competitive pricing for repair shops, mechanics, and bulk buyers. Contact our sales team to set up a wholesale account and discuss volume discounts.",
+          question: "Do you offer wholesale pricing?",
+          answer: "Yes, special conditions and prices apply for wholesale customers. Details are discussed individually depending on the volume of purchases.",
         },
       ],
     },
@@ -496,51 +496,51 @@ export const translations = {
       questions: [
         {
           question: "어떤 브랜드의 부품을 취급하나요?",
-          answer: "저희는 한국 차량 브랜드에만 특화되어 있습니다: 현대, 기아, 제네시스, 쌍용. 이러한 집중을 통해 이러한 제조업체에 대한 깊은 전문성과 광범위한 재고를 유지할 수 있습니다.",
+          answer: "저희는 다음 브랜드의 자동차 부품 공급을 전문으로 합니다: 현대, 기아, 쌍용, 대우버스, 타타대우. 한국산 승용차, 상용차, 버스를 취급합니다.",
         },
         {
-          question: "부품이 OEM인가요 아니면 애프터마켓인가요?",
-          answer: "OEM(순정) 및 고품질 애프터마켓 부품을 모두 제공합니다. 각 제품 목록에는 OEM인지 애프터마켓인지 명확하게 표시되어 있어 필요와 예산에 따라 선택할 수 있습니다.",
+          question: "OEM 부품인가요, 애프터마켓 부품인가요?",
+          answer: "저희는 OEM(순정) 부품과 검증된 제조업체의 고품질 비순정 대체품을 모두 제공합니다. 부품 유형은 고객의 요구 사항과 예산에 따라 개별적으로 선택됩니다.",
         },
         {
           question: "부품이 제 차량에 맞는지 어떻게 알 수 있나요?",
-          answer: "차량 선택기 또는 VIN 검색 기능을 사용하여 특정 차량과 호환되는 부품을 찾으세요. 각 부품 목록에는 호환 차량이 표시됩니다. 확실하지 않으면 VIN과 함께 저희 팀에 연락하시면 호환성을 확인해 드립니다.",
+          answer: "부품 선정은 VIN 코드로만 이루어집니다. 저희 상담원에게 연락하여 VIN 코드를 제공해 주셔야 합니다. 이 방법을 통해 장비, 제조 연도 및 차량의 기술 사양과의 호환성을 정확하게 확인할 수 있습니다.",
         },
         {
-          question: "반품 정책은 무엇인가요?",
-          answer: "원래 포장의 미사용 부품에 대해 구매 후 30일 이내 반품을 수락합니다. 전기 부품 및 특별 주문 품목은 다른 조건이 적용될 수 있습니다. 배송 전 반품 승인을 위해 연락하세요.",
+          question: "필요한 부품이 재고에 없으면 어떻게 하나요?",
+          answer: "재고에 부품이 없는 경우 특별 주문을 할 수 있습니다. 배송 시간과 비용은 VIN 코드와 주문 매개변수를 확인한 후 개별적으로 계산됩니다.",
         },
         {
           question: "배송은 얼마나 걸리나요?",
-          answer: "오후 2시 이전에 주문하면 당일 발송됩니다. 표준 배송은 위치에 따라 2-5 영업일 소요됩니다. 긴급 주문을 위한 특급 배송 옵션이 제공됩니다.",
+          answer: "배송 시간은 다음에 따라 달라집니다: 배송 방법 — 항공 또는 해상 운송; 배송 형식 — 개별 주문 또는 통합 화물(컨테이너); 배송 방향 — 상품이 어디에서 어디로 배송되는지. 정확한 시간은 주문 후 고객에게 전달됩니다.",
         },
         {
           question: "해외 배송을 하나요?",
-          answer: "네, 전 세계 여러 국가로 배송합니다. 국제 배송 요금 및 배송 시간은 목적지에 따라 다릅니다. 국제 주문에 대한 견적은 문의하세요.",
+          answer: "네, 러시아 연방과 대한민국 외 지역으로도 배송이 가능합니다. 국제 배송 조건과 가능성은 목적지 국가와 화물 유형에 따라 개별적으로 계산됩니다.",
         },
         {
           question: "주문을 어떻게 추적할 수 있나요?",
-          answer: "주문이 발송되면 추적 정보가 포함된 이메일을 받게 됩니다. 배송업체 웹사이트에서 추적 번호를 사용하여 배송 상태를 확인할 수 있습니다.",
+          answer: "현재 온라인 주문 추적 시스템은 제공되지 않습니다. 주문 상태에 대한 최신 정보는 저희 매니저에게 연락하시면 받으실 수 있습니다.",
         },
         {
           question: "어떤 결제 방법을 수락하나요?",
-          answer: "주요 신용카드(Visa, Mastercard, American Express), 은행 송금, 매장 구매 시 현금을 수락합니다. 모든 온라인 거래는 SSL 암호화로 보호됩니다.",
+          answer: "러시아에서: 매장에서 현금; 은행 카드 이체(스베르뱅크); 매장 터미널 결제; 청구서에 의한 은행 이체(법인용). 대한민국에서: 회사 계좌로 SWIFT 은행 송금(어느 나라에서든 송금 가능).",
         },
         {
-          question: "부품에 보증이 있나요?",
-          answer: "네, 모든 부품에는 제조업체 보증이 포함됩니다. OEM 부품은 일반적으로 12-24개월 보증이 있으며 애프터마켓 부품은 제조업체에 따라 다릅니다. 보증 세부 사항은 각 제품 페이지에 나와 있습니다.",
+          question: "반품 정책은 무엇인가요?",
+          answer: "다음 조건에서 반품이 가능합니다: 상품 외관 보존; 설치 또는 사용 흔적 없음; 원래 포장 보존. 각 반품 사례는 상품의 특성과 배송 조건을 고려하여 개별적으로 검토됩니다.",
         },
         {
-          question: "매장을 방문할 수 있나요?",
-          answer: "물론입니다! 창고와 쇼룸은 월요일부터 토요일까지 열려 있습니다. 부품을 둘러보고 전문가의 조언을 받고 직접 주문을 픽업할 수 있습니다. 주소와 영업 시간은 연락처 페이지를 참조하세요.",
+          question: "부품에 보증을 제공하나요?",
+          answer: "보증 의무는 제공되지 않습니다. 이는 배송, 운송 조건 및 부품 설치의 특수성 때문입니다.",
         },
         {
-          question: "재고가 없는 부품이 필요하면 어떻게 하나요?",
-          answer: "제조업체에서 직접 대부분의 부품을 특별 주문할 수 있습니다. 특별 주문은 일반적으로 5-10 영업일 소요됩니다. 재고 및 가격에 대해 부품 번호 또는 차량 세부 정보와 함께 문의하세요.",
+          question: "매장을 직접 방문할 수 있나요?",
+          answer: "네, 매장을 직접 방문하실 수 있습니다. 필요한 부품의 재고를 확인하기 위해 미리 연락하시는 것을 권장합니다.",
         },
         {
-          question: "대량 또는 도매 가격을 제공하나요?",
-          answer: "네, 수리점, 정비사 및 대량 구매자를 위한 경쟁력 있는 가격을 제공합니다. 도매 계정 설정 및 수량 할인에 대해 영업팀에 문의하세요.",
+          question: "도매 가격을 제공하나요?",
+          answer: "네, 도매 고객에게는 특별 조건과 가격이 적용됩니다. 세부 사항은 구매 규모에 따라 개별적으로 논의됩니다.",
         },
       ],
     },
@@ -768,52 +768,52 @@ export const translations = {
       contactSupport: "Связаться с поддержкой",
       questions: [
         {
-          question: "Для каких марок вы продаёте запчасти?",
-          answer: "Мы специализируемся исключительно на корейских автомобильных брендах: Hyundai, Kia, Genesis и SsangYong. Такой фокус позволяет нам поддерживать глубокую экспертизу и обширный ассортимент для этих производителей.",
+          question: "Для каких марок автомобилей вы продаёте запчасти?",
+          answer: "Мы специализируемся на поставке автозапчастей для следующих марок: HYUNDAI, KIA, SSANGYONG, DAEWOO BUS, TATA DAEWOO. Работаем с легковыми автомобилями, коммерческим транспортом и автобусами корейского производства.",
         },
         {
-          question: "Ваши запчасти OEM или неоригинальные?",
-          answer: "Мы предлагаем как OEM (оригинальные), так и качественные неоригинальные запчасти. В каждом описании товара чётко указано, является ли запчасть OEM или неоригинальной, что позволяет выбрать в соответствии с вашими потребностями и бюджетом.",
+          question: "Вы продаёте оригинальные запчасти или аналоги?",
+          answer: "Мы предлагаем как оригинальные (OEM) запчасти, так и качественные неоригинальные заменители от проверенных производителей. Тип запчасти подбирается индивидуально — в зависимости от требований и бюджета клиента.",
         },
         {
           question: "Как узнать, подходит ли запчасть к моему автомобилю?",
-          answer: "Используйте наш выбор автомобиля или поиск по VIN, чтобы найти запчасти, совместимые с вашим автомобилем. Каждая карточка товара показывает совместимые автомобили. Если не уверены, свяжитесь с нами с вашим VIN, и мы проверим совместимость.",
+          answer: "Подбор запчастей осуществляется исключительно по VIN-коду автомобиля. Для этого необходимо связаться с нашим консультантом и предоставить VIN-код. Такой подход позволяет точно определить совместимость запчасти с комплектацией, годом выпуска и техническими характеристиками автомобиля.",
         },
         {
-          question: "Какова ваша политика возврата?",
-          answer: "Мы принимаем возврат в течение 30 дней после покупки для неиспользованных запчастей в оригинальной упаковке. Электрические компоненты и товары под заказ могут иметь другие условия. Свяжитесь с нами для авторизации возврата перед отправкой.",
+          question: "Что делать, если нужной запчасти нет в наличии?",
+          answer: "Если запчасть отсутствует на складе, мы можем оформить заказ под поставку. Сроки и стоимость поставки рассчитываются индивидуально после уточнения VIN-кода и параметров заказа.",
         },
         {
           question: "Сколько времени занимает доставка?",
-          answer: "Заказы, оформленные до 14:00, отправляются в тот же день. Стандартная доставка занимает 2-5 рабочих дней в зависимости от местоположения. Доступны варианты экспресс-доставки для срочных заказов.",
+          answer: "Сроки доставки зависят от: способа перевозки — авиа или морской транспорт; формата отправки — единичный заказ или сборный груз (контейнер); направления доставки — откуда и куда отправляется товар. Точные сроки сообщаются клиенту после оформления заказа.",
         },
         {
-          question: "Вы отправляете за границу?",
-          answer: "Да, мы отправляем во многие страны мира. Стоимость и сроки международной доставки зависят от пункта назначения. Свяжитесь с нами для расчёта стоимости международных заказов.",
+          question: "Вы осуществляете международную доставку?",
+          answer: "Да, доставка возможна за пределы Российской Федерации и Республики Корея. Условия и возможность международной отправки рассчитываются индивидуально в зависимости от страны назначения и типа груза.",
         },
         {
           question: "Как отследить мой заказ?",
-          answer: "После отправки заказа вы получите email с информацией для отслеживания. Вы можете использовать номер отслеживания на сайте перевозчика для мониторинга статуса доставки.",
+          answer: "На данный момент онлайн-система отслеживания заказов не предусмотрена. Актуальную информацию о статусе заказа вы можете получить, связавшись с нашим менеджером.",
         },
         {
           question: "Какие способы оплаты вы принимаете?",
-          answer: "Мы принимаем основные кредитные карты (Visa, Mastercard, American Express), банковские переводы и наличные при покупке в магазине. Все онлайн-транзакции защищены SSL-шифрованием.",
+          answer: "На территории России: наличными в магазине; перевод на банковскую карту (Сбербанк); оплата через терминал в магазине; безналичный перевод по счёту (для юридических лиц). В Республике Корея: банковский перевод SWIFT на счёт компании (перевод возможен из любой страны).",
         },
         {
-          question: "Есть ли гарантия на запчасти?",
-          answer: "Да, все наши запчасти поставляются с гарантией производителя. OEM запчасти обычно имеют гарантию 12-24 месяца, неоригинальные запчасти варьируются в зависимости от производителя. Детали гарантии указаны на странице каждого товара.",
+          question: "Какова ваша политика возврата?",
+          answer: "Возврат товара возможен при соблюдении следующих условий: сохранён товарный вид; отсутствуют следы установки или эксплуатации; оригинальная упаковка сохранена. Каждый случай возврата рассматривается индивидуально, с учётом характера товара и условий поставки.",
         },
         {
-          question: "Можно ли посетить ваш магазин?",
-          answer: "Конечно! Наш склад и шоурум открыты с понедельника по субботу. Вы можете посмотреть запчасти, получить консультацию эксперта и забрать заказы лично. Адрес и часы работы смотрите на странице контактов.",
+          question: "Предоставляете ли вы гарантию на запчасти?",
+          answer: "Гарантийные обязательства не предоставляются. Это связано со спецификой поставок, условий транспортировки и установки запчастей.",
         },
         {
-          question: "Что если мне нужна запчасть, которой нет в наличии?",
-          answer: "Мы можем заказать большинство запчастей напрямую у производителей. Специальные заказы обычно занимают 5-10 рабочих дней. Свяжитесь с нами с номером запчасти или данными автомобиля для уточнения наличия и цены.",
+          question: "Можно ли посетить ваш магазин лично?",
+          answer: "Да, вы можете посетить наш магазин лично. Рекомендуем предварительно связаться с нами, чтобы уточнить наличие нужных запчастей.",
         },
         {
-          question: "Предлагаете ли вы оптовые цены?",
-          answer: "Да, мы предлагаем конкурентные цены для автосервисов, механиков и оптовых покупателей. Свяжитесь с нашим отделом продаж для открытия оптового счёта и обсуждения скидок.",
+          question: "Предоставляете ли вы оптовые цены?",
+          answer: "Да, для оптовых клиентов действуют специальные условия и цены. Подробности обсуждаются индивидуально в зависимости от объёма закупок.",
         },
       ],
     },
