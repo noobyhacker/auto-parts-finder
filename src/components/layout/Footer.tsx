@@ -14,10 +14,10 @@ export function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                <span className="font-display text-lg font-bold text-primary-foreground">KP</span>
+                <span className="font-display text-lg font-bold text-primary-foreground">AK</span>
               </div>
               <span className="font-display text-xl font-bold">
-                Korean<span className="text-primary">Parts</span>
+                Amur<span className="text-primary">Kor</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -81,9 +81,9 @@ export function Footer() {
                 <Phone className="h-4 w-4 text-primary" />
                 +1 (234) 567-890
               </a>
-              <a href="mailto:info@koreanparts.com" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
+              <a href="mailto:info@amurkor.ru" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary">
                 <Mail className="h-4 w-4 text-primary" />
-                info@koreanparts.com
+                info@amurkor.ru
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 text-primary mt-0.5" />
@@ -96,7 +96,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 border-t border-border/50 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} KoreanParts. {t.footer.rights}
+            © {new Date().getFullYear()} AmurKor. {t.footer.rights}
           </p>
         </div>
       </div>

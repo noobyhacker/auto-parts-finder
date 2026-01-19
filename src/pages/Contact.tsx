@@ -143,10 +143,10 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold">{t.contactPage.email}</h3>
                     <a
-                      href="mailto:info@koreanparts.com"
+                      href="mailto:info@amurkor.ru"
                       className="mt-1 block text-sm text-muted-foreground hover:text-primary"
                     >
-                      info@koreanparts.com
+                      info@amurkor.ru
                     </a>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {t.contactPage.emailReply}
