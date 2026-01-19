@@ -209,6 +209,8 @@ export const translations = {
       successMessage: "Thank you for your inquiry. We will get back to you within 24 hours with more information.",
       partInquiry: "Hi, I am interested in the following part:",
       availabilityRequest: "Please let me know about availability and shipping options.",
+      messageUs: "Message Us",
+      chooseMessenger: "Choose your preferred messenger to contact us",
     },
     // FAQ page
     faqPage: {
@@ -480,6 +482,8 @@ export const translations = {
       successMessage: "문의해 주셔서 감사합니다. 24시간 이내에 자세한 정보를 알려드리겠습니다.",
       partInquiry: "안녕하세요, 다음 부품에 관심이 있습니다:",
       availabilityRequest: "재고 및 배송 옵션에 대해 알려주세요.",
+      messageUs: "메시지 보내기",
+      chooseMessenger: "편리한 메신저를 선택하여 연락하세요",
     },
     // FAQ page
     faqPage: {
@@ -751,6 +755,8 @@ export const translations = {
       successMessage: "Спасибо за ваш запрос. Мы свяжемся с вами в течение 24 часов.",
       partInquiry: "Здравствуйте, меня интересует следующая запчасть:",
       availabilityRequest: "Пожалуйста, сообщите о наличии и вариантах доставки.",
+      messageUs: "Напишите нам",
+      chooseMessenger: "Выберите удобный мессенджер для связи с нами",
     },
     // FAQ page
     faqPage: {
