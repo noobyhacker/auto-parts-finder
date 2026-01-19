@@ -58,11 +58,11 @@ export function Header() {
 
               {/* Phone - Desktop */}
               <a 
-                href="tel:+1234567890" 
+                href="tel:+74162771307" 
                 className="hidden items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:flex"
               >
                 <Phone className="h-4 w-4" />
-                <span>+1 (234) 567-890</span>
+                <span>+7 (4162) 77-13-07</span>
               </a>
 
 
@@ -94,11 +94,11 @@ export function Header() {
                   </Link>
                 ))}
                 <a 
-                  href="tel:+1234567890" 
+                  href="tel:+74162771307" 
                   className="flex items-center gap-2 text-sm font-medium text-primary"
                 >
                   <Phone className="h-4 w-4" />
-                  <span>+1 (234) 567-890</span>
+                  <span>+7 (4162) 77-13-07</span>
                 </a>
               </nav>
             </div>
