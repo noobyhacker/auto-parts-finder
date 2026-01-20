@@ -271,6 +271,11 @@ export const translations = {
         },
       ],
     },
+    // Video Reviews
+    videoReviews: {
+      title: "Video Reviews",
+      subtitle: "Watch reviews of our parts from customers",
+    },
   },
   ko: {
     // Header
@@ -544,6 +549,11 @@ export const translations = {
         },
       ],
     },
+    // Video Reviews
+    videoReviews: {
+      title: "비디오 리뷰",
+      subtitle: "고객님들의 부품 리뷰 영상을 시청하세요",
+    },
   },
   ru: {
     // Header
@@ -816,6 +826,11 @@ export const translations = {
           answer: "Да, для оптовых клиентов действуют специальные условия и цены. Подробности обсуждаются индивидуально в зависимости от объёма закупок.",
         },
       ],
+    },
+    // Video Reviews
+    videoReviews: {
+      title: "Видеообзоры",
+      subtitle: "Смотрите обзоры наших запчастей от клиентов",
     },
   },
 } as const;

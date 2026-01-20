@@ -94,6 +94,14 @@ export interface SearchResult {
   total: number;
 }
 
+export interface VideoReview {
+  id: string;
+  title: string;
+  youtubeUrl: string;
+  description?: string;
+  order?: number;
+}
+
 export interface ApiResponse<T> {
   data: T;
   meta?: {

@@ -5,6 +5,7 @@ import { Layout } from "@/components/layout/Layout";
 import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
 import { OEMSearch } from "@/components/search/OEMSearch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
 import {
   EngineIcon,
   BrakeIcon,
@@ -266,6 +267,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Video Reviews Section */}
+      <VideoReviewCarousel />
 
       {/* CTA Section */}
       <section className="border-t border-border/50 py-16 md:py-20 relative overflow-hidden">
