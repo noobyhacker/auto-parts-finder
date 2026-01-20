@@ -12,7 +12,10 @@ import type {
   SearchResult,
   ContactFormData,
   PartFilters,
+  VideoReview,
 } from "@/types";
+
+export type { VideoReview };
 
 // Sanity client configuration
 const client = createClient({
@@ -449,4 +452,21 @@ export function isValidVIN(vin: string): boolean {
   if (/[IOQ]/i.test(vin)) return false;
   if (!/^[A-HJ-NPR-Z0-9]+$/i.test(vin)) return false;
   return true;
+}
+
+// Video Reviews
+export async function getVideoReviews(): Promise<VideoReview[]> {
+  try {
+    const query = `*[_type == "videoReview"] | order(order asc, _createdAt desc) {
+      "id": _id,
+      title,
+      youtubeUrl,
+      description,
+      order
+    }`;
+    return await client.fetch(query);
+  } catch (error) {
+    console.warn("Failed to fetch video reviews:", error);
+    return [];
+  }
 }
