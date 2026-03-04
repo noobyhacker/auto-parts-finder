@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sheet";
 import { useCategories } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
-import type { PartFilters } from "@/types";
+import type { Category, PartFilters } from "@/types";
 
 interface PartFiltersProps {
   filters: PartFilters;
