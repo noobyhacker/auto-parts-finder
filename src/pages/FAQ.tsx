@@ -72,12 +72,12 @@ const FAQ = () => {
             <p className="mt-2 text-muted-foreground">
               {t.faqPage.stillQuestionsDesc}
             </p>
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="mt-6 inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium btn-glow hover:opacity-90 transition-opacity"
             >
               {t.faqPage.contactSupport}
-            </a>
+            </Link>
           </div>
         </div>
       </section>

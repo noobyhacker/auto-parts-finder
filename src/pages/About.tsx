@@ -137,18 +137,18 @@ const About = () => {
             {t.aboutPage.ctaSubtitle}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/catalog"
+            <Link
+              to="/catalog"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium btn-glow hover:opacity-90 transition-opacity"
             >
               {t.aboutPage.browseCatalog}
-            </a>
-            <a
-              href="/contact"
+            </Link>
+            <Link
+              to="/contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 transition-colors"
             >
               {t.cta.contactUs}
-            </a>
+            </Link>
           </div>
         </div>
       </section>
