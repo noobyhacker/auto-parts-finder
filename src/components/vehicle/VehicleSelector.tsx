@@ -8,9 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getBrands, getModels, getYears, getEngines } from "@/lib/api";
+import { useBrands, useModels, useYears, useEngines } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
-import type { Brand, Model, VehicleSelection } from "@/types";
+import type { VehicleSelection } from "@/types";
 
 interface VehicleSelectorProps {
   onSelect: (selection: VehicleSelection) => void;
@@ -30,60 +30,22 @@ export function VehicleSelector({
   instantFilter = true,
   initialValues 
 }: VehicleSelectorProps) {
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const [models, setModels] = useState<Model[]>([]);
-  const [years, setYears] = useState<number[]>([]);
-  const [engines, setEngines] = useState<string[]>([]);
-
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialValues?.brandId || null);
   const [selectedModel, setSelectedModel] = useState<string | null>(initialValues?.modelId || null);
   const [selectedYear, setSelectedYear] = useState<number | null>(initialValues?.year || null);
   const [selectedEngine, setSelectedEngine] = useState<string | null>(initialValues?.engine || null);
-  
-  // Track if component was initialized with values
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const { t } = useLanguage();
 
-  // Load brands on mount
-  useEffect(() => {
-    getBrands().then(setBrands);
-  }, []);
-
-  // Load initial data if initialValues provided
-  useEffect(() => {
-    if (isInitialized) return;
-    
-    const loadInitialData = async () => {
-      if (initialValues?.brandId) {
-        const modelsData = await getModels(initialValues.brandId);
-        setModels(Array.isArray(modelsData) ? modelsData : []);
-        
-        if (initialValues?.modelId) {
-          const yearsData = await getYears(initialValues.modelId);
-          setYears(Array.isArray(yearsData) ? yearsData : []);
-          
-          if (initialValues?.year) {
-            const enginesData = await getEngines(initialValues.modelId, initialValues.year);
-            setEngines(Array.isArray(enginesData) ? enginesData : []);
-          }
-        }
-      }
-      setIsInitialized(true);
-    };
-    
-    loadInitialData();
-  }, [initialValues, isInitialized]);
-
-  // Track if user has interacted with the selector
-  const [hasInteracted, setHasInteracted] = useState(false);
+  // React Query cached data
+  const { data: brands = [] } = useBrands();
+  const { data: models = [] } = useModels(selectedBrand);
+  const { data: years = [] } = useYears(selectedModel);
+  const { data: engines = [] } = useEngines(selectedModel, selectedYear);
 
   // Notify parent of selection changes immediately (for instant filtering)
-  // Only trigger if instantFilter is enabled and user has interacted
   useEffect(() => {
     if (!instantFilter || !hasInteracted) return;
-    
     onSelect({
       brandId: selectedBrand || undefined,
       modelId: selectedModel || undefined,
@@ -92,110 +54,31 @@ export function VehicleSelector({
     });
   }, [selectedBrand, selectedModel, selectedYear, selectedEngine, hasInteracted, instantFilter]);
 
-  // Load models when brand changes (only after initialization)
-  useEffect(() => {
-    if (!isInitialized) return;
-    
-    let cancelled = false;
+  const handleBrandChange = (v: string) => {
+    setHasInteracted(true);
+    setSelectedBrand(v);
+    setSelectedModel(null);
+    setSelectedYear(null);
+    setSelectedEngine(null);
+  };
 
-    const run = async () => {
-      // Reset downstream selections whenever brand changes
-      setSelectedModel(null);
-      setSelectedYear(null);
-      setSelectedEngine(null);
-      setModels([]);
-      setYears([]);
-      setEngines([]);
+  const handleModelChange = (v: string) => {
+    setHasInteracted(true);
+    setSelectedModel(v);
+    setSelectedYear(null);
+    setSelectedEngine(null);
+  };
 
-      if (!selectedBrand) {
-        return;
-      }
+  const handleYearChange = (v: string) => {
+    setHasInteracted(true);
+    setSelectedYear(Number(v));
+    setSelectedEngine(null);
+  };
 
-      setIsLoading(true);
-      try {
-        const data = await getModels(selectedBrand);
-        if (!cancelled) setModels(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to load models:", err);
-        if (!cancelled) setModels([]);
-      } finally {
-        if (!cancelled) setIsLoading(false);
-      }
-    };
-
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedBrand, isInitialized]);
-
-  // Load years when model changes (only after initialization)
-  useEffect(() => {
-    if (!isInitialized) return;
-    
-    let cancelled = false;
-
-    const run = async () => {
-      // Reset downstream selections whenever model changes
-      setSelectedYear(null);
-      setSelectedEngine(null);
-      setYears([]);
-      setEngines([]);
-
-      if (!selectedModel) {
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const data = await getYears(selectedModel);
-        if (!cancelled) setYears(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to load years:", err);
-        if (!cancelled) setYears([]);
-      } finally {
-        if (!cancelled) setIsLoading(false);
-      }
-    };
-
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedModel, isInitialized]);
-
-  // Load engines when year changes (only after initialization)
-  useEffect(() => {
-    if (!isInitialized) return;
-    
-    let cancelled = false;
-
-    const run = async () => {
-      // Reset downstream selection whenever year/model changes
-      setSelectedEngine(null);
-      setEngines([]);
-
-      if (!selectedYear || !selectedModel) {
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const data = await getEngines(selectedModel, selectedYear);
-        if (!cancelled) setEngines(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to load engines:", err);
-        if (!cancelled) setEngines([]);
-      } finally {
-        if (!cancelled) setIsLoading(false);
-      }
-    };
-
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedYear, selectedModel, isInitialized]);
+  const handleEngineChange = (v: string) => {
+    setHasInteracted(true);
+    setSelectedEngine(v);
+  };
 
   const handleReset = () => {
     setSelectedBrand(null);
@@ -228,7 +111,7 @@ export function VehicleSelector({
           </label>
           <Select
             value={selectedBrand || ""}
-            onValueChange={(v) => { setHasInteracted(true); setSelectedBrand(v); }}
+            onValueChange={handleBrandChange}
           >
             <SelectTrigger className="bg-input">
               <SelectValue placeholder={t.vehicle.selectBrand} />
@@ -256,7 +139,7 @@ export function VehicleSelector({
           </label>
           <Select
             value={selectedModel || ""}
-            onValueChange={(v) => { setHasInteracted(true); setSelectedModel(v); }}
+            onValueChange={handleModelChange}
             disabled={!selectedBrand}
           >
             <SelectTrigger className="bg-input">
@@ -285,7 +168,7 @@ export function VehicleSelector({
           </label>
           <Select
             value={selectedYear?.toString() || ""}
-            onValueChange={(v) => { setHasInteracted(true); setSelectedYear(Number(v)); }}
+            onValueChange={handleYearChange}
             disabled={!selectedModel}
           >
             <SelectTrigger className="bg-input">
@@ -315,7 +198,7 @@ export function VehicleSelector({
           </label>
           <Select
             value={selectedEngine || ""}
-            onValueChange={(v) => { setHasInteracted(true); setSelectedEngine(v); }}
+            onValueChange={handleEngineChange}
             disabled={!selectedYear || engines.length === 0}
           >
             <SelectTrigger className="bg-input">

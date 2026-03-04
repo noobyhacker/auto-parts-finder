@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
-import { getVideoReviews, type VideoReview } from "@/lib/api";
+import { useVideoReviews } from "@/hooks/useQueries";
+import type { VideoReview } from "@/lib/api";
 
 // Extract YouTube video ID from various URL formats
 function getYouTubeId(url: string): string | null {
@@ -99,26 +100,11 @@ const VideoCard = ({ video, isActive, onPlay }: VideoCardProps) => {
 
 export const VideoReviewCarousel = () => {
   const { t } = useLanguage();
-  const [videos, setVideos] = useState<VideoReview[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: videos = [], isLoading } = useVideoReviews();
   const [activeIndex, setActiveIndex] = useState(0);
   const [, setPlayingIndex] = useState<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const data = await getVideoReviews();
-        setVideos(data);
-      } catch (error) {
-        console.warn("Failed to fetch video reviews:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchVideos();
-  }, []);
 
   // Auto-scroll functionality
   useEffect(() => {

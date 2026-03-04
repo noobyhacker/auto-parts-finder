@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Package } from "lucide-react";
 import {
@@ -6,7 +6,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { searchParts } from "@/lib/api";
+import { useSearchParts } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Part } from "@/types";
 
@@ -17,29 +17,19 @@ interface SearchDialogProps {
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Part[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  useEffect(() => {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      setIsLoading(true);
-      try {
-        const result = await searchParts(query);
-        setResults(result.parts);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 300);
-
+  // Debounce the query
+  useState(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query), 300);
     return () => clearTimeout(timer);
-  }, [query]);
+  });
+
+  // Use React Query for cached search
+  const { data: searchResult, isLoading } = useSearchParts(debouncedQuery);
+  const results = searchResult?.parts || [];
 
   const handleSelect = (slug: string) => {
     onOpenChange(false);

@@ -159,13 +159,13 @@ const Index = () => {
                 <p>{t.about.description1}</p>
                 <p>{t.about.description2}</p>
               </div>
-              <a
-                href="/about"
+              <Link
+                to="/about"
                 className="mt-6 inline-flex items-center gap-2 text-primary font-medium hover:underline"
               >
                 {t.about.learnMore}
                 <ChevronRight className="h-4 w-4" />
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -284,18 +284,18 @@ const Index = () => {
             {t.cta.subtitle}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/about"
+            <Link
+              to="/about"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 hover:border-primary/50 transition-all"
             >
               {t.cta.aboutUs}
-            </a>
-            <a
-              href="/faq"
+            </Link>
+            <Link
+              to="/faq"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 hover:border-primary/50 transition-all"
             >
               {t.cta.faq}
-            </a>
+            </Link>
             <Link
               to="/contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium btn-glow hover:opacity-90 transition-opacity"
