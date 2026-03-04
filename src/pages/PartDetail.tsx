@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ChevronLeft, Package, Check, Car, Send, MessageCircle, Phone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { getPart } from "@/lib/api";
+import { usePart } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
-import type { Part } from "@/types";
 
 // Map category slugs to translation keys
 const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
@@ -34,24 +33,9 @@ const partNameTranslationMap: Record<string, keyof typeof import("@/lib/i18n").t
 const PartDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [part, setPart] = useState<Part | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: part, isLoading } = usePart(slug);
   const [selectedImage, setSelectedImage] = useState(0);
   const { t } = useLanguage();
-
-  useEffect(() => {
-    const fetchPart = async () => {
-      if (!slug) return;
-      setIsLoading(true);
-      try {
-        const data = await getPart(slug);
-        setPart(data);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPart();
-  }, [slug]);
 
   const getCategoryName = (categorySlug: string) => {
     const key = categoryTranslationMap[categorySlug];

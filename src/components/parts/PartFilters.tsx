@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { getCategories } from "@/lib/api";
+import { useCategories } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Category, PartFilters } from "@/types";
 
@@ -44,13 +44,9 @@ const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").t
 };
 
 export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersProps) {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { data: categories = [] } = useCategories();
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
-
-  useEffect(() => {
-    getCategories().then(setCategories);
-  }, []);
 
   const handleCategoryClick = (categoryId: string) => {
     onFiltersChange({
