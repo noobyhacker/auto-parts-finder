@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Car, Shield, Truck, Headphones, ChevronRight, Award, Users, Clock } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
@@ -39,8 +39,8 @@ FeatureCard.displayName = "FeatureCard";
 
 // Memoized category card
 const CategoryCard = memo(({ name, Icon, slug, delay }: { name: string; Icon: any; slug: string; delay: string }) => (
-  <a
-    href={`/catalog?category=${slug}`}
+  <Link
+    to={`/catalog?category=${slug}`}
     className="glass-card flex items-center gap-4 p-4 group transition-all duration-300 hover:border-primary/50 hover:bg-secondary/50 animate-scale-in"
     style={{ animationDelay: delay }}
   >
@@ -49,7 +49,7 @@ const CategoryCard = memo(({ name, Icon, slug, delay }: { name: string; Icon: an
     </div>
     <span className="font-medium flex-1">{name}</span>
     <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-  </a>
+  </Link>
 ));
 
 CategoryCard.displayName = "CategoryCard";
@@ -296,12 +296,12 @@ const Index = () => {
             >
               {t.cta.faq}
             </a>
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium btn-glow hover:opacity-90 transition-opacity"
             >
               {t.cta.contactUs}
-            </a>
+            </Link>
           </div>
         </div>
       </section>
