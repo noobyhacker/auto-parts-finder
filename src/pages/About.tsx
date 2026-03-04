@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Award, Users, Clock, MapPin, Target, Heart } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
