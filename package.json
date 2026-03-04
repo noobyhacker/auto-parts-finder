@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "fetch-data": "node scripts/fetch-sanity-data.mjs",
+    "prebuild": "node scripts/fetch-sanity-data.mjs",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
