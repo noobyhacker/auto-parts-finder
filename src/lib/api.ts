@@ -1,5 +1,5 @@
-// API service layer for Sanity CMS
-// Configure your Sanity project ID and dataset in environment variables
+// API service layer - Uses static pre-built data when available, falls back to Sanity CMS
+// Run `npm run fetch-data` before build to generate static data
 
 import { createClient } from "@sanity/client";
 import type {
@@ -14,10 +14,21 @@ import type {
   PartFilters,
   VideoReview,
 } from "@/types";
+import {
+  getStaticBrands,
+  getStaticModels,
+  getStaticYears,
+  getStaticEngines,
+  getStaticCategories,
+  getStaticParts,
+  getStaticPart,
+  searchStaticParts,
+  getStaticVideoReviews,
+} from "@/lib/static-data";
 
 export type { VideoReview };
 
-// Sanity client configuration
+// Sanity client configuration (fallback only)
 const client = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID || "your-project-id",
   dataset: import.meta.env.VITE_SANITY_DATASET || "production",
@@ -35,6 +46,9 @@ function imageUrl(image: any): string {
 // Brands
 export async function getBrands(): Promise<Brand[]> {
   try {
+    const staticData = await getStaticBrands();
+    if (staticData) return staticData;
+
     const query = `*[_type == "brand"] | order(name asc) {
       "id": _id,
       name,
@@ -81,6 +95,9 @@ export async function findVehicleByDetails(
 // Models (filtered by brand)
 export async function getModels(brandId: string): Promise<Model[]> {
   try {
+    const staticData = await getStaticModels(brandId);
+    if (staticData) return staticData;
+
     const query = `*[_type == "model" && brand._ref == $brandId] | order(name asc) {
       "id": _id,
       name,
@@ -97,6 +114,9 @@ export async function getModels(brandId: string): Promise<Model[]> {
 // Years (for a specific model)
 export async function getYears(modelId: string): Promise<number[]> {
   try {
+    const staticData = await getStaticYears(modelId);
+    if (staticData) return staticData;
+
     const query = `*[_type == "vehicle" && model._ref == $modelId].yearFrom`;
     const raw: Array<number | string | null> = await client.fetch(query, { modelId });
 
@@ -117,6 +137,9 @@ export async function getEngines(
   year: number
 ): Promise<string[]> {
   try {
+    const staticData = await getStaticEngines(modelId, year);
+    if (staticData) return staticData;
+
     const query = `*[_type == "vehicle" && model._ref == $modelId && yearFrom == $year].engines`;
     const engines: (string | null)[] = await client.fetch(query, { modelId, year });
     return [...new Set(engines.filter((e): e is string => !!e))];
@@ -169,6 +192,9 @@ export async function getVehicle(
 // Categories
 export async function getCategories(): Promise<Category[]> {
   try {
+    const staticData = await getStaticCategories();
+    if (staticData) return staticData;
+
     const query = `*[_type == "category"] | order(name asc) {
       "id": _id,
       name,
@@ -190,6 +216,9 @@ export async function getParts(
   pageSize = 12
 ): Promise<{ parts: Part[]; total: number }> {
   try {
+    const staticData = await getStaticParts(filters, sort, page, pageSize);
+    if (staticData) return staticData;
+
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
 
@@ -216,22 +245,18 @@ export async function getParts(
       conditions.push("$vehicleId in compatibleVehicles[]._ref");
       params.vehicleId = filters.vehicleId;
     }
-    // Filter by brand (parts that have compatible vehicles with this brand)
     if (filters?.brandId) {
       conditions.push("count(compatibleVehicles[@->brand._ref == $brandId]) > 0");
       params.brandId = filters.brandId;
     }
-    // Filter by model
     if (filters?.modelId) {
       conditions.push("count(compatibleVehicles[@->model._ref == $modelId]) > 0");
       params.modelId = filters.modelId;
     }
-    // Filter by year
     if (filters?.year) {
       conditions.push("count(compatibleVehicles[@->yearFrom == $year]) > 0");
       params.year = filters.year;
     }
-    // Filter by engine
     if (filters?.engine) {
       conditions.push("count(compatibleVehicles[@->engines == $engine]) > 0");
       params.engine = filters.engine;
@@ -243,7 +268,6 @@ export async function getParts(
 
     const filterQuery = conditions.join(" && ");
 
-    // Sort mapping
     let orderBy = "name asc";
     if (sort === "price:asc") orderBy = "price asc";
     else if (sort === "price:desc") orderBy = "price desc";
@@ -295,68 +319,82 @@ export async function getParts(
 
 // Single part (supports both slug and _id lookup)
 export async function getPart(slugOrId: string): Promise<Part | null> {
-  console.log("getPart called with slugOrId:", slugOrId);
-  const query = `*[_type == "part" && (slug.current == $slugOrId || _id == $slugOrId)][0] {
-    "id": _id,
-    name,
-    "slug": coalesce(slug.current, _id),
-    articleNumber,
-    oemNumber,
-    price,
-    description,
-    inStock,
-    stockQuantity,
-    "images": images[].asset->url,
-    "category": category->{
-      "id": _id,
-      name,
-      "slug": slug.current
-    },
-    "compatibleVehicles": compatibleVehicles[]->{
-      "id": _id,
-      year,
-      engine,
-      "brand": brand->{name},
-      "model": model->{name}
-    }
-  }`;
-  const part = await client.fetch(query, { slugOrId });
-  console.log("getPart result:", part);
-  if (!part) return null;
-  return {
-    ...part,
-    images: part.images || ["/placeholder.svg"],
-  };
-}
+  try {
+    const staticData = await getStaticPart(slugOrId);
+    if (staticData) return staticData;
 
-// Search parts
-export async function searchParts(query: string): Promise<SearchResult> {
-  const searchQuery = `{
-    "parts": *[_type == "part" && (name match $search || articleNumber match $search)] [0...10] {
+    const query = `*[_type == "part" && (slug.current == $slugOrId || _id == $slugOrId)][0] {
       "id": _id,
       name,
-      "slug": slug.current,
+      "slug": coalesce(slug.current, _id),
       articleNumber,
       oemNumber,
       price,
+      description,
       inStock,
+      stockQuantity,
       "images": images[].asset->url,
       "category": category->{
         "id": _id,
         name,
         "slug": slug.current
+      },
+      "compatibleVehicles": compatibleVehicles[]->{
+        "id": _id,
+        year,
+        engine,
+        "brand": brand->{ name },
+        "model": model->{ name }
       }
-    },
-    "total": count(*[_type == "part" && (name match $search || articleNumber match $search)])
-  }`;
-  const result = await client.fetch(searchQuery, { search: `*${query}*` });
-  return {
-    parts: result.parts.map((p: any) => ({
-      ...p,
-      images: p.images || ["/placeholder.svg"],
-    })),
-    total: result.total,
-  };
+    }`;
+    const part = await client.fetch(query, { slugOrId });
+    if (!part) return null;
+    return {
+      ...part,
+      images: part.images || ["/placeholder.svg"],
+    };
+  } catch (error) {
+    console.warn("Failed to fetch part:", error);
+    return null;
+  }
+}
+
+// Search parts
+export async function searchParts(query: string): Promise<SearchResult> {
+  try {
+    const staticData = await searchStaticParts(query);
+    if (staticData) return staticData;
+
+    const searchQuery = `{
+      "parts": *[_type == "part" && (name match $search || articleNumber match $search)] [0...10] {
+        "id": _id,
+        name,
+        "slug": slug.current,
+        articleNumber,
+        oemNumber,
+        price,
+        inStock,
+        "images": images[].asset->url,
+        "category": category->{
+          "id": _id,
+          name,
+          "slug": slug.current
+        }
+      },
+      "total": count(*[_type == "part" && (name match $search || articleNumber match $search)])
+    }`;
+    const result = await client.fetch(searchQuery, { search: `*${query}*` });
+    return {
+      parts: result.parts.map((p: any) => ({
+        ...p,
+        images: p.images || ["/placeholder.svg"],
+      })),
+      total: result.total,
+    };
+  } catch (error) {
+    console.warn("Failed to search parts:", error);
+    return { parts: [], total: 0 };
+  }
 }
 
 // VIN decode using free NHTSA API
@@ -385,7 +423,6 @@ export async function decodeVIN(vin: string): Promise<VINDecodeResult> {
     const engineCylinders = getValue("Engine Number of Cylinders");
     const errorCode = getValue("Error Code");
     
-    // Check for errors (error codes 1-4 indicate issues)
     if (errorCode && !["0", "6"].includes(errorCode.split(",")[0])) {
       return { success: false, error: "Invalid VIN or vehicle not found" };
     }
@@ -394,7 +431,6 @@ export async function decodeVIN(vin: string): Promise<VINDecodeResult> {
       return { success: false, error: "Could not decode vehicle information" };
     }
     
-    // Build engine string
     let engineStr: string | undefined;
     if (engine) {
       engineStr = `${engine}L`;
@@ -422,27 +458,11 @@ export async function decodeVIN(vin: string): Promise<VINDecodeResult> {
   }
 }
 
-// Submit contact form - Sanity mutations require write token
-// Consider using a serverless function for this
+// Submit contact form
 export async function submitContactForm(
   data: ContactFormData
 ): Promise<{ success: boolean }> {
-  // For production, use a serverless function with write token
-  // This is a placeholder that logs the data
   console.log("Contact form submitted:", data);
-  
-  // If you have a write token configured:
-  // const writeClient = createClient({
-  //   ...client.config(),
-  //   token: import.meta.env.VITE_SANITY_WRITE_TOKEN,
-  //   useCdn: false,
-  // });
-  // await writeClient.create({
-  //   _type: "contactRequest",
-  //   ...data,
-  //   submittedAt: new Date().toISOString(),
-  // });
-  
   return { success: true };
 }
 
@@ -457,6 +477,9 @@ export function isValidVIN(vin: string): boolean {
 // Video Reviews
 export async function getVideoReviews(): Promise<VideoReview[]> {
   try {
+    const staticData = await getStaticVideoReviews();
+    if (staticData) return staticData;
+
     const query = `*[_type == "videoReview"] | order(order asc, _createdAt desc) {
       "id": _id,
       title,
