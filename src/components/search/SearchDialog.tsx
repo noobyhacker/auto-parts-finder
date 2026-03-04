@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Package } from "lucide-react";
 import {
@@ -22,10 +22,10 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const { t } = useLanguage();
 
   // Debounce the query
-  useState(() => {
+  useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query), 300);
     return () => clearTimeout(timer);
-  });
+  }, [query]);
 
   // Use React Query for cached search
   const { data: searchResult, isLoading } = useSearchParts(debouncedQuery);
