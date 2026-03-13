@@ -96,6 +96,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-background" />
         <div className="absolute inset-0 animated-grid opacity-40" />
         <div className="absolute inset-0 floating-particles" />
+        <AnimatedCarsBackground />
         
         {/* Glow Effects */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-[100px] animate-pulse-slow" />
