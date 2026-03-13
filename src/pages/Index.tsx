@@ -19,6 +19,7 @@ import {
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
+import { AnimatedCarsBackground } from "@/components/AnimatedCarsBackground";
 import type { VehicleSelection } from "@/types";
 
 // Memoized feature card for performance
