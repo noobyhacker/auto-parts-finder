@@ -641,6 +641,7 @@ export const translations = {
       body: "Кузовные детали",
       cooling: "Система охлаждения",
       transmission: "Трансмиссия",
+      general: "Общие запчасти",
     },
     // Brands
     brands: {
