@@ -193,8 +193,7 @@ export function VehicleSelector({
             }`}>
               {getStepStatus(4) === "completed" ? <Check className="h-3 w-3" /> : "4"}
             </span>
-            <span className="truncate">{t.vehicle.engine}</span>
-            <span className="text-[10px] text-muted-foreground shrink-0">({t.vehicle.optional})</span>
+            {t.vehicle.engine}
           </label>
           <Select
             value={selectedEngine || ""}
