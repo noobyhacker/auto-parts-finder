@@ -83,6 +83,7 @@ export const translations = {
       body: "Body Parts",
       cooling: "Cooling System",
       transmission: "Transmission",
+      general: "General Parts",
     },
     // Brands
     brands: {
