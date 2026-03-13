@@ -186,15 +186,14 @@ export function VehicleSelector({
 
         {/* Engine (Optional) */}
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-            <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
+          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground min-w-0">
+            <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
               getStepStatus(4) === "completed" ? "bg-success text-success-foreground" : 
               getStepStatus(4) === "active" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
             }`}>
               {getStepStatus(4) === "completed" ? <Check className="h-3 w-3" /> : "4"}
             </span>
-            {t.vehicle.engine}
-            <span className="text-xs text-muted-foreground">({t.vehicle.optional})</span>
+            <span className="truncate">{t.vehicle.engine} <span className="text-xs text-muted-foreground">({t.vehicle.optional})</span></span>
           </label>
           <Select
             value={selectedEngine || ""}
