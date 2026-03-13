@@ -104,7 +104,7 @@ export const VideoReviewCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [, setPlayingIndex] = useState<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
+  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Auto-scroll functionality
   useEffect(() => {
