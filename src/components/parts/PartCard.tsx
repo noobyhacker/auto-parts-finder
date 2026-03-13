@@ -17,6 +17,8 @@ const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").t
   "body-parts": "body",
   "cooling-system": "cooling",
   "transmission": "transmission",
+  "general": "general",
+  "general-parts": "general",
 };
 
 // Map part slugs to translation keys

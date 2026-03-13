@@ -36,11 +36,14 @@ const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").t
   "cooling-system": "cooling",
   "cooling": "cooling",
   "transmission": "transmission",
+  "general": "general",
+  "general-parts": "general",
   // Name variations (lowercase)
   "engine parts": "engine",
   "brake system": "brake",
   "body parts": "body",
   "cooling system": "cooling",
+  "general parts": "general",
 };
 
 export function PartFiltersComponent({ filters, onFiltersChange }: PartFiltersProps) {
