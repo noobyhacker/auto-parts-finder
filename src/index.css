@@ -181,7 +181,19 @@
     background: radial-gradient(circle, hsl(var(--primary) / 0.12) 0%, hsl(var(--accent) / 0.06) 40%, transparent 70%);
     transform: translate(-50%, -50%);
     transition: opacity 0.3s ease;
+    mix-blend-mode: multiply;
+  }
+
+  .dark .cursor-glow {
     mix-blend-mode: screen;
+  }
+
+  .korean-texture {
+    color: hsl(var(--primary) / 0.06);
+  }
+
+  .dark .korean-texture {
+    color: hsl(var(--primary) / 0.04);
   }
 
   /* Homepage gradient */
