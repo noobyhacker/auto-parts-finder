@@ -362,6 +362,7 @@ export const translations = {
       body: "차체 부품",
       cooling: "냉각 시스템",
       transmission: "변속기",
+      general: "일반 부품",
     },
     // Brands
     brands: {
