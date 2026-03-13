@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, Building2, HelpCircle, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { SearchDialog } from "@/components/search/SearchDialog";
@@ -11,37 +11,32 @@ import { useLanguage } from "@/hooks/useLanguage";
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const navigate = useNavigate();
   const { t } = useLanguage();
 
   const navLinks = [
     { to: "/catalog", label: t.nav.catalog },
-    { to: "/about", label: t.nav.about, icon: Building2 },
-    { to: "/faq", label: t.nav.faq, icon: HelpCircle },
-    { to: "/contact", label: t.nav.contact, icon: Mail },
+    { to: "/about", label: t.nav.about },
+    { to: "/faq", label: t.nav.faq },
+    { to: "/contact", label: t.nav.contact },
   ];
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-xl">
         <div className="container-custom">
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Logo */}
             <Link to="/" className="flex items-center group">
-              <img 
-                src={logo} 
-                alt="AmurKor" 
-                className="h-10 sm:h-12 w-auto"
-              />
+              <img src={logo} alt="AmurKor" className="h-9 sm:h-11 w-auto" />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden items-center gap-6 md:flex">
+            {/* Desktop Nav */}
+            <nav className="hidden items-center gap-8 md:flex">
               {navLinks.map((link) => (
-                <Link 
+                <Link
                   key={link.to}
-                  to={link.to} 
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                  to={link.to}
+                  className="font-display text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
                 >
                   {link.label}
                 </Link>
@@ -50,26 +45,18 @@ export function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              {/* Theme Toggle */}
               <ThemeToggle />
-
-              {/* Language Switcher */}
               <LanguageSwitcher />
-
-              {/* Phone - Desktop */}
-              <a 
-                href="tel:+74162771307" 
-                className="hidden items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:flex"
+              <a
+                href="tel:+74162771307"
+                className="hidden items-center gap-2 text-xs font-medium text-muted-foreground transition-colors hover:text-primary lg:flex ml-2"
               >
-                <Phone className="h-4 w-4" />
+                <Phone className="h-3.5 w-3.5" />
                 <span>+7 (4162) 77-13-07</span>
               </a>
-
-
-              {/* Mobile Menu Toggle */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
@@ -80,25 +67,21 @@ export function Header() {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="border-t border-border/50 py-4 md:hidden animate-slide-up">
+            <div className="border-t border-border/40 py-4 md:hidden animate-slide-up">
               <nav className="flex flex-col gap-3">
                 {navLinks.map((link) => (
-                  <Link 
+                  <Link
                     key={link.to}
-                    to={link.to} 
-                    className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                    to={link.to}
+                    className="font-display text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {link.icon && <link.icon className="h-4 w-4" />}
                     {link.label}
                   </Link>
                 ))}
-                <a 
-                  href="tel:+74162771307" 
-                  className="flex items-center gap-2 text-sm font-medium text-primary"
-                >
-                  <Phone className="h-4 w-4" />
-                  <span>+7 (4162) 77-13-07</span>
+                <a href="tel:+74162771307" className="flex items-center gap-2 text-xs font-medium text-primary">
+                  <Phone className="h-3.5 w-3.5" />
+                  +7 (4162) 77-13-07
                 </a>
               </nav>
             </div>

@@ -1,64 +1,52 @@
 import { memo } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Car, Shield, Truck, Headphones, ChevronRight, Award, Users, Clock } from "lucide-react";
+import { ArrowRight, Zap, Shield, Truck, Headphones, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
 import { OEMSearch } from "@/components/search/OEMSearch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
 import {
-  EngineIcon,
-  BrakeIcon,
-  SuspensionIcon,
-  FilterIcon,
-  ElectricalIcon,
-  BodyIcon,
-  CoolingIcon,
-  TransmissionIcon,
+  EngineIcon, BrakeIcon, SuspensionIcon, FilterIcon,
+  ElectricalIcon, BodyIcon, CoolingIcon, TransmissionIcon,
 } from "@/components/icons/CategoryIcons";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import type { VehicleSelection } from "@/types";
 
-// Memoized feature card for performance
-const FeatureCard = memo(({ Icon, title, desc, delay }: { Icon: any; title: string; desc: string; delay: string }) => (
+const StatBlock = memo(({ value, label, delay }: { value: string; label: string; delay: string }) => (
   <div 
-    className="glass-card p-6 text-center group hover:border-primary/50 transition-all duration-500 animate-slide-up"
+    className="stat-block transition-all duration-500 animate-slide-up"
     style={{ animationDelay: delay }}
   >
-    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-      <Icon className="h-7 w-7 text-primary" />
-    </div>
-    <h3 className="mt-4 font-display font-semibold">{title}</h3>
-    <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+    <div className="font-display text-3xl md:text-4xl font-extrabold text-primary tracking-tight">{value}</div>
+    <div className="mt-1 text-sm text-muted-foreground uppercase tracking-widest">{label}</div>
   </div>
 ));
+StatBlock.displayName = "StatBlock";
 
-FeatureCard.displayName = "FeatureCard";
-
-// Memoized category card
-const CategoryCard = memo(({ name, Icon, slug, delay }: { name: string; Icon: any; slug: string; delay: string }) => (
-  <Link
-    to={`/catalog?category=${slug}`}
-    className="glass-card flex items-center gap-4 p-4 group transition-all duration-300 hover:border-primary/50 hover:bg-secondary/50 animate-scale-in"
-    style={{ animationDelay: delay }}
+const FeatureRow = memo(({ Icon, title, desc, index }: { Icon: any; title: string; desc: string; index: number }) => (
+  <div 
+    className="group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-300 hover:bg-primary/5 animate-slide-up"
+    style={{ animationDelay: `${index * 0.08}s` }}
   >
-    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-      <Icon className="h-6 w-6 text-primary" />
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 group-hover:bg-primary/20 transition-colors">
+      <Icon className="h-5 w-5 text-primary" />
     </div>
-    <span className="font-medium flex-1">{name}</span>
-    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-  </Link>
+    <div>
+      <h3 className="font-display font-semibold text-foreground">{title}</h3>
+      <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{desc}</p>
+    </div>
+  </div>
 ));
-
-CategoryCard.displayName = "CategoryCard";
+FeatureRow.displayName = "FeatureRow";
 
 const brands = [
-  { name: "Hyundai", models: "Sonata, Tucson, Santa Fe, Palisade, Ioniq" },
-  { name: "Kia", models: "K5, Sportage, Sorento, Telluride, EV6" },
-  { name: "Genesis", models: "G70, G80, G90, GV70, GV80" },
-  { name: "SsangYong", models: "Rexton, Korando, Tivoli, Musso" },
+  { name: "Hyundai", tagline: "Sonata • Tucson • Santa Fe • Palisade" },
+  { name: "Kia", tagline: "K5 • Sportage • Sorento • Telluride" },
+  { name: "Genesis", tagline: "G70 • G80 • G90 • GV70 • GV80" },
+  { name: "SsangYong", tagline: "Rexton • Korando • Tivoli • Musso" },
 ];
 
 const Index = () => {
@@ -88,219 +76,226 @@ const Index = () => {
   return (
     <Layout>
       <CursorGlow />
-      <div className="homepage-gradient absolute inset-0 -z-10" />
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border/50">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-background" />
-        <div className="absolute inset-0 animated-grid opacity-40" />
-        <div className="absolute inset-0 floating-particles" />
+
+      {/* ─── HERO ─── */}
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0 homepage-gradient" />
+        <div className="absolute inset-0 animated-grid opacity-30" />
         
-        {/* Glow Effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-[100px] animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent/20 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: "1s" }} />
+        {/* Decorative Korean text */}
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 korean-texture select-none" aria-hidden="true">
+          자동차<br />부품
+        </div>
 
-        <div className="container-custom relative py-16 md:py-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-sm text-primary mb-6 animate-slide-up">
-              <KoreanFlagMini className="h-4 w-6" />
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              {t.hero.badge}
+        {/* Diagonal accent line */}
+        <div className="diagonal-accent top-1/3" />
+        <div className="diagonal-accent bottom-1/4" style={{ animationDelay: "0.5s" }} />
+
+        {/* Glow orbs */}
+        <div className="absolute top-1/4 left-1/6 w-80 h-80 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/6 w-60 h-60 bg-accent/15 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: "2s" }} />
+
+        <div className="container-custom relative z-10 py-20 md:py-28">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left — Copy */}
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-sm border border-primary/30 bg-primary/10 text-xs font-medium text-primary uppercase tracking-widest mb-8 animate-slide-up">
+                <KoreanFlagMini className="h-3.5 w-5" />
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+                </span>
+                {t.hero.badge}
+              </div>
+              
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[0.9] tracking-tighter animate-slide-up" style={{ animationDelay: "0.1s" }}>
+                {t.hero.title}
+                <span className="block text-gradient mt-2">{t.hero.titleBrands}</span>
+              </h1>
+              
+              <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-md animate-slide-up" style={{ animationDelay: "0.2s" }}>
+                {t.hero.subtitle}
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3 animate-slide-up" style={{ animationDelay: "0.3s" }}>
+                <Link
+                  to="/catalog"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-sm bg-primary text-primary-foreground font-display font-semibold text-sm uppercase tracking-wider btn-glow hover:opacity-90 transition-opacity"
+                >
+                  {t.nav.catalog}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-sm border border-border text-foreground font-display font-semibold text-sm uppercase tracking-wider hover:border-primary/50 hover:bg-primary/5 transition-all"
+                >
+                  {t.nav.contact}
+                </Link>
+              </div>
             </div>
-            
-            <h1 className="font-display text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              {t.hero.title}
-              <span className="block text-gradient mt-2">{t.hero.titleBrands}</span>
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground md:text-xl animate-slide-up" style={{ animationDelay: "0.2s" }}>
-              {t.hero.subtitle}
-            </p>
-          </div>
 
-          {/* Vehicle Selector with Tabs */}
-          <div className="mx-auto mt-10 max-w-4xl animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <div className="glass-card p-6 md:p-8 border-primary/40 bg-white shadow-lg">
-              <Tabs defaultValue="vehicle" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="vehicle">{t.hero.selectVehicle}</TabsTrigger>
-                  <TabsTrigger value="oem">{t.vehicle.searchByOEM}</TabsTrigger>
-                </TabsList>
-                <TabsContent value="vehicle">
-                  <VehicleSelector onSelect={handleVehicleSelect} instantFilter={false} />
-                </TabsContent>
-                <TabsContent value="oem">
-                  <OEMSearch />
-                </TabsContent>
-              </Tabs>
+            {/* Right — Vehicle Selector */}
+            <div className="animate-slide-up" style={{ animationDelay: "0.35s" }}>
+              <div className="glass-card p-6 md:p-8 border-primary/20">
+                <Tabs defaultValue="vehicle" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6 bg-secondary rounded-sm">
+                    <TabsTrigger value="vehicle" className="rounded-sm font-display text-sm">{t.hero.selectVehicle}</TabsTrigger>
+                    <TabsTrigger value="oem" className="rounded-sm font-display text-sm">{t.vehicle.searchByOEM}</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="vehicle">
+                    <VehicleSelector onSelect={handleVehicleSelect} instantFilter={false} />
+                  </TabsContent>
+                  <TabsContent value="oem">
+                    <OEMSearch />
+                  </TabsContent>
+                </Tabs>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Us Section */}
-      <section className="py-16 md:py-20 border-b border-border/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
+      {/* ─── STATS BAR ─── */}
+      <section className="border-y border-border/50 relative">
+        <div className="container-custom">
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            <StatBlock value="14+" label={t.about.stats.years} delay="0s" />
+            <StatBlock value="100K+" label={t.about.stats.parts} delay="0.1s" />
+            <StatBlock value="50K+" label={t.about.stats.customers} delay="0.2s" />
+            <StatBlock value="24h" label={t.about.stats.dispatch} delay="0.3s" />
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FEATURES ─── */}
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 floating-particles" />
         
         <div className="container-custom relative">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-            <div className="animate-fade-in">
-              <div className="flex items-center gap-3 mb-4">
-                <KoreanFlagMini className="h-5 w-8 rounded shadow-sm" />
-                <span className="text-sm text-primary font-medium">{t.about.badge}</span>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            {/* Left heading */}
+            <div className="lg:sticky lg:top-28">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-px w-8 bg-primary" />
+                <span className="text-xs text-primary uppercase tracking-widest font-medium">{t.about.badge}</span>
               </div>
-              <h2 className="font-display text-2xl font-bold md:text-3xl lg:text-4xl">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
                 {t.about.title}
-                <span className="text-gradient block">{t.about.titleHighlight}</span>
+                <span className="block text-gradient">{t.about.titleHighlight}</span>
               </h2>
-              <div className="mt-6 space-y-4 text-muted-foreground">
-                <p>{t.about.description1}</p>
-                <p>{t.about.description2}</p>
-              </div>
+              <p className="mt-6 text-muted-foreground leading-relaxed max-w-md">
+                {t.about.description1}
+              </p>
               <Link
                 to="/about"
-                className="mt-6 inline-flex items-center gap-2 text-primary font-medium hover:underline"
+                className="mt-6 inline-flex items-center gap-2 text-primary font-display font-semibold text-sm uppercase tracking-wider hover:gap-3 transition-all"
               >
                 {t.about.learnMore}
-                <ChevronRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
-                  <Award className="h-6 w-6 text-primary" />
-                </div>
-                <div className="text-3xl font-display font-bold text-primary">14+</div>
-                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.years}</div>
-              </div>
-              <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.2s" }}>
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
-                  <Car className="h-6 w-6 text-primary" />
-                </div>
-                <div className="text-3xl font-display font-bold text-primary">100K+</div>
-                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.parts}</div>
-              </div>
-              <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <div className="text-3xl font-display font-bold text-primary">50K+</div>
-                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.customers}</div>
-              </div>
-              <div className="glass-card p-6 text-center animate-slide-up" style={{ animationDelay: "0.4s" }}>
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-3">
-                  <Clock className="h-6 w-6 text-primary" />
-                </div>
-                <div className="text-3xl font-display font-bold text-primary">24h</div>
-                <div className="mt-1 text-sm text-muted-foreground">{t.about.stats.dispatch}</div>
-              </div>
+            {/* Right feature list */}
+            <div className="glass-card divide-y divide-border/50">
+              <FeatureRow Icon={Truck} title={t.features.shipping} desc={t.features.shippingDesc} index={0} />
+              <FeatureRow Icon={Shield} title={t.features.quality} desc={t.features.qualityDesc} index={1} />
+              <FeatureRow Icon={Headphones} title={t.features.support} desc={t.features.supportDesc} index={2} />
+              <FeatureRow Icon={Zap} title={t.features.catalog} desc={t.features.catalogDesc} index={3} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 md:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 floating-particles opacity-50" />
-        
+      {/* ─── CATEGORIES ─── */}
+      <section className="py-20 md:py-28 border-t border-border/50 relative overflow-hidden">
         <div className="container-custom relative">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <FeatureCard Icon={Truck} title={t.features.shipping} desc={t.features.shippingDesc} delay="0s" />
-            <FeatureCard Icon={Shield} title={t.features.quality} desc={t.features.qualityDesc} delay="0.1s" />
-            <FeatureCard Icon={Headphones} title={t.features.support} desc={t.features.supportDesc} delay="0.2s" />
-            <FeatureCard Icon={Car} title={t.features.catalog} desc={t.features.catalogDesc} delay="0.3s" />
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-px w-8 bg-accent" />
+            <span className="text-xs text-accent uppercase tracking-widest font-medium">{t.categories.subtitle}</span>
           </div>
-        </div>
-      </section>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold mb-12">{t.categories.title}</h2>
 
-      {/* Popular Categories */}
-      <section className="border-t border-border/50 py-16 md:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
-        
-        <div className="container-custom relative">
-          <div className="text-center">
-            <h2 className="font-display text-2xl font-bold md:text-3xl">{t.categories.title}</h2>
-            <p className="mt-2 text-muted-foreground">{t.categories.subtitle}</p>
-          </div>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {categories.map((category, index) => (
-              <CategoryCard 
-                key={category.slug} 
-                {...category} 
-                delay={`${index * 0.05}s`} 
-              />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((cat, i) => (
+              <Link
+                key={cat.slug}
+                to={`/catalog?category=${cat.slug}`}
+                className="category-item animate-scale-in"
+                style={{ animationDelay: `${i * 0.05}s` }}
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-primary/10">
+                  <cat.Icon className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-display font-semibold text-sm flex-1">{cat.name}</span>
+                <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Brands Section */}
-      <section className="border-t border-border/50 py-16 md:py-20 relative">
+      {/* ─── BRANDS ─── */}
+      <section className="py-20 md:py-28 border-t border-border/50 relative">
         <div className="container-custom">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <KoreanFlagMini className="h-4 w-6 rounded shadow-sm" />
-              <span className="text-sm text-muted-foreground">{t.brands.badge}</span>
-            </div>
-            <h2 className="font-display text-2xl font-bold md:text-3xl">{t.brands.title}</h2>
-            <p className="mt-2 text-muted-foreground">{t.brands.subtitle}</p>
+          <div className="flex items-center gap-2 mb-4">
+            <KoreanFlagMini className="h-3.5 w-5" />
+            <span className="text-xs text-muted-foreground uppercase tracking-widest">{t.brands.badge}</span>
           </div>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold mb-4">{t.brands.title}</h2>
+          <p className="text-muted-foreground mb-12 max-w-lg">{t.brands.subtitle}</p>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {brands.map((brand, index) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {brands.map((brand, i) => (
               <div 
                 key={brand.name}
-                className="glass-card p-6 text-center group hover:border-primary/50 transition-all duration-300 animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group glass-card p-6 transition-all duration-300 hover:border-primary/40 animate-slide-up"
+                style={{ animationDelay: `${i * 0.1}s` }}
               >
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <KoreanFlagMini className="h-3 w-5 opacity-60" />
-                  <h3 className="font-display text-xl font-bold text-primary">{brand.name}</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <KoreanFlagMini className="h-3 w-4.5 opacity-40 group-hover:opacity-80 transition-opacity" />
+                  <h3 className="font-display text-xl font-extrabold text-primary tracking-tight">{brand.name}</h3>
                 </div>
-                <p className="text-sm text-muted-foreground">{brand.models}</p>
+                <p className="text-xs text-muted-foreground tracking-wide">{brand.tagline}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Video Reviews Section */}
+      {/* ─── VIDEO REVIEWS ─── */}
       <VideoReviewCarousel />
 
-      {/* CTA Section */}
-      <section className="border-t border-border/50 py-16 md:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
-        <div className="absolute inset-0 animated-grid opacity-20" />
+      {/* ─── CTA ─── */}
+      <section className="py-20 md:py-28 border-t border-border/50 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/8 via-transparent to-transparent" />
+          <div className="absolute inset-0 animated-grid opacity-15" />
+        </div>
         
         <div className="container-custom relative text-center">
-          <h2 className="font-display text-2xl font-bold md:text-3xl">
-            {t.cta.title}
-          </h2>
-          <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
-            {t.cta.subtitle}
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold">{t.cta.title}</h2>
+          <p className="mt-3 text-muted-foreground max-w-xl mx-auto">{t.cta.subtitle}</p>
+          
+          <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/about"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 hover:border-primary/50 transition-all"
+              className="inline-flex items-center justify-center px-7 py-3.5 rounded-sm border border-border font-display font-semibold text-sm uppercase tracking-wider hover:border-primary/50 hover:bg-primary/5 transition-all"
             >
               {t.cta.aboutUs}
             </Link>
             <Link
               to="/faq"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border bg-secondary text-foreground font-medium hover:bg-secondary/80 hover:border-primary/50 transition-all"
+              className="inline-flex items-center justify-center px-7 py-3.5 rounded-sm border border-border font-display font-semibold text-sm uppercase tracking-wider hover:border-primary/50 hover:bg-primary/5 transition-all"
             >
               {t.cta.faq}
             </Link>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium btn-glow hover:opacity-90 transition-opacity"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm bg-primary text-primary-foreground font-display font-semibold text-sm uppercase tracking-wider btn-glow hover:opacity-90 transition-opacity"
             >
               {t.cta.contactUs}
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
