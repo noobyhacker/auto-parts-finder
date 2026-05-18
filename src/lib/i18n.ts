@@ -63,7 +63,7 @@ export const translations = {
     // Features
     features: {
       shipping: "Fast Shipping",
-      shippingDesc: "Same-day dispatch on orders placed before 2 PM",
+      shippingDesc: "Fastest possible shipment around the world.",
       quality: "Quality Guaranteed",
       qualityDesc: "OEM quality parts with warranty included",
       support: "Expert Support",
