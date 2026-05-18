@@ -49,7 +49,7 @@ export const translations = {
       customerFocus: "Customer Focus",
       customerFocusDesc: "Your satisfaction is our priority. Our team is always ready to help you find the right parts.",
       fastDelivery: "Fast Delivery",
-      fastDeliveryDesc: "Same-day dispatch on orders placed before 2 PM. We know you need your parts quickly.",
+      fastDeliveryDesc: "Fastest possible shipment around the world.",
       expertise: "Expertise",
       expertiseDesc: "Our specialists have deep knowledge of Korean vehicles and can assist with any technical questions.",
       trust: "Trust",
@@ -63,7 +63,7 @@ export const translations = {
     // Features
     features: {
       shipping: "Fast Shipping",
-      shippingDesc: "Same-day dispatch on orders placed before 2 PM",
+      shippingDesc: "Fastest possible shipment around the world.",
       quality: "Quality Guaranteed",
       qualityDesc: "OEM quality parts with warranty included",
       support: "Expert Support",
@@ -328,7 +328,7 @@ export const translations = {
       customerFocus: "고객 중심",
       customerFocusDesc: "고객 만족이 최우선입니다. 저희 팀은 항상 적합한 부품을 찾는 것을 도와드릴 준비가 되어 있습니다.",
       fastDelivery: "빠른 배송",
-      fastDeliveryDesc: "오후 2시 이전 주문은 당일 발송됩니다. 부품이 빨리 필요하다는 것을 알고 있습니다.",
+      fastDeliveryDesc: "전 세계 어디든 가장 빠른 배송.",
       expertise: "전문성",
       expertiseDesc: "저희 전문가들은 한국 차량에 대한 깊은 지식을 가지고 있으며 기술적인 질문에 도움을 드릴 수 있습니다.",
       trust: "신뢰",
@@ -342,7 +342,7 @@ export const translations = {
     // Features
     features: {
       shipping: "빠른 배송",
-      shippingDesc: "오후 2시 이전 주문 당일 발송",
+      shippingDesc: "전 세계 어디든 가장 빠른 배송.",
       quality: "품질 보증",
       qualityDesc: "보증이 포함된 OEM 품질 부품",
       support: "전문 지원",
@@ -607,7 +607,7 @@ export const translations = {
       customerFocus: "Фокус на клиента",
       customerFocusDesc: "Ваше удовлетворение - наш приоритет. Наша команда всегда готова помочь найти нужные запчасти.",
       fastDelivery: "Быстрая доставка",
-      fastDeliveryDesc: "Отправка в тот же день для заказов до 14:00. Мы знаем, что вам нужны запчасти быстро.",
+      fastDeliveryDesc: "Самая быстрая доставка по всему миру.",
       expertise: "Экспертиза",
       expertiseDesc: "Наши специалисты обладают глубокими знаниями о корейских автомобилях и могут помочь с любыми техническими вопросами.",
       trust: "Доверие",
@@ -621,7 +621,7 @@ export const translations = {
     // Features
     features: {
       shipping: "Быстрая доставка",
-      shippingDesc: "Отправка в тот же день для заказов до 14:00",
+      shippingDesc: "Самая быстрая доставка по всему миру.",
       quality: "Гарантия качества",
       qualityDesc: "Запчасти OEM качества с гарантией",
       support: "Экспертная поддержка",
