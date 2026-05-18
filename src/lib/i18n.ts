@@ -49,7 +49,7 @@ export const translations = {
       customerFocus: "Customer Focus",
       customerFocusDesc: "Your satisfaction is our priority. Our team is always ready to help you find the right parts.",
       fastDelivery: "Fast Delivery",
-      fastDeliveryDesc: "Same-day dispatch on orders placed before 2 PM. We know you need your parts quickly.",
+      fastDeliveryDesc: "Fastest possible shipment around the world.",
       expertise: "Expertise",
       expertiseDesc: "Our specialists have deep knowledge of Korean vehicles and can assist with any technical questions.",
       trust: "Trust",
