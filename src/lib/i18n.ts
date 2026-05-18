@@ -342,7 +342,7 @@ export const translations = {
     // Features
     features: {
       shipping: "빠른 배송",
-      shippingDesc: "오후 2시 이전 주문 당일 발송",
+      shippingDesc: "전 세계 어디든 가장 빠른 배송.",
       quality: "품질 보증",
       qualityDesc: "보증이 포함된 OEM 품질 부품",
       support: "전문 지원",
