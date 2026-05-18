@@ -621,7 +621,7 @@ export const translations = {
     // Features
     features: {
       shipping: "Быстрая доставка",
-      shippingDesc: "Отправка в тот же день для заказов до 14:00",
+      shippingDesc: "Самая быстрая доставка по всему миру.",
       quality: "Гарантия качества",
       qualityDesc: "Запчасти OEM качества с гарантией",
       support: "Экспертная поддержка",
