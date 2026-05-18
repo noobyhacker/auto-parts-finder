@@ -328,7 +328,7 @@ export const translations = {
       customerFocus: "고객 중심",
       customerFocusDesc: "고객 만족이 최우선입니다. 저희 팀은 항상 적합한 부품을 찾는 것을 도와드릴 준비가 되어 있습니다.",
       fastDelivery: "빠른 배송",
-      fastDeliveryDesc: "오후 2시 이전 주문은 당일 발송됩니다. 부품이 빨리 필요하다는 것을 알고 있습니다.",
+      fastDeliveryDesc: "전 세계 어디든 가장 빠른 배송.",
       expertise: "전문성",
       expertiseDesc: "저희 전문가들은 한국 차량에 대한 깊은 지식을 가지고 있으며 기술적인 질문에 도움을 드릴 수 있습니다.",
       trust: "신뢰",
