@@ -62,7 +62,7 @@ export const PartCard = memo(function PartCard({ part }: PartCardProps) {
             {part.inStock ? t.common.inStock : t.common.outOfStock}
           </span>
         </div>
-        <h3 className="line-clamp-2 text-sm font-semibold group-hover:text-primary transition-colors">
+        <h3 className="line-clamp-2 text-[15px] leading-snug font-sans font-semibold tracking-normal text-foreground group-hover:text-primary transition-colors min-h-[2.6em]" style={{ fontFamily: '"DM Sans", system-ui, sans-serif' }}>
           {getPartName()}
         </h3>
         <p className="mt-1 font-mono text-xs text-muted-foreground">{part.articleNumber}</p>
