@@ -13,6 +13,7 @@ import {
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
+import parentCompanyLogo from "@/assets/parent-company-logo.png";
 import type { VehicleSelection } from "@/types";
 
 const StatBlock = memo(({ value, label, delay }: { value: string; label: string; delay: string }) => (
@@ -100,15 +101,6 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left — Copy */}
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-sm border border-primary/30 bg-primary/10 text-xs font-medium text-primary uppercase tracking-widest mb-8 animate-slide-up">
-                <KoreanFlagMini className="h-3.5 w-5" />
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
-                </span>
-                {t.hero.badge}
-              </div>
-              
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[0.9] tracking-tighter animate-slide-up" style={{ animationDelay: "0.1s" }}>
                 {t.hero.title}
                 <span className="block text-gradient mt-2">{t.hero.titleBrands}</span>
@@ -202,6 +194,63 @@ const Index = () => {
               <FeatureRow Icon={Shield} title={t.features.quality} desc={t.features.qualityDesc} index={1} />
               <FeatureRow Icon={Headphones} title={t.features.support} desc={t.features.supportDesc} index={2} />
               <FeatureRow Icon={Zap} title={t.features.catalog} desc={t.features.catalogDesc} index={3} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Parent company section */}
+      <section className="py-20 md:py-28 border-t border-border/50 relative overflow-hidden">
+        <div className="container-custom relative">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+            <div className="glass-card p-6 md:p-8">
+              <img
+                src={parentCompanyLogo}
+                alt="Parent company logo"
+                className="h-10 md:h-12 w-auto mb-5"
+                loading="lazy"
+              />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-px w-8 bg-primary" />
+                <span className="text-xs text-primary uppercase tracking-widest font-medium">{t.parentCompany.badge}</span>
+              </div>
+              <h2 className="font-display text-2xl md:text-3xl font-extrabold leading-tight">
+                {t.parentCompany.title}
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                {t.parentCompany.description}
+              </p>
+
+              <div className="mt-6 space-y-3 text-sm">
+                <p>
+                  <span className="text-muted-foreground">{t.parentCompany.phoneLabel}:</span>{" "}
+                  <a href="tel:+74162771307" className="text-primary hover:underline">+7 (4162) 77-13-07</a>
+                </p>
+                <p>
+                  <span className="text-muted-foreground">{t.parentCompany.mobileLabel}:</span>{" "}
+                  <a href="tel:+79145505217" className="text-primary hover:underline">+7 (914) 550-52-17</a>
+                </p>
+                <p>
+                  <span className="text-muted-foreground">{t.parentCompany.emailLabel}:</span>{" "}
+                  <a href="mailto:rerekin@mail.ru" className="text-primary hover:underline">rerekin@mail.ru</a>
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {t.parentCompany.addressLine1}<br />
+                  {t.parentCompany.addressLine2}
+                </p>
+              </div>
+            </div>
+
+            <div className="glass-card p-3 md:p-4">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!3m2!1sen!2skr!4v1779360548237!5m2!1sen!2skr!6m8!1m7!1sucvYKoQfns_arrgblrX7tg!2m2!1d50.30469138127859!2d127.5330426583126!3f295.4845197453312!4f-7.937552665948502!5f0.7820865974627469"
+                className="w-full h-[320px] md:h-full min-h-[320px] rounded-sm"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={t.parentCompany.mapTitle}
+              />
             </div>
           </div>
         </div>

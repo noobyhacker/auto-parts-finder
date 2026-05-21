@@ -32,6 +32,17 @@ export const translations = {
         dispatch: "Fast Dispatch",
       },
     },
+    parentCompany: {
+      badge: "Parent Company",
+      title: "Our Head Office in Russia",
+      description: "We are part of a group of companies with headquarters in Russia. This office coordinates supply and operations so you receive trusted Korean auto parts quickly and reliably.",
+      phoneLabel: "Phone",
+      mobileLabel: "Mobile",
+      emailLabel: "Email",
+      mapTitle: "Parent company location",
+      addressLine1: "Amur Region, Blagoveshchensk,",
+      addressLine2: "66 Koltsevaya St., Office 210",
+    },
     // About page
     aboutPage: {
       title: "About",
@@ -311,6 +322,17 @@ export const translations = {
         dispatch: "빠른 발송",
       },
     },
+    parentCompany: {
+      badge: "모회사",
+      title: "러시아 본사",
+      description: "당사는 러시아에 본사를 둔 그룹의 일원입니다. 본사는 공급 및 운영을 총괄하여 신뢰할 수 있는 한국 자동차 부품을 빠르고 안정적으로 제공합니다.",
+      phoneLabel: "전화",
+      mobileLabel: "휴대폰",
+      emailLabel: "이메일",
+      mapTitle: "모회사 위치",
+      addressLine1: "러시아 아무르주, 블라고베셴스크,",
+      addressLine2: "콜체바야 66, 210호",
+    },
     // About page
     aboutPage: {
       title: "회사 소개",
@@ -589,6 +611,17 @@ export const translations = {
         customers: "Довольных клиентов",
         dispatch: "Быстрая отправка",
       },
+    },
+    parentCompany: {
+      badge: "Родительская компания",
+      title: "Наш головной офис в России",
+      description: "Мы входим в группу компаний с головным офисом в России. Этот офис координирует поставки и операционную поддержку, чтобы вы получали проверенные корейские автозапчасти быстро и надежно.",
+      phoneLabel: "Телефон",
+      mobileLabel: "Мобильный",
+      emailLabel: "Email",
+      mapTitle: "Локация родительской компании",
+      addressLine1: "Амурская обл., г. Благовещенск,",
+      addressLine2: "ул. Кольцевая 66, оф. 210",
     },
     // About page
     aboutPage: {
