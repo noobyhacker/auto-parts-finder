@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Package, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ export function SearchAutocomplete({
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
 
   const ph = placeholder ?? t.vehicle.enterOEM;
 
@@ -50,6 +52,29 @@ export function SearchAutocomplete({
 
   const { data: searchResult, isLoading } = useSearchParts(debouncedQuery);
   const results = searchResult?.parts ?? [];
+
+  // Track input position for portal dropdown
+  useEffect(() => {
+    function updatePosition() {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setDropdownStyle({
+        position: "fixed",
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+      });
+    }
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, { passive: true, capture: true });
+    window.addEventListener("resize", updatePosition, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", updatePosition, { capture: true });
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [isOpen]);
 
   // Close on outside click
   useEffect(() => {
@@ -135,8 +160,8 @@ export function SearchAutocomplete({
         )}
       </div>
 
-      {isOpen && (query.trim().length >= 1) && (
-        <div className="absolute left-0 right-0 top-full z-[9999] mt-1 rounded-lg border border-border bg-background shadow-lg overflow-hidden">
+      {isOpen && (query.trim().length >= 1) && createPortal(
+        <div style={dropdownStyle} className="rounded-lg border border-border bg-background shadow-xl overflow-hidden">
           {results.length > 0 ? (
             <ul className="max-h-72 overflow-y-auto py-1">
               {results.map((part, i) => (
@@ -176,7 +201,8 @@ export function SearchAutocomplete({
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
