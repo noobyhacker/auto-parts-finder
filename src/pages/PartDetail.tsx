@@ -5,6 +5,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { usePart } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
+import { getTelegramLink, getWhatsAppLink, getMaxLink } from "@/lib/contact-links";
 
 // Map category slugs to translation keys
 const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
@@ -221,37 +222,33 @@ const PartDetail = () => {
             <div className="space-y-3">
               <h3 className="text-sm font-semibold">{t.common.contactAboutPart}</h3>
               <div className="flex flex-wrap gap-3">
-                <Button 
-                  className="gap-2 bg-[#0088cc] hover:bg-[#0088cc]/90"
-                  onClick={() => {
-                    const message = encodeURIComponent(`Hi! I'm interested in: ${partName} (Article: ${part.articleNumber})`);
-                    window.open(`https://t.me/your_telegram_handle?text=${message}`, '_blank');
-                  }}
+                <a
+                  href={getTelegramLink({ name: part.name, articleNumber: part.articleNumber, oemNumber: part.oemNumber })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-white bg-[#0088cc] hover:bg-[#0088cc]/90 transition-colors"
                 >
                   <Send className="h-4 w-4" />
                   Telegram
-                </Button>
-                <Button 
-                  className="gap-2 bg-[#25D366] hover:bg-[#25D366]/90"
-                  onClick={() => {
-                    const message = encodeURIComponent(`Hi! I'm interested in: ${partName} (Article: ${part.articleNumber})`);
-                    window.open(`https://wa.me/your_phone_number?text=${message}`, '_blank');
-                  }}
+                </a>
+                <a
+                  href={getWhatsAppLink({ name: part.name, articleNumber: part.articleNumber, oemNumber: part.oemNumber })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-white bg-[#25D366] hover:bg-[#25D366]/90 transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => {
-                    const message = encodeURIComponent(`Hi! I'm interested in: ${partName} (Article: ${part.articleNumber})`);
-                    window.open(`https://max.com/your_max_handle?text=${message}`, '_blank');
-                  }}
+                </a>
+                <a
+                  href={getMaxLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium border border-border bg-background hover:bg-secondary transition-colors"
                 >
                   <Phone className="h-4 w-4" />
                   MAX
-                </Button>
+                </a>
               </div>
             </div>
 

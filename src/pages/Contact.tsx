@@ -2,6 +2,7 @@ import { MessageCircle, Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-re
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
+import { getTelegramLink, getWhatsAppLink, getMaxLink } from "@/lib/contact-links";
 
 const Contact = () => {
   const { t } = useLanguage();
@@ -125,7 +126,7 @@ const Contact = () => {
               <div className="mt-8 grid gap-4 sm:grid-cols-3 flex-1 content-start">
                 {/* Telegram */}
                 <a
-                  href="https://t.me/magazinamur"
+                  href={getTelegramLink()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#0088cc]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
@@ -145,7 +146,7 @@ const Contact = () => {
 
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/message/ZVLZMRTXDIIPJ1"
+                  href={getWhatsAppLink()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#25D366]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
@@ -165,7 +166,7 @@ const Contact = () => {
 
                 {/* MAX */}
                 <a
-                  href="https://max.ru/u/f9LHodD0cOJAWBgVJrrdb5HwnEGYVFsAS-zU-iCw9FLq43FidiYM8Oxc1vI"
+                  href={getMaxLink()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#168acd]/60 hover:shadow-lg hover:-translate-y-1"
