@@ -158,7 +158,9 @@ const PartDetail = () => {
           {/* Details */}
           <div className="space-y-6">
             <div>
-              <p className="text-sm font-medium text-primary">{getCategoryName(part.category.slug)}</p>
+              {part.category && (
+                <p className="text-sm font-medium text-primary">{getCategoryName(part.category.slug)}</p>
+              )}
               <h1
                 className="mt-1 text-2xl font-bold leading-[1.25] tracking-normal md:text-3xl"
                 style={{ fontFamily: '"DM Sans", system-ui, sans-serif' }}

@@ -1,10 +1,8 @@
 import { memo } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Shield, Truck, Headphones, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import { VehicleSelector } from "@/components/vehicle/VehicleSelector";
-import { OEMSearch } from "@/components/search/OEMSearch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
 import {
   EngineIcon, BrakeIcon, SuspensionIcon, FilterIcon,
@@ -14,8 +12,6 @@ import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
-import type { VehicleSelection } from "@/types";
-
 const StatBlock = memo(({ value, label, delay }: { value: string; label: string; delay: string }) => (
   <div 
     className="stat-block transition-all duration-500 animate-slide-up"
@@ -51,17 +47,7 @@ const brands = [
 ];
 
 const Index = () => {
-  const navigate = useNavigate();
   const { t } = useLanguage();
-
-  const handleVehicleSelect = (selection: VehicleSelection) => {
-    const params = new URLSearchParams();
-    if (selection.brandId) params.set("brand", selection.brandId);
-    if (selection.modelId) params.set("model", selection.modelId);
-    if (selection.year) params.set("year", selection.year.toString());
-    if (selection.engine) params.set("engine", selection.engine);
-    navigate(`/catalog?${params.toString()}`);
-  };
 
   const categories = [
     { name: t.categories.engine, Icon: EngineIcon, slug: "engine-parts" },
@@ -127,21 +113,17 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right — Vehicle Selector */}
+            {/* Right — Search */}
             <div className="animate-slide-up" style={{ animationDelay: "0.35s" }}>
               <div className="glass-card p-6 md:p-8 border-primary/20">
-                <Tabs defaultValue="vehicle" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-6 bg-secondary rounded-sm">
-                    <TabsTrigger value="vehicle" className="rounded-sm font-display text-sm">{t.hero.selectVehicle}</TabsTrigger>
-                    <TabsTrigger value="oem" className="rounded-sm font-display text-sm">{t.vehicle.searchByOEM}</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="vehicle">
-                    <VehicleSelector onSelect={handleVehicleSelect} instantFilter={false} />
-                  </TabsContent>
-                  <TabsContent value="oem">
-                    <OEMSearch />
-                  </TabsContent>
-                </Tabs>
+                <p className="mb-2 font-display text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                  {t.vehicle.searchByOEM}
+                </p>
+                <SearchAutocomplete
+                  inputClassName="h-12 text-base"
+                  navigateToCatalogOnEnter
+                />
+                <p className="mt-3 text-xs text-muted-foreground">{t.vehicle.oemHint}</p>
               </div>
             </div>
           </div>

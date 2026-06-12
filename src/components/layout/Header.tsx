@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
-import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -24,12 +23,12 @@ export function Header() {
       <div className="container-custom">
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="flex shrink-0 items-center group">
+          <Link to="/" className="flex items-center group">
             <img src={logo} alt="AmurKor" className="h-9 sm:h-11 w-auto" />
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden items-center gap-6 md:flex">
+          <nav className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -41,21 +40,13 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Search bar — desktop */}
-          <div className="hidden md:block w-64 lg:w-80">
-            <SearchAutocomplete
-              inputClassName="h-9 text-sm"
-              navigateToCatalogOnEnter
-            />
-          </div>
-
           {/* Actions */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
             <a
               href="tel:+74162771307"
-              className="hidden items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-primary lg:flex ml-1"
+              className="hidden items-center gap-2 text-xs font-medium text-muted-foreground transition-colors hover:text-primary lg:flex ml-2"
             >
               <Phone className="h-3.5 w-3.5" />
               <span>+7 (4162) 77-13-07</span>
@@ -73,12 +64,7 @@ export function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="border-t border-border/40 py-4 md:hidden animate-slide-up space-y-4">
-            {/* Mobile search */}
-            <SearchAutocomplete
-              inputClassName="h-9 text-sm"
-              navigateToCatalogOnEnter
-            />
+          <div className="border-t border-border/40 py-4 md:hidden animate-slide-up">
             <nav className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
