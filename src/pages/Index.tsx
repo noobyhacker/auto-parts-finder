@@ -8,6 +8,7 @@ import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
+import carsHero from "@/assets/cars-hero.png";
 
 function useCountUpOnScroll(target: number, duration = 1800) {
   const [count, setCount] = useState(0);
@@ -160,7 +161,21 @@ const Index = () => {
 
             {/* Right — Cars image + Search card */}
             <div className="relative animate-slide-up" style={{ animationDelay: "0.35s" }}>
-              {/* Car image — behind card — add src/assets/cars-hero.png to enable */}
+              {/* Car image — behind search card */}
+              <div className="absolute inset-x-0 bottom-0 -mb-6 pointer-events-none select-none" style={{ zIndex: 0 }}>
+                <img
+                  src={carsHero}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full object-contain object-bottom opacity-90 dark:opacity-70"
+                  style={{
+                    maskImage: "linear-gradient(to bottom, transparent 0%, black 25%), linear-gradient(to right, transparent 0%, black 20%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 25%), linear-gradient(to right, transparent 0%, black 20%)",
+                    maskComposite: "intersect",
+                    WebkitMaskComposite: "destination-in",
+                  }}
+                />
+              </div>
               {/* Floating badge — top-right */}
               <div className="trust-badge -top-4 -right-4 animate-float" style={{ animationDelay: "0.5s", zIndex: 2 }}>
                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
