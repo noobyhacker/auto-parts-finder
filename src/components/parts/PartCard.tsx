@@ -37,6 +37,7 @@ export const PartCard = memo(function PartCard({ part }: PartCardProps) {
   const { t } = useLanguage();
 
   const getCategoryName = () => {
+    if (!part.category) return null;
     const key = categoryTranslationMap[part.category.slug];
     if (key && t.categories[key]) {
       return t.categories[key];
