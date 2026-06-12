@@ -52,7 +52,7 @@ export function Header() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex shrink-0 items-center group">
-            <img src={logo} alt="AmurKor" className="h-9 sm:h-11 w-auto" />
+            <img src={logo} alt="AmurKor" className="h-12 sm:h-16 w-auto" />
           </Link>
 
           {/* Desktop Nav */}

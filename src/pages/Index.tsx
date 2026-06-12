@@ -102,13 +102,29 @@ const Index = () => {
         <div className="absolute top-1/4 left-1/6 w-80 h-80 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
         <div className="absolute bottom-1/4 right-1/6 w-60 h-60 bg-accent/15 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: "2s" }} />
 
+        {/* Cars image — full-width right half of hero, behind all content */}
+        <div className="absolute bottom-0 right-0 w-[60%] md:w-[55%] pointer-events-none select-none" style={{ zIndex: 1 }}>
+          <img
+            src={carsHero}
+            alt=""
+            aria-hidden="true"
+            className="w-full object-contain object-bottom-right opacity-95 dark:opacity-75"
+            style={{
+              maskImage: "linear-gradient(to right, transparent 0%, black 28%), linear-gradient(to top, black 55%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%), linear-gradient(to top, black 55%, transparent 100%)",
+              maskComposite: "intersect",
+              WebkitMaskComposite: "destination-in",
+            }}
+          />
+        </div>
+
         {/* Floating decorative shapes */}
         <div className="absolute top-1/3 left-[8%] w-3 h-3 rounded-full bg-primary/40 animate-float" style={{ animationDelay: "0s" }} />
         <div className="absolute top-2/3 left-[15%] w-2 h-2 rounded-full bg-accent/50 animate-float-slow" style={{ animationDelay: "1.5s" }} />
         <div className="absolute top-1/4 right-[20%] w-2.5 h-2.5 rounded-sm bg-primary/30 animate-float rotate-45" style={{ animationDelay: "0.8s" }} />
         <div className="absolute bottom-1/3 right-[10%] w-2 h-2 rounded-full bg-accent/40 animate-float-fast" style={{ animationDelay: "2.2s" }} />
 
-        <div className="container-custom relative z-10 py-20 md:py-28">
+        <div className="container-custom relative py-20 md:py-28" style={{ zIndex: 2 }}>
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left — Copy */}
             <div className="max-w-xl">
@@ -161,21 +177,6 @@ const Index = () => {
 
             {/* Right — Cars image + Search card */}
             <div className="relative animate-slide-up" style={{ animationDelay: "0.35s" }}>
-              {/* Car image — behind search card */}
-              <div className="absolute inset-x-0 bottom-0 -mb-6 pointer-events-none select-none" style={{ zIndex: 0 }}>
-                <img
-                  src={carsHero}
-                  alt=""
-                  aria-hidden="true"
-                  className="w-full object-contain object-bottom opacity-90 dark:opacity-70"
-                  style={{
-                    maskImage: "linear-gradient(to bottom, transparent 0%, black 25%), linear-gradient(to right, transparent 0%, black 20%)",
-                    WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 25%), linear-gradient(to right, transparent 0%, black 20%)",
-                    maskComposite: "intersect",
-                    WebkitMaskComposite: "destination-in",
-                  }}
-                />
-              </div>
               {/* Floating badge — top-right */}
               <div className="trust-badge -top-4 -right-4 animate-float" style={{ animationDelay: "0.5s", zIndex: 2 }}>
                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />

@@ -161,9 +161,16 @@ export function SearchAutocomplete({
       </div>
 
       {isOpen && (query.trim().length >= 1) && createPortal(
-        <div style={dropdownStyle} className="rounded-lg border border-border bg-background shadow-xl overflow-hidden">
+        <div
+          style={dropdownStyle}
+          className="rounded-lg border border-border bg-background shadow-xl overflow-hidden"
+          onWheel={(e) => e.stopPropagation()}
+        >
           {results.length > 0 ? (
-            <ul className="max-h-72 overflow-y-auto py-1">
+            <ul
+              className="max-h-72 overflow-y-auto py-1"
+              style={{ overscrollBehavior: "contain" }}
+            >
               {results.map((part, i) => (
                 <li key={part.id}>
                   <button
