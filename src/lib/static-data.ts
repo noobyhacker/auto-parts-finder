@@ -124,7 +124,11 @@ export async function getStaticParts(
     filtered = filtered.filter((p) => p.price <= filters.maxPrice!);
   }
   if (filters?.searchTerm) {
-    filtered = filtered.filter((p) => matchesAllTokens(p, filters.searchTerm!));
+    filtered = filtered
+      .map((p) => ({ p, score: scoreMatch(p, filters.searchTerm!) }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(({ p }) => p);
   }
   if (filters?.brandId) {
     filtered = filtered.filter((p) =>
@@ -160,27 +164,30 @@ export async function getStaticParts(
   return { parts, total };
 }
 
-function matchesAllTokens(p: Part, query: string): boolean {
-  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const norm = (s: string) => s.replace(/[\s\-_.]/g, "").toLowerCase();
-  const fields = [p.name, p.articleNumber ?? "", p.oemNumber ?? ""].map((f) => f.toLowerCase());
-  const normFields = fields.map(norm);
+const normalize = (s: string) => s.replace(/[\s\-_.]/g, "").toLowerCase();
 
-  return tokens.every((token) => {
-    const normToken = norm(token);
-    return (
-      fields.some((f) => f.includes(token)) ||
-      normFields.some((f) => f.includes(normToken))
-    );
-  });
+function scoreMatch(p: Part, query: string): number {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (!tokens.length) return 0;
+  const raw = [p.name ?? "", p.articleNumber ?? "", p.oemNumber ?? ""].join(" ").toLowerCase();
+  const normed = normalize(raw);
+  let score = 0;
+  for (const token of tokens) {
+    if (raw.includes(token) || normed.includes(normalize(token))) score++;
+  }
+  return score;
 }
 
 export async function searchStaticParts(query: string): Promise<{ parts: Part[]; total: number } | null> {
   const data = await loadStaticData();
   if (!data) return null;
 
-  const matched = data.parts.filter((p) => matchesAllTokens(p, query));
-  return { parts: matched.slice(0, 12), total: matched.length };
+  const scored = data.parts
+    .map((p) => ({ p, score: scoreMatch(p, query) }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || a.p.name.localeCompare(b.p.name));
+
+  return { parts: scored.slice(0, 12).map((s) => s.p), total: scored.length };
 }
 
 export function isStaticDataAvailable(): boolean {

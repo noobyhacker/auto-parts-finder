@@ -51,16 +51,19 @@ function buildSearchCondition(rawParam: string, normalizedParam: string): string
   return `(name match $${rawParam} || oemNumber match $${rawParam} || articleNumber match $${rawParam} || searchIndex match $${normalizedParam})`;
 }
 
-// Build a multi-token GROQ condition: each token must appear in at least one field
-// Returns the condition string and params object to merge into the query params
+// Build a multi-token GROQ condition using OR: a part matches if ANY token appears in any field.
+// Parts matching more tokens rank higher (handled in static layer; GROQ sorts by name).
 function buildMultiTokenCondition(query: string): { condition: string; params: Record<string, string> } {
   const tokens = tokenize(query);
   if (tokens.length <= 1) {
+    // Single token — use original wildcard match
+    const q = query.trim();
     return {
       condition: buildSearchCondition("search", "searchN"),
-      params: { search: `*${query}*`, searchN: `*${normalizeQuery(query)}*` },
+      params: { search: `*${q}*`, searchN: `*${normalizeQuery(q)}*` },
     };
   }
+  // Multiple tokens — OR across all tokens so any match returns a result
   const perToken = tokens.map((_, i) =>
     `(name match $t${i} || oemNumber match $t${i} || articleNumber match $t${i} || searchIndex match $tn${i})`
   );
@@ -69,7 +72,7 @@ function buildMultiTokenCondition(query: string): { condition: string; params: R
     params[`t${i}`] = `*${token}*`;
     params[`tn${i}`] = `*${normalizeQuery(token)}*`;
   });
-  return { condition: perToken.join(" && "), params };
+  return { condition: perToken.join(" || "), params };
 }
 
 // Helper to transform Sanity image to URL
