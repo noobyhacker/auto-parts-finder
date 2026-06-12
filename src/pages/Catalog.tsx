@@ -136,7 +136,7 @@ const Catalog = () => {
       </div>
 
       {/* ── GRID ── */}
-      <div className="container-custom py-8">
+      <div className="container-custom py-8 reveal">
         <PartGrid parts={parts} isLoading={isLoading} />
 
         {hasMore && !isLoading && (

@@ -40,7 +40,7 @@ const FAQ = () => {
       {/* ── FAQ LIST ── */}
       <section className="py-12 md:py-16">
         <div className="container-custom">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-3xl reveal">
             <Accordion type="single" collapsible className="space-y-3">
               {t.faqPage.questions.map((faq, index) => (
                 <AccordionItem

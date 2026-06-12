@@ -1,8 +1,51 @@
+import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Award, Users, Clock, MapPin, Target, Heart, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
+
+function useCountUpOnScroll(target: number, duration = 1600) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        let startTime: number | null = null;
+        const step = (ts: number) => {
+          if (!startTime) startTime = ts;
+          const progress = Math.min((ts - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.floor(eased * target));
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        observer.disconnect();
+      }
+    }, { threshold: 0.4 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+  return { count, ref };
+}
+
+function StatItem({ numeric, suffix, label, delay }: { numeric: number; suffix: string; label: string; delay: number }) {
+  const { count, ref } = useCountUpOnScroll(numeric);
+  return (
+    <div
+      ref={ref}
+      className="stat-block py-7 text-center animate-slide-up"
+      style={{ animationDelay: `${delay}s` }}
+    >
+      <div className="font-display text-3xl font-extrabold text-primary">{count}{suffix}</div>
+      <div className="mt-1 text-xs text-muted-foreground uppercase tracking-wider">{label}</div>
+    </div>
+  );
+}
 
 const milestones = [
   { year: "2010", key: "founded" },
@@ -23,11 +66,11 @@ const About = () => {
     { Icon: MapPin,  title: t.aboutPage.localPresence,   desc: t.aboutPage.localPresenceDesc },
   ];
 
-  const stats = [
-    { value: "14+", label: t.about.stats.years },
-    { value: "100K+", label: t.about.stats.parts },
-    { value: "50K+", label: t.about.stats.customers },
-    { value: "99%", label: t.aboutPage.satisfaction },
+  const statsConfig = [
+    { value: "14+", numeric: 14, suffix: "+", label: t.about.stats.years },
+    { value: "100K+", numeric: 100, suffix: "K+", label: t.about.stats.parts },
+    { value: "50K+", numeric: 50, suffix: "K+", label: t.about.stats.customers },
+    { value: "99%", numeric: 99, suffix: "%", label: t.aboutPage.satisfaction },
   ];
 
   const advantages = [
@@ -64,15 +107,8 @@ const About = () => {
       <section className="border-b border-border/40 bg-card/30">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {stats.map((s, i) => (
-              <div
-                key={i}
-                className="stat-block py-7 text-center animate-slide-up"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <div className="font-display text-3xl font-extrabold text-primary">{s.value}</div>
-                <div className="mt-1 text-xs text-muted-foreground uppercase tracking-wider">{s.label}</div>
-              </div>
+            {statsConfig.map((s, i) => (
+              <StatItem key={i} numeric={s.numeric} suffix={s.suffix} label={s.label} delay={i * 0.08} />
             ))}
           </div>
         </div>
@@ -83,7 +119,7 @@ const About = () => {
         <div className="container-custom">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             {/* Text */}
-            <div>
+            <div className="reveal">
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-px w-8 bg-accent" />
                 <span className="text-xs text-accent uppercase tracking-widest font-semibold">{t.aboutPage.storyTitle}</span>
@@ -107,14 +143,13 @@ const About = () => {
             </div>
 
             {/* Timeline */}
-            <div className="relative pl-6">
+            <div className="relative pl-6 reveal reveal-d2">
               <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-primary via-primary/50 to-transparent" />
               <div className="space-y-8">
                 {milestones.map((m, i) => (
                   <div
                     key={m.year}
-                    className="relative animate-slide-up"
-                    style={{ animationDelay: `${i * 0.1}s` }}
+                    className="relative"
                   >
                     <div className="absolute -left-[25px] flex h-4 w-4 items-center justify-center rounded-full border-2 border-primary bg-background">
                       <div className="h-1.5 w-1.5 rounded-full bg-primary" />
@@ -151,8 +186,7 @@ const About = () => {
             {values.map(({ Icon, title, desc }, i) => (
               <div
                 key={i}
-                className="glass-card p-6 group hover:border-primary/50 transition-all duration-300 animate-scale-in"
-                style={{ animationDelay: `${i * 0.07}s` }}
+                className={`glass-card p-6 group hover:border-primary/50 transition-all duration-300 reveal reveal-d${Math.min(i + 1, 6)}`}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
                   <Icon className="h-6 w-6 text-primary" />

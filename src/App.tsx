@@ -41,6 +41,7 @@ const PageLoader = () => (
 
 const App = () => {
   useEffect(() => {
+    // Smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -53,7 +54,39 @@ const App = () => {
     }
     requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    // Global scroll-reveal: observe .reveal elements, add .is-visible when in view
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -48px 0px" }
+    );
+
+    // Also observe elements added later (route changes / lazy loads)
+    const mutationObserver = new MutationObserver(() => {
+      document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
+        revealObserver.observe(el);
+      });
+    });
+
+    function observeAll() {
+      document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
+        revealObserver.observe(el);
+      });
+    }
+    observeAll();
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      lenis.destroy();
+      revealObserver.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   return (

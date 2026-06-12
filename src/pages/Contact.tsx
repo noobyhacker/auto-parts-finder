@@ -39,7 +39,7 @@ const Contact = () => {
         <div className="grid gap-6 lg:grid-cols-3">
 
           {/* ── LEFT: Info cards ── */}
-          <div className="space-y-4">
+          <div className="space-y-4 reveal">
             {/* Phone */}
             <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300">
               <div className="flex items-start gap-4">
@@ -107,7 +107,7 @@ const Contact = () => {
           </div>
 
           {/* ── RIGHT: Messengers ── */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 reveal reveal-d2">
             <div className="glass-card p-8 md:p-10 h-full flex flex-col">
               <div className="mb-2 flex items-center gap-2">
                 <div className="h-px w-6 bg-primary" />
@@ -128,8 +128,8 @@ const Contact = () => {
                   href="https://t.me/magazinamur"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#0088cc]/60 hover:shadow-lg hover:-translate-y-1"
-                  style={{ background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)))" }}
+                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#0088cc]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
+                  style={{ background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)))", animationDelay: "0.1s" }}
                 >
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0088cc]/10 group-hover:bg-[#0088cc]/20 transition-colors">
                     <svg className="h-7 w-7 text-[#0088cc]" viewBox="0 0 24 24" fill="currentColor">
@@ -148,7 +148,8 @@ const Contact = () => {
                   href="https://wa.me/message/ZVLZMRTXDIIPJ1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#25D366]/60 hover:shadow-lg hover:-translate-y-1"
+                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#25D366]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
+                  style={{ animationDelay: "0.2s" }}
                 >
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#25D366]/10 group-hover:bg-[#25D366]/20 transition-colors">
                     <svg className="h-7 w-7 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor">

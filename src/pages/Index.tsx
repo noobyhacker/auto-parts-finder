@@ -1,6 +1,6 @@
-import { memo } from "react";
+import { memo, useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Shield, Truck, Headphones } from "lucide-react";
+import { ArrowRight, Zap, Shield, Truck, Headphones, CheckCircle2, ChevronDown } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
@@ -8,21 +8,55 @@ import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
-const StatBlock = memo(({ value, label, delay }: { value: string; label: string; delay: string }) => (
-  <div 
-    className="stat-block transition-all duration-500 animate-slide-up"
-    style={{ animationDelay: delay }}
-  >
-    <div className="font-display text-3xl md:text-4xl font-extrabold text-primary tracking-tight">{value}</div>
-    <div className="mt-1 text-sm text-muted-foreground uppercase tracking-widest">{label}</div>
-  </div>
-));
+import carsHero from "@/assets/cars-hero.png";
+
+function useCountUpOnScroll(target: number, duration = 1800) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        let startTime: number | null = null;
+        const step = (ts: number) => {
+          if (!startTime) startTime = ts;
+          const progress = Math.min((ts - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.floor(eased * target));
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        observer.disconnect();
+      }
+    }, { threshold: 0.4 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+  return { count, ref };
+}
+
+const StatBlock = memo(({ value, numericValue, label, delay, suffix }: { value: string; numericValue?: number; label: string; delay: string; suffix?: string }) => {
+  const { count, ref } = useCountUpOnScroll(numericValue ?? 0);
+  const displayValue = numericValue !== undefined ? `${count}${suffix ?? ""}` : value;
+  return (
+    <div
+      ref={ref}
+      className="stat-block transition-all duration-500 animate-slide-up"
+      style={{ animationDelay: delay }}
+    >
+      <div className="font-display text-3xl md:text-4xl font-extrabold text-primary tracking-tight">{displayValue}</div>
+      <div className="mt-1 text-sm text-muted-foreground uppercase tracking-widest">{label}</div>
+    </div>
+  );
+});
 StatBlock.displayName = "StatBlock";
 
 const FeatureRow = memo(({ Icon, title, desc, index }: { Icon: any; title: string; desc: string; index: number }) => (
-  <div 
-    className="group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-300 hover:bg-primary/5 animate-slide-up"
-    style={{ animationDelay: `${index * 0.08}s` }}
+  <div
+    className={`group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-300 hover:bg-primary/5`}
   >
     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 group-hover:bg-primary/20 transition-colors">
       <Icon className="h-5 w-5 text-primary" />
@@ -68,6 +102,12 @@ const Index = () => {
         <div className="absolute top-1/4 left-1/6 w-80 h-80 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
         <div className="absolute bottom-1/4 right-1/6 w-60 h-60 bg-accent/15 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: "2s" }} />
 
+        {/* Floating decorative shapes */}
+        <div className="absolute top-1/3 left-[8%] w-3 h-3 rounded-full bg-primary/40 animate-float" style={{ animationDelay: "0s" }} />
+        <div className="absolute top-2/3 left-[15%] w-2 h-2 rounded-full bg-accent/50 animate-float-slow" style={{ animationDelay: "1.5s" }} />
+        <div className="absolute top-1/4 right-[20%] w-2.5 h-2.5 rounded-sm bg-primary/30 animate-float rotate-45" style={{ animationDelay: "0.8s" }} />
+        <div className="absolute bottom-1/3 right-[10%] w-2 h-2 rounded-full bg-accent/40 animate-float-fast" style={{ animationDelay: "2.2s" }} />
+
         <div className="container-custom relative z-10 py-20 md:py-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left — Copy */}
@@ -82,13 +122,16 @@ const Index = () => {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-                <Link
-                  to="/catalog"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-sm bg-primary text-primary-foreground font-display font-semibold text-sm uppercase tracking-wider btn-glow hover:opacity-90 transition-opacity"
-                >
-                  {t.nav.catalog}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+                <div className="relative">
+                  <div className="pulse-ring" />
+                  <Link
+                    to="/catalog"
+                    className="relative inline-flex items-center gap-2 px-7 py-3.5 rounded-sm bg-primary text-primary-foreground font-display font-semibold text-sm uppercase tracking-wider btn-glow hover:opacity-90 transition-opacity"
+                  >
+                    {t.nav.catalog}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-sm border border-border text-foreground font-display font-semibold text-sm uppercase tracking-wider hover:border-primary/50 hover:bg-primary/5 transition-all"
@@ -96,11 +139,57 @@ const Index = () => {
                   {t.nav.contact}
                 </Link>
               </div>
+
+              {/* Trust badges */}
+              <div className="mt-8 flex flex-wrap gap-3 animate-slide-up" style={{ animationDelay: "0.45s" }}>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>14+ лет на рынке</span>
+                </div>
+                <div className="w-px h-4 bg-border self-center" />
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>Гарантия качества</span>
+                </div>
+                <div className="w-px h-4 bg-border self-center" />
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>Доставка по России</span>
+                </div>
+              </div>
             </div>
 
-            {/* Right — Search */}
-            <div className="animate-slide-up" style={{ animationDelay: "0.35s" }}>
-              <div className="glass-card p-6 md:p-8 border-primary/20">
+            {/* Right — Cars image + Search card */}
+            <div className="relative animate-slide-up" style={{ animationDelay: "0.35s" }}>
+              {/* Car image — behind card */}
+              <div className="absolute inset-x-0 bottom-0 -bottom-6 pointer-events-none select-none" style={{ zIndex: 0 }}>
+                <img
+                  src={carsHero}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full object-contain object-bottom opacity-90 dark:opacity-70"
+                  style={{
+                    maskImage: "linear-gradient(to bottom, transparent 0%, black 22%), linear-gradient(to right, transparent 0%, black 18%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 22%), linear-gradient(to right, transparent 0%, black 18%)",
+                    maskComposite: "intersect",
+                    WebkitMaskComposite: "destination-in",
+                  }}
+                />
+              </div>
+
+              {/* Floating badge — top-right */}
+              <div className="trust-badge -top-4 -right-4 animate-float" style={{ animationDelay: "0.5s", zIndex: 2 }}>
+                <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-muted-foreground">100K+ запчастей</span>
+              </div>
+              {/* Floating badge — bottom-left */}
+              <div className="trust-badge -bottom-4 -left-4 animate-float-slow" style={{ animationDelay: "1.8s", zIndex: 2 }}>
+                <Shield className="h-3.5 w-3.5 text-primary" />
+                <span className="text-muted-foreground">Гарантия качества</span>
+              </div>
+
+              {/* Search card — above image */}
+              <div className="relative glass-card p-6 md:p-8 border-primary/20" style={{ zIndex: 1 }}>
                 <p className="mb-2 font-display text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                   {t.vehicle.searchByOEM}
                 </p>
@@ -113,15 +202,21 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground/50 scroll-indicator animate-fade-in" style={{ animationDelay: "1.5s" }}>
+          <span className="text-[10px] uppercase tracking-widest">Листать</span>
+          <ChevronDown className="h-4 w-4" />
+        </div>
       </section>
 
       {/* ─── STATS BAR ─── */}
       <section className="border-y border-border/50 relative">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            <StatBlock value="14+" label={t.about.stats.years} delay="0s" />
-            <StatBlock value="100K+" label={t.about.stats.parts} delay="0.1s" />
-            <StatBlock value="50K+" label={t.about.stats.customers} delay="0.2s" />
+            <StatBlock value="14+" numericValue={14} suffix="+" label={t.about.stats.years} delay="0s" />
+            <StatBlock value="100K+" numericValue={100} suffix="K+" label={t.about.stats.parts} delay="0.1s" />
+            <StatBlock value="50K+" numericValue={50} suffix="K+" label={t.about.stats.customers} delay="0.2s" />
             <StatBlock value="24h" label={t.about.stats.dispatch} delay="0.3s" />
           </div>
         </div>
@@ -130,11 +225,11 @@ const Index = () => {
       {/* ─── FEATURES ─── */}
       <section className="py-20 md:py-28 relative overflow-hidden">
         <div className="absolute inset-0 floating-particles" />
-        
+
         <div className="container-custom relative">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             {/* Left heading */}
-            <div className="lg:sticky lg:top-28">
+            <div className="lg:sticky lg:top-28 reveal">
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-px w-8 bg-primary" />
                 <span className="text-xs text-primary uppercase tracking-widest font-medium">{t.about.badge}</span>
@@ -156,7 +251,7 @@ const Index = () => {
             </div>
 
             {/* Right feature list */}
-            <div className="glass-card divide-y divide-border/50">
+            <div className="glass-card divide-y divide-border/50 reveal reveal-d2">
               <FeatureRow Icon={Truck} title={t.features.shipping} desc={t.features.shippingDesc} index={0} />
               <FeatureRow Icon={Shield} title={t.features.quality} desc={t.features.qualityDesc} index={1} />
               <FeatureRow Icon={Headphones} title={t.features.support} desc={t.features.supportDesc} index={2} />
@@ -170,7 +265,7 @@ const Index = () => {
       <section className="py-20 md:py-28 border-t border-border/50 relative overflow-hidden">
         <div className="container-custom relative">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            <div className="glass-card p-6 md:p-8">
+            <div className="glass-card p-6 md:p-8 reveal">
               <img
                 src={parentCompanyLogo}
                 alt="Parent company logo"
@@ -208,7 +303,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="glass-card p-3 md:p-4">
+            <div className="glass-card p-3 md:p-4 reveal reveal-d2">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!3m2!1sen!2skr!4v1779360548237!5m2!1sen!2skr!6m8!1m7!1sucvYKoQfns_arrgblrX7tg!2m2!1d50.30469138127859!2d127.5330426583126!3f295.4845197453312!4f-7.937552665948502!5f0.7820865974627469"
                 className="w-full h-[320px] md:h-full min-h-[320px] rounded-sm"
@@ -235,10 +330,9 @@ const Index = () => {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {brands.map((brand, i) => (
-              <div 
+              <div
                 key={brand.name}
-                className="group glass-card p-6 transition-all duration-300 hover:border-primary/40 animate-slide-up"
-                style={{ animationDelay: `${i * 0.1}s` }}
+                className={`group glass-card p-6 transition-all duration-300 hover:border-primary/40 reveal reveal-d${Math.min(i + 1, 6)}`}
               >
                 <div className="flex items-center gap-2 mb-3">
                   <KoreanFlagMini className="h-3 w-4.5 opacity-40 group-hover:opacity-80 transition-opacity" />

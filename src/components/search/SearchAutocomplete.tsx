@@ -136,7 +136,7 @@ export function SearchAutocomplete({
       </div>
 
       {isOpen && (query.trim().length >= 1) && (
-        <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-lg border border-border bg-background shadow-lg overflow-hidden">
+        <div className="absolute left-0 right-0 top-full z-[9999] mt-1 rounded-lg border border-border bg-background shadow-lg overflow-hidden">
           {results.length > 0 ? (
             <ul className="max-h-72 overflow-y-auto py-1">
               {results.map((part, i) => (
