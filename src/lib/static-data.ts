@@ -125,11 +125,15 @@ export async function getStaticParts(
   }
   if (filters?.searchTerm) {
     const term = filters.searchTerm.toLowerCase();
-    filtered = filtered.filter(
-      (p) =>
-        p.name.toLowerCase().includes(term) ||
-        p.articleNumber?.toLowerCase().includes(term) ||
-        p.oemNumber?.toLowerCase().includes(term)
+    const normTerm = term.replace(/[\s\-_.]/g, "");
+    filtered = filtered.filter((p) =>
+      p.name.toLowerCase().includes(term) ||
+      p.articleNumber?.toLowerCase().includes(term) ||
+      p.oemNumber?.toLowerCase().includes(term) ||
+      (normTerm && (
+        (p.articleNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm) ||
+        (p.oemNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm)
+      ))
     );
   }
   if (filters?.brandId) {
@@ -171,11 +175,15 @@ export async function searchStaticParts(query: string): Promise<{ parts: Part[];
   if (!data) return null;
 
   const term = query.toLowerCase();
-  const matched = data.parts.filter(
-    (p) =>
-      p.name.toLowerCase().includes(term) ||
-      p.articleNumber?.toLowerCase().includes(term) ||
-      p.oemNumber?.toLowerCase().includes(term)
+  const normTerm = term.replace(/[\s\-_.]/g, "");
+  const matched = data.parts.filter((p) =>
+    p.name.toLowerCase().includes(term) ||
+    p.articleNumber?.toLowerCase().includes(term) ||
+    p.oemNumber?.toLowerCase().includes(term) ||
+    (normTerm && (
+      (p.articleNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm) ||
+      (p.oemNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm)
+    ))
   );
 
   return {

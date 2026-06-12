@@ -69,12 +69,14 @@ export const PartCard = memo(function PartCard({ part }: PartCardProps) {
         >
           {getPartName()}
         </h3>
-        <p
-          className="mt-1 text-[13px] leading-5 text-muted-foreground tabular-nums tracking-[0.01em]"
-          style={{ fontFamily: '"DM Sans", system-ui, sans-serif' }}
-        >
-          {part.articleNumber}
-        </p>
+        {(part.articleNumber || part.oemNumber) && (
+          <p
+            className="mt-1 text-[13px] leading-5 text-muted-foreground tabular-nums tracking-[0.01em]"
+            style={{ fontFamily: '"DM Sans", system-ui, sans-serif' }}
+          >
+            {[part.articleNumber, part.oemNumber].filter(Boolean).join(" · ")}
+          </p>
+        )}
         <p className="mt-2 text-sm font-medium text-primary">{t.common.contactForPrice}</p>
       </div>
     </Link>
