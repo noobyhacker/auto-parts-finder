@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, Package2, Search } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { PartGrid } from "@/components/parts/PartGrid";
 import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
@@ -21,13 +21,11 @@ const Catalog = () => {
   const [filters, setFilters] = useState<PartFilters>({});
   const { t } = useLanguage();
 
-  // Sync filters from URL on mount / URL change
   useEffect(() => {
     const searchTerm = searchParams.get("search") ?? undefined;
     setFilters(searchTerm ? { searchTerm } : {});
   }, [searchParams]);
 
-  // Fetch parts whenever filters change
   useEffect(() => {
     const fetchParts = async () => {
       setIsLoading(true);
@@ -58,11 +56,8 @@ const Catalog = () => {
 
   const handleSearch = (value: string) => {
     const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set("search", value);
-    } else {
-      params.delete("search");
-    }
+    if (value) params.set("search", value);
+    else params.delete("search");
     setSearchParams(params);
     setFilters(value ? { searchTerm: value } : {});
   };
@@ -72,50 +67,102 @@ const Catalog = () => {
 
   return (
     <Layout>
+      {/* ── HERO ── */}
+      <section className="relative overflow-hidden border-b border-border/40">
+        <div className="absolute inset-0 homepage-gradient" />
+        <div className="absolute inset-0 animated-grid opacity-20" />
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 korean-texture select-none pointer-events-none" aria-hidden>
+          부품
+        </div>
+
+        <div className="container-custom relative py-14 md:py-20">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-px w-8 bg-primary" />
+              <span className="text-xs text-primary uppercase tracking-widest font-semibold">
+                {t.catalogPage.title}
+              </span>
+            </div>
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold leading-tight animate-slide-up">
+              {t.catalogPage.subtitle}
+            </h1>
+            <p className="mt-3 text-muted-foreground animate-slide-up" style={{ animationDelay: "0.1s" }}>
+              {t.vehicle.enterOEM}
+            </p>
+
+            {/* Search */}
+            <div className="mt-6 animate-slide-up" style={{ animationDelay: "0.15s" }}>
+              <SearchAutocomplete
+                initialValue={currentSearch}
+                onSearch={handleSearch}
+                navigateToCatalogOnEnter={false}
+                inputClassName="h-12 text-base bg-background/80 backdrop-blur"
+                className="max-w-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── RESULTS BAR ── */}
+      <div className="border-b border-border/40 bg-card/40 backdrop-blur-sm">
+        <div className="container-custom py-3 flex items-center gap-3">
+          <Package2 className="h-4 w-4 text-primary shrink-0" />
+          <span className="text-sm text-muted-foreground">
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                {t.common.loading}…
+              </span>
+            ) : (
+              <>
+                <span className="font-semibold text-foreground">{total}</span>{" "}
+                {total === 1 ? t.common.part : t.common.parts} {t.common.found}
+                {currentSearch && (
+                  <> — <span className="text-primary italic">«{currentSearch}»</span></>
+                )}
+              </>
+            )}
+          </span>
+          {currentSearch && !isLoading && (
+            <button
+              onClick={() => handleSearch("")}
+              className="ml-auto text-xs text-muted-foreground hover:text-primary transition-colors underline underline-offset-2"
+            >
+              {t.common.clearAllFilters}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ── GRID ── */}
       <div className="container-custom py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="font-display text-3xl font-bold">{t.catalogPage.title}</h1>
-          <p className="mt-1 text-muted-foreground">{t.catalogPage.subtitle}</p>
-        </div>
-
-        {/* Search */}
-        <div className="mb-8 max-w-xl">
-          <SearchAutocomplete
-            initialValue={currentSearch}
-            onSearch={handleSearch}
-            navigateToCatalogOnEnter={false}
-            inputClassName="h-11 text-base"
-          />
-        </div>
-
-        {/* Results count */}
-        <p className="mb-4 text-sm text-muted-foreground">
-          {total} {total === 1 ? t.common.part : t.common.parts} {t.common.found}
-        </p>
-
-        {/* Grid */}
         <PartGrid parts={parts} isLoading={isLoading} />
 
-        {/* Load More */}
         {hasMore && !isLoading && (
-          <div className="mt-8 flex justify-center">
+          <div className="mt-10 flex flex-col items-center gap-2">
             <Button
               variant="outline"
               size="lg"
               onClick={loadMore}
               disabled={isLoadingMore}
-              className="min-w-[200px]"
+              className="min-w-[220px] gap-2"
             >
               {isLoadingMore ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   {t.common.loading}
                 </>
               ) : (
-                `${t.vehicle.loadMore} (${parts.length}/${total})`
+                <>
+                  <Search className="h-4 w-4" />
+                  {t.vehicle.loadMore} ({parts.length}/{total})
+                </>
               )}
             </Button>
+            <p className="text-xs text-muted-foreground">
+              {t.common.found}: {parts.length} / {total}
+            </p>
           </div>
         )}
       </div>
