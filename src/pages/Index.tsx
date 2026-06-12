@@ -102,16 +102,16 @@ const Index = () => {
         <div className="absolute top-1/4 left-1/6 w-80 h-80 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
         <div className="absolute bottom-1/4 right-1/6 w-60 h-60 bg-accent/15 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: "2s" }} />
 
-        {/* Cars image — full-width right half of hero, behind all content */}
-        <div className="absolute bottom-0 right-0 w-[60%] md:w-[55%] pointer-events-none select-none" style={{ zIndex: 1 }}>
+        {/* Cars image — hero background, full width on mobile, right-half on desktop */}
+        <div className="absolute bottom-0 left-0 right-0 md:left-auto md:right-0 md:w-[55%] pointer-events-none select-none" style={{ zIndex: 1 }}>
           <img
             src={carsHero}
             alt=""
             aria-hidden="true"
-            className="w-full object-contain object-bottom-right opacity-95 dark:opacity-75"
+            className="w-full object-contain object-bottom opacity-30 md:opacity-95 dark:opacity-20 md:dark:opacity-75"
             style={{
-              maskImage: "linear-gradient(to right, transparent 0%, black 28%), linear-gradient(to top, black 55%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%), linear-gradient(to top, black 55%, transparent 100%)",
+              maskImage: "linear-gradient(to right, transparent 0%, black 20%), linear-gradient(to top, black 50%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%), linear-gradient(to top, black 50%, transparent 100%)",
               maskComposite: "intersect",
               WebkitMaskComposite: "destination-in",
             }}
