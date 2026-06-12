@@ -41,9 +41,35 @@ export function normalizeQuery(q: string): string {
   return q.replace(/[\s\-_.]/g, "").toLowerCase();
 }
 
+// Split a query into individual tokens (handles mixed-language, multi-word)
+function tokenize(q: string): string[] {
+  return q.trim().split(/\s+/).filter(Boolean).slice(0, 5);
+}
+
 // Build the GROQ search condition for name/OEM/article with normalized fallback
 function buildSearchCondition(rawParam: string, normalizedParam: string): string {
   return `(name match $${rawParam} || oemNumber match $${rawParam} || articleNumber match $${rawParam} || searchIndex match $${normalizedParam})`;
+}
+
+// Build a multi-token GROQ condition: each token must appear in at least one field
+// Returns the condition string and params object to merge into the query params
+function buildMultiTokenCondition(query: string): { condition: string; params: Record<string, string> } {
+  const tokens = tokenize(query);
+  if (tokens.length <= 1) {
+    return {
+      condition: buildSearchCondition("search", "searchN"),
+      params: { search: `*${query}*`, searchN: `*${normalizeQuery(query)}*` },
+    };
+  }
+  const perToken = tokens.map((_, i) =>
+    `(name match $t${i} || oemNumber match $t${i} || articleNumber match $t${i} || searchIndex match $tn${i})`
+  );
+  const params: Record<string, string> = {};
+  tokens.forEach((token, i) => {
+    params[`t${i}`] = `*${token}*`;
+    params[`tn${i}`] = `*${normalizeQuery(token)}*`;
+  });
+  return { condition: perToken.join(" && "), params };
 }
 
 // Helper to transform Sanity image to URL
@@ -272,9 +298,9 @@ export async function getParts(
       params.engine = filters.engine;
     }
     if (filters?.searchTerm) {
-      conditions.push(buildSearchCondition("searchTerm", "searchTermN"));
-      params.searchTerm = `*${filters.searchTerm}*`;
-      params.searchTermN = `*${normalizeQuery(filters.searchTerm)}*`;
+      const { condition: tokenCondition, params: tokenParams } = buildMultiTokenCondition(filters.searchTerm);
+      conditions.push(tokenCondition);
+      Object.assign(params, tokenParams);
     }
 
     const filterQuery = conditions.join(" && ");
@@ -375,9 +401,8 @@ export async function searchParts(query: string): Promise<SearchResult> {
     const staticData = await searchStaticParts(query);
     if (staticData) return staticData;
 
-    const q = `*${query}*`;
-    const qn = `*${normalizeQuery(query)}*`;
-    const condition = `_type == "part" && ${buildSearchCondition("search", "searchN")}`;
+    const { condition: tokenCondition, params: tokenParams } = buildMultiTokenCondition(query);
+    const condition = `_type == "part" && ${tokenCondition}`;
     const searchQuery = `{
       "parts": *[${condition}] | order(name asc) [0...12] {
         "id": _id,
@@ -396,7 +421,7 @@ export async function searchParts(query: string): Promise<SearchResult> {
       },
       "total": count(*[${condition}])
     }`;
-    const result = await client.fetch(searchQuery, { search: q, searchN: qn });
+    const result = await client.fetch(searchQuery, tokenParams);
     return {
       parts: result.parts.map((p: any) => ({
         ...p,

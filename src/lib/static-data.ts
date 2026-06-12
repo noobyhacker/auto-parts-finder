@@ -124,17 +124,7 @@ export async function getStaticParts(
     filtered = filtered.filter((p) => p.price <= filters.maxPrice!);
   }
   if (filters?.searchTerm) {
-    const term = filters.searchTerm.toLowerCase();
-    const normTerm = term.replace(/[\s\-_.]/g, "");
-    filtered = filtered.filter((p) =>
-      p.name.toLowerCase().includes(term) ||
-      p.articleNumber?.toLowerCase().includes(term) ||
-      p.oemNumber?.toLowerCase().includes(term) ||
-      (normTerm && (
-        (p.articleNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm) ||
-        (p.oemNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm)
-      ))
-    );
+    filtered = filtered.filter((p) => matchesAllTokens(p, filters.searchTerm!));
   }
   if (filters?.brandId) {
     filtered = filtered.filter((p) =>
@@ -170,26 +160,27 @@ export async function getStaticParts(
   return { parts, total };
 }
 
+function matchesAllTokens(p: Part, query: string): boolean {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const norm = (s: string) => s.replace(/[\s\-_.]/g, "").toLowerCase();
+  const fields = [p.name, p.articleNumber ?? "", p.oemNumber ?? ""].map((f) => f.toLowerCase());
+  const normFields = fields.map(norm);
+
+  return tokens.every((token) => {
+    const normToken = norm(token);
+    return (
+      fields.some((f) => f.includes(token)) ||
+      normFields.some((f) => f.includes(normToken))
+    );
+  });
+}
+
 export async function searchStaticParts(query: string): Promise<{ parts: Part[]; total: number } | null> {
   const data = await loadStaticData();
   if (!data) return null;
 
-  const term = query.toLowerCase();
-  const normTerm = term.replace(/[\s\-_.]/g, "");
-  const matched = data.parts.filter((p) =>
-    p.name.toLowerCase().includes(term) ||
-    p.articleNumber?.toLowerCase().includes(term) ||
-    p.oemNumber?.toLowerCase().includes(term) ||
-    (normTerm && (
-      (p.articleNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm) ||
-      (p.oemNumber || "").replace(/[\s\-_.]/g, "").toLowerCase().includes(normTerm)
-    ))
-  );
-
-  return {
-    parts: matched.slice(0, 10),
-    total: matched.length,
-  };
+  const matched = data.parts.filter((p) => matchesAllTokens(p, query));
+  return { parts: matched.slice(0, 12), total: matched.length };
 }
 
 export function isStaticDataAvailable(): boolean {
