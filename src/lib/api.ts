@@ -67,13 +67,13 @@ export async function findVehicleByDetails(
   modelName: string,
   year: number
 ): Promise<Vehicle | null> {
-  const query = `*[_type == "vehicle" && 
-    brand->name match $brandName && 
-    model->name match $modelName && 
-    year == $year][0] {
+  const query = `*[_type == "vehicle" &&
+    brand->name match $brandName &&
+    model->name match $modelName &&
+    yearFrom == $year][0] {
       "id": _id,
-      year,
-      engine,
+      "year": yearFrom,
+      "engine": engines,
       "brand": brand->{
         "id": _id,
         name,
@@ -156,10 +156,10 @@ export async function getVehicle(
   engine?: string
 ): Promise<Vehicle | null> {
   const query = engine
-    ? `*[_type == "vehicle" && model._ref == $modelId && year == $year && engine == $engine][0] {
+    ? `*[_type == "vehicle" && model._ref == $modelId && yearFrom == $year && engines == $engine][0] {
         "id": _id,
-        year,
-        engine,
+        "year": yearFrom,
+        "engine": engines,
         "brand": brand->{
           "id": _id,
           name,
@@ -171,10 +171,10 @@ export async function getVehicle(
           "slug": slug.current
         }
       }`
-    : `*[_type == "vehicle" && model._ref == $modelId && year == $year][0] {
+    : `*[_type == "vehicle" && model._ref == $modelId && yearFrom == $year][0] {
         "id": _id,
-        year,
-        engine,
+        "year": yearFrom,
+        "engine": engines,
         "brand": brand->{
           "id": _id,
           name,
@@ -294,8 +294,8 @@ export async function getParts(
         },
         "compatibleVehicles": compatibleVehicles[]->{
           "id": _id,
-          year,
-          engine,
+          "year": yearFrom,
+          "engine": engines,
           "brand": brand->{name},
           "model": model->{name}
         }
@@ -341,8 +341,8 @@ export async function getPart(slugOrId: string): Promise<Part | null> {
       },
       "compatibleVehicles": compatibleVehicles[]->{
         "id": _id,
-        year,
-        engine,
+        "year": yearFrom,
+        "engine": engines,
         "brand": brand->{ name },
         "model": model->{ name }
       }
