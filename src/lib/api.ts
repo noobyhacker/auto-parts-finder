@@ -36,6 +36,16 @@ const client = createClient({
   useCdn: true,
 });
 
+// Normalize a search query: lowercase, remove hyphens/spaces/dots
+export function normalizeQuery(q: string): string {
+  return q.replace(/[\s\-_.]/g, "").toLowerCase();
+}
+
+// Build the GROQ search condition for name/OEM/article with normalized fallback
+function buildSearchCondition(rawParam: string, normalizedParam: string): string {
+  return `(name match $${rawParam} || oemNumber match $${rawParam} || articleNumber match $${rawParam} || searchIndex match $${normalizedParam})`;
+}
+
 // Helper to transform Sanity image to URL
 function imageUrl(image: any): string {
   if (!image?.asset?._ref) return "/placeholder.svg";
@@ -262,8 +272,9 @@ export async function getParts(
       params.engine = filters.engine;
     }
     if (filters?.searchTerm) {
-      conditions.push("(name match $searchTerm || oemNumber match $searchTerm || articleNumber match $searchTerm)");
+      conditions.push(buildSearchCondition("searchTerm", "searchTermN"));
       params.searchTerm = `*${filters.searchTerm}*`;
+      params.searchTermN = `*${normalizeQuery(filters.searchTerm)}*`;
     }
 
     const filterQuery = conditions.join(" && ");
@@ -271,7 +282,6 @@ export async function getParts(
     let orderBy = "name asc";
     if (sort === "price:asc") orderBy = "price asc";
     else if (sort === "price:desc") orderBy = "price desc";
-    else if (sort === "name:asc") orderBy = "name asc";
     else if (sort === "name:desc") orderBy = "name desc";
     else if (sort === "createdAt:desc") orderBy = "_createdAt desc";
 
@@ -365,8 +375,11 @@ export async function searchParts(query: string): Promise<SearchResult> {
     const staticData = await searchStaticParts(query);
     if (staticData) return staticData;
 
+    const q = `*${query}*`;
+    const qn = `*${normalizeQuery(query)}*`;
+    const condition = `_type == "part" && ${buildSearchCondition("search", "searchN")}`;
     const searchQuery = `{
-      "parts": *[_type == "part" && (name match $search || articleNumber match $search)] [0...10] {
+      "parts": *[${condition}] | order(name asc) [0...12] {
         "id": _id,
         name,
         "slug": slug.current,
@@ -381,9 +394,9 @@ export async function searchParts(query: string): Promise<SearchResult> {
           "slug": slug.current
         }
       },
-      "total": count(*[_type == "part" && (name match $search || articleNumber match $search)])
+      "total": count(*[${condition}])
     }`;
-    const result = await client.fetch(searchQuery, { search: `*${query}*` });
+    const result = await client.fetch(searchQuery, { search: q, searchN: qn });
     return {
       parts: result.parts.map((p: any) => ({
         ...p,
