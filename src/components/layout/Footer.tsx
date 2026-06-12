@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border/40 bg-card/30">
       <div className="container-custom py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
@@ -32,17 +32,6 @@ export function Footer() {
               <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.nav.about}</Link>
               <Link to="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.nav.faq}</Link>
               <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.nav.contact}</Link>
-            </nav>
-          </div>
-
-          {/* Categories */}
-          <div className="space-y-4">
-            <h4 className="font-display text-xs font-semibold uppercase tracking-widest text-foreground">{t.footer.categories}</h4>
-            <nav className="flex flex-col gap-2.5">
-              <Link to="/catalog?category=engine-parts" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.categories.engine}</Link>
-              <Link to="/catalog?category=brake-system" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.categories.brake}</Link>
-              <Link to="/catalog?category=suspension" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.categories.suspension}</Link>
-              <Link to="/catalog?category=filters" className="text-sm text-muted-foreground hover:text-primary transition-colors">{t.categories.filters}</Link>
             </nav>
           </div>
 

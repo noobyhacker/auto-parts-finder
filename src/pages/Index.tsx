@@ -1,13 +1,9 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Shield, Truck, Headphones, ChevronRight } from "lucide-react";
+import { ArrowRight, Zap, Shield, Truck, Headphones } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
-import {
-  EngineIcon, BrakeIcon, SuspensionIcon, FilterIcon,
-  ElectricalIcon, BodyIcon, CoolingIcon, TransmissionIcon,
-} from "@/components/icons/CategoryIcons";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
@@ -48,17 +44,6 @@ const brands = [
 
 const Index = () => {
   const { t } = useLanguage();
-
-  const categories = [
-    { name: t.categories.engine, Icon: EngineIcon, slug: "engine-parts" },
-    { name: t.categories.brake, Icon: BrakeIcon, slug: "brake-system" },
-    { name: t.categories.suspension, Icon: SuspensionIcon, slug: "suspension" },
-    { name: t.categories.filters, Icon: FilterIcon, slug: "filters" },
-    { name: t.categories.electrical, Icon: ElectricalIcon, slug: "electrical" },
-    { name: t.categories.body, Icon: BodyIcon, slug: "body-parts" },
-    { name: t.categories.cooling, Icon: CoolingIcon, slug: "cooling-system" },
-    { name: t.categories.transmission, Icon: TransmissionIcon, slug: "transmission" },
-  ];
 
   return (
     <Layout>
@@ -234,34 +219,6 @@ const Index = () => {
                 title={t.parentCompany.mapTitle}
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── CATEGORIES ─── */}
-      <section className="py-20 md:py-28 border-t border-border/50 relative overflow-hidden">
-        <div className="container-custom relative">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-px w-8 bg-accent" />
-            <span className="text-xs text-accent uppercase tracking-widest font-medium">{t.categories.subtitle}</span>
-          </div>
-          <h2 className="font-display text-3xl md:text-4xl font-extrabold mb-12">{t.categories.title}</h2>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {categories.map((cat, i) => (
-              <Link
-                key={cat.slug}
-                to={`/catalog?category=${cat.slug}`}
-                className="category-item animate-scale-in"
-                style={{ animationDelay: `${i * 0.05}s` }}
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-primary/10">
-                  <cat.Icon className="h-5 w-5 text-primary" />
-                </div>
-                <span className="font-display font-semibold text-sm flex-1">{cat.name}</span>
-                <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-              </Link>
-            ))}
           </div>
         </div>
       </section>
