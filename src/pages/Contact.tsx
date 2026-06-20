@@ -176,16 +176,19 @@ const Contact = () => {
                   href={getMaxLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#168acd]/60 hover:shadow-lg hover:-translate-y-1"
+                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center"
+                  style={{
+                    transition: "box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.45s ease",
+                  }}
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#168acd]/10 group-hover:bg-[#168acd]/20 transition-colors">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#168acd]/10 group-hover:bg-[#168acd]/20 transition-colors duration-[450ms]">
                     <MessageCircle className="h-7 w-7 text-[#168acd]" />
                   </div>
                   <div>
                     <p className="font-display font-semibold text-sm">MAX</p>
                     <p className="text-xs text-muted-foreground mt-0.5">ВКонтакте MAX</p>
                   </div>
-                  <ArrowRight className="absolute right-3 top-3 h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight className="absolute right-3 top-3 h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-[450ms]" />
                 </a>
               </div>
 
