@@ -57,7 +57,7 @@ StatBlock.displayName = "StatBlock";
 
 const FeatureRow = memo(({ Icon, title, desc, index }: { Icon: any; title: string; desc: string; index: number }) => (
   <div
-    className={`group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-300 hover:bg-primary/5`}
+    className={`group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-[450ms] hover:bg-primary/5`}
   >
     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 group-hover:bg-primary/20 transition-colors">
       <Icon className="h-5 w-5 text-primary" />
