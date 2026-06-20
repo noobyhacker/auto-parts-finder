@@ -54,7 +54,7 @@ export function Footer() {
               </a>
               <div className="flex items-start gap-2.5 text-sm text-muted-foreground">
                 <MapPin className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
-                <span>Амурская обл., г. Благовещенск,<br />ул. Кольцевая 66, оф. 210</span>
+                <span>서울특별시 동대문구 황물로 17가길 2,<br />1층, 4호</span>
               </div>
             </div>
           </div>
