@@ -9,7 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
 import carsHero from "@/assets/cars-hero.png";
-import businessRegistrationAsset from "@/assets/business-registration.jpg.asset.json";
+const businessRegistrationUrl = "/business-registration.png";
 
 function useCountUpOnScroll(target: number, duration = 1800) {
   const [count, setCount] = useState(0);
