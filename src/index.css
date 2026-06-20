@@ -488,6 +488,19 @@
 }
 
 @layer utilities {
+  /* ── GLOBAL SMOOTH EASING ──
+     Override Tailwind's default transitions so every hover across the app
+     feels like the smooth 3D pop instead of a snappy 150ms ease. */
+  .transition,
+  .transition-all,
+  .transition-colors,
+  .transition-opacity,
+  .transition-transform,
+  .transition-shadow {
+    transition-duration: 450ms;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
   /* ── SCROLL REVEAL ── */
   .reveal {
     opacity: 0;
