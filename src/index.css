@@ -210,9 +210,13 @@
 
   /* ── PART CARD ── */
   .part-card {
-    @apply relative flex flex-col border border-border/60 rounded-xl overflow-hidden transition-all duration-300;
+    @apply relative flex flex-col border border-border/60 rounded-xl overflow-hidden;
     background: hsl(var(--card));
     box-shadow: var(--shadow-sm);
+    transition:
+      box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s ease;
   }
 
   .part-card::before {
@@ -228,8 +232,11 @@
 
   .part-card:hover {
     @apply border-primary/40;
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
-    transform: translateY(-3px);
+    box-shadow:
+      6px 6px 0 0 hsl(var(--foreground) / 0.85),
+      0 0 24px -6px hsl(var(--primary) / 0.20),
+      var(--shadow-lg);
+    transform: translate(-3px, -3px);
   }
 
   .part-card:hover::before {
@@ -246,7 +253,7 @@
     height: 3px;
     background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .part-card:hover::after {
@@ -339,7 +346,10 @@
   .stat-block {
     @apply relative p-6 md:p-8 border-l-2 border-primary/25;
     background: linear-gradient(135deg, hsl(var(--primary) / 0.04) 0%, transparent 70%);
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition:
+      background 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .stat-block:first-child {
@@ -349,21 +359,30 @@
   .stat-block:hover {
     border-color: hsl(var(--primary) / 0.6);
     background: linear-gradient(135deg, hsl(var(--primary) / 0.09) 0%, transparent 70%);
+    transform: translateX(-2px);
   }
 
   /* ── CATEGORY ITEM ── */
   .category-item {
-    @apply relative flex items-center gap-4 p-5 rounded-xl cursor-pointer transition-all duration-300;
+    @apply relative flex items-center gap-4 p-5 rounded-xl cursor-pointer;
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border) / 0.7);
     box-shadow: var(--shadow-sm);
+    transition:
+      box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s ease,
+      background 0.45s ease;
   }
 
   .category-item:hover {
     border-color: hsl(var(--primary) / 0.50);
     background: hsl(var(--card));
-    box-shadow: var(--shadow-md), var(--shadow-glow);
-    transform: translateY(-2px);
+    box-shadow:
+      6px 6px 0 0 hsl(var(--foreground) / 0.80),
+      0 0 20px -6px hsl(var(--primary) / 0.20),
+      var(--shadow-md);
+    transform: translate(-3px, -3px);
   }
 
   .category-item::before {
@@ -377,7 +396,7 @@
     border-radius: 99px;
     transform: scaleY(0);
     transform-origin: bottom;
-    transition: transform 0.25s ease;
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .category-item:hover::before {
