@@ -46,7 +46,7 @@ const FAQ = () => {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="glass-card overflow-hidden border border-border/60 rounded-xl data-[state=open]:border-primary/50 transition-colors"
+                  className="glass-card overflow-hidden data-[state=open]:border-primary/50"
                 >
                   <AccordionTrigger className="px-6 py-5 text-left font-semibold hover:text-primary transition-colors hover:no-underline group">
                     <div className="flex items-start gap-4 text-left">

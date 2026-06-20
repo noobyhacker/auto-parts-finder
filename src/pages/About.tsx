@@ -154,7 +154,7 @@ const About = () => {
                     <div className="absolute -left-[25px] flex h-4 w-4 items-center justify-center rounded-full border-2 border-primary bg-background">
                       <div className="h-1.5 w-1.5 rounded-full bg-primary" />
                     </div>
-                    <div className="glass-card p-5 hover:border-primary/50 transition-colors">
+                    <div className="glass-card p-5">
                       <div className="text-xs font-bold text-primary uppercase tracking-widest mb-1">{m.year}</div>
                       <p className="text-sm text-muted-foreground">
                         {t.aboutPage.storyP1}
