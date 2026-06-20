@@ -164,10 +164,32 @@
   .border-offset {
     border: 1px solid hsl(var(--foreground));
     box-shadow: 4px 4px 0 0 hsl(var(--foreground));
+    transition:
+      box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s ease;
+  }
+  .border-offset:hover {
+    transform: translate(-4px, -4px);
+    border-color: hsl(var(--foreground));
+    box-shadow:
+      10px 10px 0 0 hsl(var(--foreground) / 0.95),
+      0 0 24px -6px hsl(var(--primary) / 0.25);
   }
   .border-offset-primary {
     border: 1px solid hsl(var(--foreground));
     box-shadow: 4px 4px 0 0 hsl(var(--primary));
+    transition:
+      box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s ease;
+  }
+  .border-offset-primary:hover {
+    transform: translate(-4px, -4px);
+    border-color: hsl(var(--foreground));
+    box-shadow:
+      10px 10px 0 0 hsl(var(--primary) / 0.95),
+      0 0 24px -6px hsl(var(--primary) / 0.25);
   }
 
   /* ── BUTTONS ── */
