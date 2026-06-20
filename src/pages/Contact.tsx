@@ -153,7 +153,7 @@ const Contact = () => {
                   href={getWhatsAppLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center animate-scale-in"
+                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center hover:border-[#25D366]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
                   style={{
                     animationDelay: "0.2s",
                     transition: "box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.45s ease",
