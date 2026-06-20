@@ -9,7 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
 import carsHero from "@/assets/cars-hero.png";
-import businessRegistrationAsset from "@/assets/business-registration.jpg.asset.json";
+const businessRegistrationUrl = "/business-registration.png";
 
 function useCountUpOnScroll(target: number, duration = 1800) {
   const [count, setCount] = useState(0);
@@ -337,13 +337,13 @@ const Index = () => {
             </div>
             <div className="lg:col-span-3 reveal reveal-d2">
               <a
-                href={businessRegistrationAsset.url}
+                href={businessRegistrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block glass-card p-3 md:p-4 hover:border-primary/50 transition-colors"
               >
                 <img
-                  src={businessRegistrationAsset.url}
+                  src={businessRegistrationUrl}
                   alt={t.businessReg.alt}
                   className="w-full h-auto rounded-sm"
                   loading="lazy"
