@@ -340,7 +340,7 @@ const Index = () => {
                 href={businessRegistrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block glass-card p-3 md:p-4 hover:border-primary/50 transition-colors"
+                className="block glass-card p-3 md:p-4"
               >
                 <img
                   src={businessRegistrationUrl}
@@ -369,7 +369,7 @@ const Index = () => {
             {brands.map((brand, i) => (
               <div
                 key={brand.name}
-                className={`group glass-card p-6 transition-all duration-300 hover:border-primary/40 reveal reveal-d${Math.min(i + 1, 6)}`}
+                className={`group glass-card p-6 reveal reveal-d${Math.min(i + 1, 6)}`}
               >
                 <div className="flex items-center gap-2 mb-3">
                   <KoreanFlagMini className="h-3 w-4.5 opacity-40 group-hover:opacity-80 transition-opacity" />

@@ -42,7 +42,7 @@ const Contact = () => {
           {/* ── LEFT: Info cards ── */}
           <div className="space-y-4 reveal">
             {/* Phone */}
-            <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300">
+            <div className="glass-card p-6 group">
               <div className="flex items-start gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                   <Phone className="h-5 w-5 text-primary" />
@@ -61,7 +61,7 @@ const Contact = () => {
             </div>
 
             {/* Email */}
-            <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300">
+            <div className="glass-card p-6 group">
               <div className="flex items-start gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                   <Mail className="h-5 w-5 text-primary" />
@@ -77,7 +77,7 @@ const Contact = () => {
             </div>
 
             {/* Address */}
-            <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300">
+            <div className="glass-card p-6 group">
               <div className="flex items-start gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                   <MapPin className="h-5 w-5 text-primary" />
@@ -93,7 +93,7 @@ const Contact = () => {
             </div>
 
             {/* Hours */}
-            <div className="glass-card p-6 group hover:border-primary/50 transition-all duration-300">
+            <div className="glass-card p-6 group">
               <div className="flex items-start gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                   <Clock className="h-5 w-5 text-primary" />

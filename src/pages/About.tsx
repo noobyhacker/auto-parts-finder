@@ -186,7 +186,7 @@ const About = () => {
             {values.map(({ Icon, title, desc }, i) => (
               <div
                 key={i}
-                className={`glass-card p-6 group hover:border-primary/50 transition-all duration-300 reveal reveal-d${Math.min(i + 1, 6)}`}
+                className={`glass-card p-6 group reveal reveal-d${Math.min(i + 1, 6)}`}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
                   <Icon className="h-6 w-6 text-primary" />
