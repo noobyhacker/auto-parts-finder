@@ -85,8 +85,8 @@ const Contact = () => {
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">{t.contactPage.address}</p>
                   <p className="text-sm font-medium leading-relaxed">
-                    Амурская обл., г. Благовещенск,<br />
-                    ул. Кольцевая 66, оф. 210
+                    서울특별시 동대문구 황물로 17가길 2,<br />
+                    1층, 4호
                   </p>
                 </div>
               </div>

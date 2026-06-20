@@ -9,6 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
 import carsHero from "@/assets/cars-hero.png";
+import businessRegistrationAsset from "@/assets/business-registration.jpg.asset.json";
 
 function useCountUpOnScroll(target: number, duration = 1800) {
   const [count, setCount] = useState(0);
@@ -317,6 +318,42 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Business Registration */}
+      <section className="py-20 md:py-28 border-t border-border/50 relative">
+        <div className="container-custom">
+          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-2 reveal">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-px w-8 bg-primary" />
+                <span className="text-xs text-primary uppercase tracking-widest font-medium">{t.businessReg.badge}</span>
+              </div>
+              <h2 className="font-display text-2xl md:text-3xl font-extrabold leading-tight">
+                {t.businessReg.title}
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                {t.businessReg.description}
+              </p>
+            </div>
+            <div className="lg:col-span-3 reveal reveal-d2">
+              <a
+                href={businessRegistrationAsset.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block glass-card p-3 md:p-4 hover:border-primary/50 transition-colors"
+              >
+                <img
+                  src={businessRegistrationAsset.url}
+                  alt={t.businessReg.alt}
+                  className="w-full h-auto rounded-sm"
+                  loading="lazy"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* ─── BRANDS ─── */}
       <section className="py-20 md:py-28 border-t border-border/50 relative">
