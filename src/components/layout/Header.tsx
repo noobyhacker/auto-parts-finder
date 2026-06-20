@@ -72,7 +72,6 @@ export function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <LanguageSwitcher />
             <a
               href="tel:+74162771307"
