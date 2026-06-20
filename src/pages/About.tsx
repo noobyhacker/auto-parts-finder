@@ -154,7 +154,7 @@ const About = () => {
                     <div className="absolute -left-[25px] flex h-4 w-4 items-center justify-center rounded-full border-2 border-primary bg-background">
                       <div className="h-1.5 w-1.5 rounded-full bg-primary" />
                     </div>
-                    <div className="glass-card p-5 hover:border-primary/50 transition-colors">
+                    <div className="glass-card p-5">
                       <div className="text-xs font-bold text-primary uppercase tracking-widest mb-1">{m.year}</div>
                       <p className="text-sm text-muted-foreground">
                         {t.aboutPage.storyP1}
@@ -186,7 +186,7 @@ const About = () => {
             {values.map(({ Icon, title, desc }, i) => (
               <div
                 key={i}
-                className={`glass-card p-6 group hover:border-primary/50 transition-all duration-300 reveal reveal-d${Math.min(i + 1, 6)}`}
+                className={`glass-card p-6 group reveal reveal-d${Math.min(i + 1, 6)}`}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
                   <Icon className="h-6 w-6 text-primary" />

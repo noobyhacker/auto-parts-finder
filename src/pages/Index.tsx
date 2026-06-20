@@ -45,7 +45,7 @@ const StatBlock = memo(({ value, numericValue, label, delay, suffix }: { value: 
   return (
     <div
       ref={ref}
-      className="stat-block transition-all duration-500 animate-slide-up"
+      className="stat-block animate-slide-up"
       style={{ animationDelay: delay }}
     >
       <div className="font-display text-3xl md:text-4xl font-extrabold text-primary tracking-tight">{displayValue}</div>
@@ -57,7 +57,7 @@ StatBlock.displayName = "StatBlock";
 
 const FeatureRow = memo(({ Icon, title, desc, index }: { Icon: any; title: string; desc: string; index: number }) => (
   <div
-    className={`group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-300 hover:bg-primary/5`}
+    className={`group flex items-start gap-5 p-5 border-b border-border/50 last:border-0 transition-all duration-[450ms] hover:bg-primary/5`}
   >
     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 group-hover:bg-primary/20 transition-colors">
       <Icon className="h-5 w-5 text-primary" />
@@ -340,7 +340,7 @@ const Index = () => {
                 href={businessRegistrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block glass-card p-3 md:p-4 hover:border-primary/50 transition-colors"
+                className="block glass-card p-3 md:p-4"
               >
                 <img
                   src={businessRegistrationUrl}
@@ -369,7 +369,7 @@ const Index = () => {
             {brands.map((brand, i) => (
               <div
                 key={brand.name}
-                className={`group glass-card p-6 transition-all duration-300 hover:border-primary/40 reveal reveal-d${Math.min(i + 1, 6)}`}
+                className={`group glass-card p-6 reveal reveal-d${Math.min(i + 1, 6)}`}
               >
                 <div className="flex items-center gap-2 mb-3">
                   <KoreanFlagMini className="h-3 w-4.5 opacity-40 group-hover:opacity-80 transition-opacity" />
