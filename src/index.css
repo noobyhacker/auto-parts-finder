@@ -422,13 +422,20 @@
 
   /* ── FILTER CHIP ── */
   .filter-chip {
-    @apply px-3 py-1.5 text-sm font-medium rounded-full cursor-pointer transition-all;
+    @apply px-3 py-1.5 text-sm font-medium rounded-full cursor-pointer;
     background: hsl(var(--secondary));
     border: 1px solid hsl(var(--border));
+    transition:
+      box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s ease,
+      background 0.45s ease;
   }
 
   .filter-chip:hover {
     border-color: hsl(var(--primary) / 0.5);
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 0 hsl(var(--foreground) / 0.70);
   }
 
   .filter-chip.active {
