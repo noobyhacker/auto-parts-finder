@@ -129,7 +129,7 @@ const Contact = () => {
                   href={getTelegramLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center animate-scale-in"
+                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center hover:border-[#0088cc]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
                   style={{
                     background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)))",
                     animationDelay: "0.1s",
