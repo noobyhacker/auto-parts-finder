@@ -185,7 +185,7 @@ const Contact = () => {
               {/* Map */}
               <div className="mt-8 rounded-xl overflow-hidden border border-border/50">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!3m2!1sen!2skr!4v1779360548237!5m2!1sen!2skr!6m8!1m7!1sucvYKoQfns_arrgblrX7tg!2m2!1d50.30469138127859!2d127.5330426583126!3f295.4845197453312!4f-7.937552665948502!5f0.7820865974627469"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.546492248888!2d127.05721007612016!3d37.565747224173016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357cbb4ae9691f4d%3A0xbd12205af5ca42c!2s2%20Hwangmul-ro%2017ga-gil%2C%20Dongdaemun%20District%2C%20Seoul!5e0!3m2!1sen!2skr!4v1781986849970!5m2!1sen!2skr"
                   className="w-full h-52"
                   style={{ border: 0 }}
                   allowFullScreen
