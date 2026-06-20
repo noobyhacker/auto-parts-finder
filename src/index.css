@@ -122,19 +122,46 @@
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* ── GLASS CARD ── */
+  /* ── GLASS CARD (double-line offset border, industrial) ── */
   .glass-card {
-    @apply border border-border/70 rounded-xl overflow-hidden;
+    @apply border border-foreground/80 rounded-none overflow-hidden;
     background: hsl(var(--surface-elevated));
-    box-shadow: var(--shadow-md);
+    box-shadow:
+      4px 4px 0 0 hsl(var(--foreground) / 0.9),
+      var(--shadow-md);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .glass-card:hover {
+    box-shadow:
+      6px 6px 0 0 hsl(var(--primary)),
+      var(--shadow-lg);
   }
 
-  /* ── TEXT GRADIENT ── */
+  /* ── TEXT GRADIENT (flattened to solid for editorial feel) ── */
   .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(130deg, hsl(var(--primary)) 20%, hsl(var(--accent)) 100%);
+    color: hsl(var(--primary));
+    background: none;
+    -webkit-text-fill-color: hsl(var(--primary));
+  }
+
+  /* ── BOLD UTILITARIAN ICONS ── */
+  /* Make Lucide icons feel less generic: thicker strokes, square caps */
+  .lucide {
+    stroke-width: 2.25px;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+
+  /* ── DOUBLE-LINE OFFSET BORDER UTILITY ── */
+  .border-offset {
+    border: 1px solid hsl(var(--foreground));
+    box-shadow: 4px 4px 0 0 hsl(var(--foreground));
+  }
+  .border-offset-primary {
+    border: 1px solid hsl(var(--foreground));
+    box-shadow: 4px 4px 0 0 hsl(var(--primary));
   }
 
   /* ── BUTTONS ── */
