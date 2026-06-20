@@ -43,6 +43,12 @@ export const translations = {
       addressLine1: "Amur Region, Blagoveshchensk,",
       addressLine2: "66 Koltsevaya St., Office 210",
     },
+    businessReg: {
+      badge: "Verified Business",
+      title: "Officially Registered Korean Entity",
+      description: "AmurKor is a legally registered corporation in the Republic of Korea. Click the certificate to view the full document.",
+      alt: "AmurKor Korean business registration certificate",
+    },
     // About page
     aboutPage: {
       title: "About",
@@ -333,6 +339,12 @@ export const translations = {
       addressLine1: "러시아 아무르주, 블라고베셴스크,",
       addressLine2: "콜체바야 66, 210호",
     },
+    businessReg: {
+      badge: "사업자 등록",
+      title: "대한민국 정식 등록 법인",
+      description: "아무르코르는 대한민국에 정식으로 등록된 법인입니다. 사업자등록증을 클릭하면 전체 문서를 확인할 수 있습니다.",
+      alt: "아무르코르 법인 사업자등록증",
+    },
     // About page
     aboutPage: {
       title: "회사 소개",
@@ -622,6 +634,12 @@ export const translations = {
       mapTitle: "Локация родительской компании",
       addressLine1: "Амурская обл., г. Благовещенск,",
       addressLine2: "ул. Кольцевая 66, оф. 210",
+    },
+    businessReg: {
+      badge: "Проверенный бизнес",
+      title: "Официально зарегистрированная компания в Корее",
+      description: "AmurKor — юридически зарегистрированная корпорация в Республике Корея. Нажмите на свидетельство, чтобы открыть полный документ.",
+      alt: "Свидетельство о регистрации компании AmurKor в Корее",
     },
     // About page
     aboutPage: {
