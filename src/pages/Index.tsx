@@ -45,7 +45,7 @@ const StatBlock = memo(({ value, numericValue, label, delay, suffix }: { value: 
   return (
     <div
       ref={ref}
-      className="stat-block transition-all duration-500 animate-slide-up"
+      className="stat-block animate-slide-up"
       style={{ animationDelay: delay }}
     >
       <div className="font-display text-3xl md:text-4xl font-extrabold text-primary tracking-tight">{displayValue}</div>
