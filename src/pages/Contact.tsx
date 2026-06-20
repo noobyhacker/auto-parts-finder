@@ -129,10 +129,14 @@ const Contact = () => {
                   href={getTelegramLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center transition-all duration-300 hover:border-[#0088cc]/60 hover:shadow-lg hover:-translate-y-1 animate-scale-in"
-                  style={{ background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)))", animationDelay: "0.1s" }}
+                  className="group relative flex flex-col items-center gap-3 rounded-xl border border-border p-6 text-center animate-scale-in"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)))",
+                    animationDelay: "0.1s",
+                    transition: "box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.45s ease",
+                  }}
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0088cc]/10 group-hover:bg-[#0088cc]/20 transition-colors">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0088cc]/10 group-hover:bg-[#0088cc]/20 transition-colors duration-[450ms]">
                     <svg className="h-7 w-7 text-[#0088cc]" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                     </svg>
@@ -141,7 +145,7 @@ const Contact = () => {
                     <p className="font-display font-semibold text-sm">Telegram</p>
                     <p className="text-xs text-muted-foreground mt-0.5">@magazinamur</p>
                   </div>
-                  <ArrowRight className="absolute right-3 top-3 h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight className="absolute right-3 top-3 h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-[450ms]" />
                 </a>
 
                 {/* WhatsApp */}
