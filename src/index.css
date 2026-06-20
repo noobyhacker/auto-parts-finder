@@ -525,6 +525,25 @@
   .reveal-d5 { transition-delay: 0.40s; }
   .reveal-d6 { transition-delay: 0.50s; }
 
+  /* ── GLASS-CARD + REVEAL FIX ──
+     .reveal lives in utilities layer which outranks components.
+     Without this override its transition clobbers .glass-card's
+     box-shadow/border-color easing and its transform blocks the
+     hover pop-out. These selectors sit in the same layer with
+     higher specificity so the 3D lift works on revealed cards. */
+  .glass-card.reveal,
+  .glass-card.reveal.is-visible {
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.45s ease;
+  }
+
+  .glass-card.reveal.is-visible:hover {
+    transform: translate(-4px, -4px);
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
   }
