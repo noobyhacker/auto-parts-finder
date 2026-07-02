@@ -49,13 +49,10 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">{t.contactPage.phone}</p>
-                  <a href="tel:+74162771307" className="block text-sm font-medium hover:text-primary transition-colors">
-                    +7 (4162) 77-13-07
+                  <a href="tel:+821035891980" className="block text-sm font-medium hover:text-primary transition-colors">
+                    010-3589-1980
                   </a>
-                  <a href="tel:+79145505217" className="block text-sm font-medium hover:text-primary transition-colors mt-0.5">
-                    +7 (914) 550-52-17
-                  </a>
-                  <p className="mt-2 text-xs text-muted-foreground">{t.contactPage.phoneHours}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">{t.footer.sharedNumberNote}</p>
                 </div>
               </div>
             </div>
@@ -68,8 +65,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">{t.contactPage.email}</p>
-                  <a href="mailto:rerekin@mail.ru" className="block text-sm font-medium hover:text-primary transition-colors">
-                    rerekin@mail.ru
+                  <a href="mailto:amurkor@mail.ru" className="block text-sm font-medium hover:text-primary transition-colors">
+                    amurkor@mail.ru
                   </a>
                   <p className="mt-2 text-xs text-muted-foreground">{t.contactPage.emailReply}</p>
                 </div>
@@ -166,7 +163,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-display font-semibold text-sm">WhatsApp</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">+7 (914) 550-52-17</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">010-3589-1980</p>
                   </div>
                   <ArrowRight className="absolute right-3 top-3 h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-[450ms]" />
                 </a>

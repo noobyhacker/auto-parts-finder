@@ -47,12 +47,6 @@ function StatItem({ numeric, suffix, label, delay }: { numeric: number; suffix: 
   );
 }
 
-const milestones = [
-  { year: "2010", key: "founded" },
-  { year: "2014", key: "expanded" },
-  { year: "2018", key: "online" },
-  { year: "2024", key: "today" },
-] as const;
 
 const About = () => {
   const { t } = useLanguage();
@@ -117,7 +111,7 @@ const About = () => {
       {/* ── STORY ── */}
       <section className="py-14 md:py-20">
         <div className="container-custom">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
+          <div className="max-w-3xl mx-auto">
             {/* Text */}
             <div className="reveal">
               <div className="flex items-center gap-2 mb-4">
@@ -140,29 +134,6 @@ const About = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Timeline */}
-            <div className="relative pl-6 reveal reveal-d2">
-              <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-primary via-primary/50 to-transparent" />
-              <div className="space-y-8">
-                {milestones.map((m, i) => (
-                  <div
-                    key={m.year}
-                    className="relative"
-                  >
-                    <div className="absolute -left-[25px] flex h-4 w-4 items-center justify-center rounded-full border-2 border-primary bg-background">
-                      <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    </div>
-                    <div className="glass-card p-5">
-                      <div className="text-xs font-bold text-primary uppercase tracking-widest mb-1">{m.year}</div>
-                      <p className="text-sm text-muted-foreground">
-                        {t.aboutPage.storyP1}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>

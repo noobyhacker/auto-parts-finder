@@ -1,6 +1,6 @@
 const TELEGRAM = "https://t.me/magazinamur";
-const WHATSAPP_BASE = "https://wa.me/message/ZVLZMRTXDIIPJ1";
-const WHATSAPP_PHONE = "79145505217";
+const WHATSAPP_BASE = "https://wa.me/821035891980";
+const WHATSAPP_PHONE = "821035891980";
 const MAX = "https://max.ru/u/f9LHodD0cOJAWBgVJrrdb5HwnEGYVFsAS-zU-iCw9FLq43FidiYM8Oxc1vI";
 
 interface PartContext {

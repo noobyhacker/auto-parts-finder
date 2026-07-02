@@ -151,6 +151,10 @@ export const translations = {
       contact: "Contact",
       categories: "Categories",
       rights: "All rights reserved.",
+      sharedNumberNote: "WhatsApp and MAX are on this number too",
+      businessInfo: "Business Info",
+      brnLabel: "BRN",
+      representativeLabel: "Representative",
     },
     // Common
     common: {
@@ -447,6 +451,10 @@ export const translations = {
       contact: "연락처",
       categories: "카테고리",
       rights: "모든 권리 보유.",
+      sharedNumberNote: "WhatsApp 및 MAX도 동일한 번호로 이용 가능합니다",
+      businessInfo: "사업자 정보",
+      brnLabel: "사업자등록번호",
+      representativeLabel: "대표자",
     },
     // Common
     common: {
@@ -743,6 +751,10 @@ export const translations = {
       contact: "Контакты",
       categories: "Категории",
       rights: "Все права защищены.",
+      sharedNumberNote: "WhatsApp и MAX доступны по этому же номеру",
+      businessInfo: "Реквизиты компании",
+      brnLabel: "Рег. номер (BRN)",
+      representativeLabel: "Представитель",
     },
     // Common
     common: {
