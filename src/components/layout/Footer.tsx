@@ -40,17 +40,14 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-display text-xs font-semibold uppercase tracking-widest text-foreground">{t.footer.contact}</h4>
             <div className="flex flex-col gap-3">
-              <a href="tel:+74162771307" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
+              <a href="tel:+821035891980" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Phone className="h-3.5 w-3.5 text-primary" />
-                +7 (4162) 77-13-07
+                010-3589-1980
               </a>
-              <a href="tel:+79145505217" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <Phone className="h-3.5 w-3.5 text-primary" />
-                +7 (914) 550-52-17
-              </a>
-              <a href="mailto:rerekin@mail.ru" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
+              <p className="text-xs text-muted-foreground/80 pl-6 -mt-1">{t.footer.sharedNumberNote}</p>
+              <a href="mailto:amurkor@mail.ru" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-3.5 w-3.5 text-primary" />
-                rerekin@mail.ru
+                amurkor@mail.ru
               </a>
               <div className="flex items-start gap-2.5 text-sm text-muted-foreground">
                 <MapPin className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
@@ -58,6 +55,21 @@ export function Footer() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Business info */}
+        <div className="mt-10 pt-6 border-t border-border/30 grid gap-2 sm:grid-cols-[auto,1fr] sm:gap-x-6">
+          <h4 className="font-display text-xs font-semibold uppercase tracking-widest text-foreground">{t.footer.businessInfo}</h4>
+          <dl className="text-xs text-muted-foreground grid gap-1 sm:grid-cols-2">
+            <div className="flex gap-2">
+              <dt className="font-semibold">{t.footer.brnLabel}:</dt>
+              <dd>577-81-03812</dd>
+            </div>
+            <div className="flex gap-2">
+              <dt className="font-semibold">{t.footer.representativeLabel}:</dt>
+              <dd>REREKIN SERGEI</dd>
+            </div>
+          </dl>
         </div>
 
         {/* Messenger links */}
