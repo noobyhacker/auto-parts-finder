@@ -8,8 +8,17 @@ import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
 import parentCompanyLogo from "@/assets/parent-company-logo.png";
-import carsHero from "@/assets/cars-hero.png";
-const businessRegistrationUrl = "/business-registration.png";
+import parentCompanyLogoWebp from "@/assets/parent-company-logo.webp";
+import heroAvif768 from "@/assets/cars-hero-768.avif";
+import heroAvif1200 from "@/assets/cars-hero-1200.avif";
+import heroWebp768 from "@/assets/cars-hero-768.webp";
+import heroWebp1200 from "@/assets/cars-hero-1200.webp";
+import heroJpg from "@/assets/cars-hero-1200.jpg";
+// Optimized document scan lives in /public (avif/webp with jpg fallback)
+const businessRegImg = "/business-registration.jpg";
+const businessRegWebp = "/business-registration.webp";
+const businessRegAvif = "/business-registration.avif";
+const heroSizes = "(min-width: 768px) 55vw, 100vw";
 
 function useCountUpOnScroll(target: number, duration = 1800) {
   const [count, setCount] = useState(0);
@@ -105,18 +114,33 @@ const Index = () => {
 
         {/* Cars image — hero background, full width on mobile, right-half on desktop */}
         <div className="absolute bottom-0 left-0 right-0 md:left-auto md:right-0 md:w-[55%] pointer-events-none select-none" style={{ zIndex: 1 }}>
-          <img
-            src={carsHero}
-            alt=""
-            aria-hidden="true"
-            className="w-full object-contain object-bottom opacity-30 md:opacity-95 dark:opacity-20 md:dark:opacity-75"
-            style={{
-              maskImage: "linear-gradient(to right, transparent 0%, black 20%), linear-gradient(to top, black 50%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%), linear-gradient(to top, black 50%, transparent 100%)",
-              maskComposite: "intersect",
-              WebkitMaskComposite: "destination-in",
-            }}
-          />
+          <picture>
+            <source
+              type="image/avif"
+              srcSet={`${heroAvif768} 768w, ${heroAvif1200} 1200w`}
+              sizes={heroSizes}
+            />
+            <source
+              type="image/webp"
+              srcSet={`${heroWebp768} 768w, ${heroWebp1200} 1200w`}
+              sizes={heroSizes}
+            />
+            <img
+              src={heroJpg}
+              width={1536}
+              height={1024}
+              alt=""
+              aria-hidden="true"
+              decoding="async"
+              className="w-full object-contain object-bottom opacity-30 md:opacity-95 dark:opacity-20 md:dark:opacity-75"
+              style={{
+                maskImage: "linear-gradient(to right, transparent 0%, black 20%), linear-gradient(to top, black 50%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%), linear-gradient(to top, black 50%, transparent 100%)",
+                maskComposite: "intersect",
+                WebkitMaskComposite: "destination-in",
+              }}
+            />
+          </picture>
         </div>
 
         {/* Floating decorative shapes */}
@@ -267,12 +291,18 @@ const Index = () => {
         <div className="container-custom relative">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             <div className="glass-card p-6 md:p-8 reveal">
-              <img
-                src={parentCompanyLogo}
-                alt="Parent company logo"
-                className="h-10 md:h-12 w-auto mb-5"
-                loading="lazy"
-              />
+              <picture>
+                <source type="image/webp" srcSet={parentCompanyLogoWebp} />
+                <img
+                  src={parentCompanyLogo}
+                  alt="Parent company logo"
+                  width={291}
+                  height={54}
+                  className="h-10 md:h-12 w-auto mb-5"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-px w-8 bg-primary" />
                 <span className="text-xs text-primary uppercase tracking-widest font-medium">{t.parentCompany.badge}</span>
@@ -337,17 +367,24 @@ const Index = () => {
             </div>
             <div className="lg:col-span-3 reveal reveal-d2">
               <a
-                href={businessRegistrationUrl}
+                href={businessRegImg}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block glass-card p-3 md:p-4"
               >
-                <img
-                  src={businessRegistrationUrl}
-                  alt={t.businessReg.alt}
-                  className="w-full h-auto rounded-sm"
-                  loading="lazy"
-                />
+                <picture>
+                  <source type="image/avif" srcSet={businessRegAvif} />
+                  <source type="image/webp" srcSet={businessRegWebp} />
+                  <img
+                    src={businessRegImg}
+                    alt={t.businessReg.alt}
+                    width={566}
+                    height={799}
+                    className="w-full h-auto rounded-sm"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </a>
             </div>
           </div>

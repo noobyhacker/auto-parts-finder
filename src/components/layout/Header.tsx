@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-300.png";
+import logoWebp from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -51,7 +52,10 @@ export function Header() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex shrink-0 items-center group">
-            <img src={logo} alt="AmurKor" className="h-12 sm:h-16 w-auto" />
+            <picture>
+              <source type="image/webp" srcSet={logoWebp} />
+              <img src={logo} alt="AmurKor" width={300} height={200} className="h-12 sm:h-16 w-auto" fetchPriority="high" />
+            </picture>
           </Link>
 
           {/* Desktop Nav */}
