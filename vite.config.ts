@@ -27,4 +27,29 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Split the vendor monolith into cacheable chunks so no single JS file is
+    // huge and they can download in parallel on throttled links.
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (id.includes("react-dom")) return "react-dom";
+          if (id.includes("react-router") || /[\\/]react[\\/]/.test(id) || id.includes("scheduler"))
+            return "react";
+          if (id.includes("@tanstack")) return "react-query";
+          if (id.includes("@sanity") || id.includes("groq")) return "sanity";
+          if (id.includes("embla")) return "carousel";
+          if (id.includes("@radix-ui")) return "radix";
+          if (id.includes("lucide-react")) return "icons";
+          // Everything else: one chunk per package so no "vendor" megachunk forms.
+          const after = id.split("node_modules/").pop() || "";
+          const pkg = after.startsWith("@")
+            ? after.split("/").slice(0, 2).join("/")
+            : after.split("/")[0];
+          return `vendor-${pkg.replace("@", "").replace("/", "-")}`;
+        },
+      },
+    },
+  },
 }));

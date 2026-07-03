@@ -1,10 +1,13 @@
-import { memo, useRef, useEffect, useState } from "react";
+import { memo, useRef, useEffect, useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Shield, Truck, Headphones, CheckCircle2, ChevronDown } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { LazyMap } from "@/components/LazyMap";
 import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
-import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
+// Below-fold: keep embla-carousel out of the initial bundle.
+const VideoReviewCarousel = lazy(() =>
+  import("@/components/video/VideoReviewCarousel").then((m) => ({ default: m.VideoReviewCarousel }))
+);
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 import { useLanguage } from "@/hooks/useLanguage";
 import { CursorGlow } from "@/components/CursorGlow";
@@ -417,7 +420,9 @@ const Index = () => {
       </section>
 
       {/* ─── VIDEO REVIEWS ─── */}
-      <VideoReviewCarousel />
+      <Suspense fallback={null}>
+        <VideoReviewCarousel />
+      </Suspense>
 
       {/* ─── CTA ─── */}
       <section className="py-20 md:py-28 border-t border-border/50 relative overflow-hidden">
