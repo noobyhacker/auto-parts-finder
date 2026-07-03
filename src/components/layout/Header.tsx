@@ -54,7 +54,7 @@ export function Header() {
           <Link to="/" className="flex shrink-0 items-center group">
             <picture>
               <source type="image/webp" srcSet={logoWebp} />
-              <img src={logo} alt="AmurKor" width={300} height={200} className="h-12 sm:h-16 w-auto" fetchPriority="high" />
+              <img src={logo} alt="AmurKor" width={300} height={200} className="h-12 sm:h-16 w-auto" />
             </picture>
           </Link>
 

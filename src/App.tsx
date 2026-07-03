@@ -2,44 +2,36 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Suspense, lazy, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import type { RouteRecord } from "vite-react-ssg";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { ThemeProvider } from "@/hooks/useTheme";
 import Lenis from "lenis";
 
-// Eager load the homepage for fastest initial render
+// Eager-load the homepage so it's part of the initial pre-rendered document.
 import Index from "./pages/Index";
+import { getPartStaticPaths } from "@/lib/catalog-build";
 
-// Lazy load other pages for code splitting
-const Catalog = lazy(() => import("./pages/Catalog"));
-const PartDetail = lazy(() => import("./pages/PartDetail"));
-const Contact = lazy(() => import("./pages/Contact"));
-const About = lazy(() => import("./pages/About"));
-const FAQ = lazy(() => import("./pages/FAQ"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+/**
+ * Root layout: all app-wide providers + global smooth-scroll / scroll-reveal.
+ * Rendered once and wraps every route via <Outlet/>. The effects below run only
+ * in the browser (inside useEffect), so they're safe during SSG pre-render.
+ */
+function RootLayout() {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 15 * 60 * 1000,
+            gcTime: 30 * 60 * 1000,
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 15 * 60 * 1000, // 15 minutes - reduces API calls significantly
-      gcTime: 30 * 60 * 1000, // 30 minutes cache retention
-      refetchOnWindowFocus: false, // Don't refetch when user switches tabs
-    },
-  },
-});
-
-// Loading fallback for lazy-loaded pages
-const PageLoader = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
-    <div className="flex flex-col items-center gap-4">
-      <div className="h-10 w-10 rounded-lg bg-primary animate-pulse" />
-      <div className="text-muted-foreground text-sm">Loading...</div>
-    </div>
-  </div>
-);
-
-const App = () => {
   useEffect(() => {
     // Smooth scroll
     const lenis = new Lenis({
@@ -67,7 +59,6 @@ const App = () => {
       { threshold: 0.12, rootMargin: "0px 0px -48px 0px" }
     );
 
-    // Also observe elements added later (route changes / lazy loads)
     const mutationObserver = new MutationObserver(() => {
       document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
         revealObserver.observe(el);
@@ -96,25 +87,51 @@ const App = () => {
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/catalog" element={<Catalog />} />
-                  <Route path="/part/:slug" element={<PartDetail />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </BrowserRouter>
+            <Outlet />
           </TooltipProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
-};
+}
 
-export default App;
+// Retry a dynamic import a few times before giving up — a dropped chunk request
+// on a throttled link shouldn't leave the user on a blank route.
+function retryImport<T>(fn: () => Promise<T>, attempts = 3, delay = 400): Promise<T> {
+  return fn().catch((err) => {
+    if (attempts <= 1) throw err;
+    return new Promise<void>((r) => setTimeout(r, delay)).then(() =>
+      retryImport(fn, attempts - 1, delay * 2)
+    );
+  });
+}
+
+// Adapter: our page modules export a default component (+ optional `loader`).
+// React Router's `lazy` wants named { Component, loader }, so map them here.
+const page =
+  (importer: () => Promise<{ default: React.ComponentType; loader?: unknown }>) =>
+  async () => {
+    const mod = await retryImport(importer);
+    return { Component: mod.default, loader: mod.loader as never };
+  };
+
+export const routes: RouteRecord[] = [
+  {
+    path: "/",
+    element: <RootLayout />,
+    entry: "src/App.tsx",
+    children: [
+      { index: true, element: <Index /> },
+      { path: "catalog", lazy: page(() => import("./pages/Catalog")) },
+      {
+        path: "part/:slug",
+        lazy: page(() => import("./pages/PartDetail")),
+        getStaticPaths: getPartStaticPaths,
+      },
+      { path: "contact", lazy: page(() => import("./pages/Contact")) },
+      { path: "about", lazy: page(() => import("./pages/About")) },
+      { path: "faq", lazy: page(() => import("./pages/FAQ")) },
+      { path: "*", lazy: page(() => import("./pages/NotFound")) },
+    ],
+  },
+];

@@ -73,7 +73,14 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static fallback: shown only while the JS boots or if it fails to load.
+           Pre-rendered page HTML replaces this at build; hydration replaces it at runtime. -->
+      <div id="app-loading" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#f7f8fa;font-family:system-ui,sans-serif">
+        <img src="/logo.webp" width="150" height="100" alt="АмурКор" style="height:64px;width:auto" />
+        <div style="color:#5b6472;font-size:14px;letter-spacing:.02em">Загрузка…</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

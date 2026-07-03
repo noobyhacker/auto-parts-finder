@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, useLoaderData, Link, type LoaderFunctionArgs } from "react-router-dom";
 import { ChevronLeft, Package, Check, Car, Send, MessageCircle, Phone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,16 @@ import { usePart } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTelegramLink, getWhatsAppLink, getMaxLink } from "@/lib/contact-links";
 import { sanityImage } from "@/lib/image";
+import { getPartForBuild } from "@/lib/catalog-build";
+import type { Part } from "@/types";
+
+// Build-time loader: bakes each part's data into its pre-rendered HTML.
+// On the client, vite-react-ssg serves this from the per-route manifest for
+// pre-rendered parts; brand-new parts (not yet rebuilt) fall back to react-query.
+export async function loader({ params }: LoaderFunctionArgs) {
+  const part = await getPartForBuild(params.slug);
+  return { part };
+}
 
 // Map category slugs to translation keys
 const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
@@ -37,7 +47,12 @@ const partNameTranslationMap: Record<string, keyof typeof import("@/lib/i18n").t
 const PartDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { data: part, isLoading } = usePart(slug);
+  // Prefer build-time / manifest data; only hit react-query when it's absent.
+  const loaderData = useLoaderData() as { part: Part | null } | null;
+  const bakedPart = loaderData?.part ?? null;
+  const { data: queryPart, isLoading: queryLoading } = usePart(bakedPart ? undefined : slug);
+  const part = bakedPart ?? queryPart;
+  const isLoading = bakedPart ? false : queryLoading;
   const [selectedImage, setSelectedImage] = useState(0);
   const { t } = useLanguage();
 

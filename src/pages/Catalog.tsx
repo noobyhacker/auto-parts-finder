@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useSearchParams, useLoaderData } from "react-router-dom";
 import { Loader2, Package2, Search } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { PartGrid } from "@/components/parts/PartGrid";
@@ -7,18 +7,32 @@ import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 import { Button } from "@/components/ui/button";
 import { getParts } from "@/lib/api";
 import { useLanguage } from "@/hooks/useLanguage";
+import { getCatalogFirstPage } from "@/lib/catalog-build";
 import type { Part, PartFilters } from "@/types";
 
 const PAGE_SIZE = 12;
 
+// Build-time loader: bakes the first, unfiltered listing page into the
+// pre-rendered HTML so /catalog shows real content without JS.
+export async function loader() {
+  return getCatalogFirstPage(PAGE_SIZE);
+}
+
 const Catalog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [parts, setParts] = useState<Part[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const initial = (useLoaderData() as { parts: Part[]; total: number } | null) ?? null;
+  const hasInitial = !!initial && initial.parts.length > 0 && !searchParams.get("search");
+  const [parts, setParts] = useState<Part[]>(initial?.parts ?? []);
+  const [isLoading, setIsLoading] = useState(!hasInitial);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(initial?.total ?? 0);
   const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState<PartFilters>({});
+  const [filters, setFilters] = useState<PartFilters>(() => {
+    const searchTerm = searchParams.get("search") ?? undefined;
+    return searchTerm ? { searchTerm } : {};
+  });
+  // Skip the first client fetch when the loader already seeded page 1.
+  const seededRef = useRef(hasInitial);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -27,6 +41,11 @@ const Catalog = () => {
   }, [searchParams]);
 
   useEffect(() => {
+    if (seededRef.current) {
+      // First mount already has server-baked data — don't refetch/flash.
+      seededRef.current = false;
+      return;
+    }
     const fetchParts = async () => {
       setIsLoading(true);
       setPage(1);
