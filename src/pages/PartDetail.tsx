@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { usePart } from "@/hooks/useQueries";
 import { useLanguage } from "@/hooks/useLanguage";
 import { getTelegramLink, getWhatsAppLink, getMaxLink } from "@/lib/contact-links";
+import { sanityImage } from "@/lib/image";
 
 // Map category slugs to translation keys
 const categoryTranslationMap: Record<string, keyof typeof import("@/lib/i18n").translations.en.categories> = {
@@ -104,10 +105,13 @@ const PartDetail = () => {
   // Use compatible vehicles from Sanity or empty array
   const compatibleVehicles = part.compatibleVehicles || [];
 
-  // Helper to get image URL
-  const getImageUrl = (img: string | { id: number; url: string; alt?: string }) => {
-    if (typeof img === 'string') return img;
-    return img.url;
+  // Helper to get a right-sized WebP image URL from Sanity (or pass through local URLs)
+  const getImageUrl = (
+    img: string | { id: number; url: string; alt?: string },
+    w = 800
+  ) => {
+    const url = typeof img === "string" ? img : img.url;
+    return sanityImage(url, { w });
   };
 
   return (
@@ -128,9 +132,10 @@ const PartDetail = () => {
             <div className="space-y-4">
               <div className="aspect-square overflow-hidden rounded-lg border border-border/50 bg-card">
                 <img
-                  src={getImageUrl(part.images[selectedImage])}
+                  src={getImageUrl(part.images[selectedImage], 800)}
                   alt={partName}
                   className="h-full w-full object-cover"
+                  decoding="async"
                 />
               </div>
               
@@ -145,9 +150,11 @@ const PartDetail = () => {
                       }`}
                     >
                       <img
-                        src={getImageUrl(image)}
+                        src={getImageUrl(image, 160)}
                         alt={`${partName} ${index + 1}`}
                         className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </button>
                   ))}

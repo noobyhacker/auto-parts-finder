@@ -2,6 +2,7 @@ import { memo, useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Shield, Truck, Headphones, CheckCircle2, ChevronDown } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
+import { LazyMap } from "@/components/LazyMap";
 import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 import { VideoReviewCarousel } from "@/components/video/VideoReviewCarousel";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
@@ -335,13 +336,9 @@ const Index = () => {
             </div>
 
             <div className="glass-card p-3 md:p-4 reveal reveal-d2">
-              <iframe
+              <LazyMap
                 src="https://www.google.com/maps/embed?pb=!3m2!1sen!2skr!4v1779360548237!5m2!1sen!2skr!6m8!1m7!1sucvYKoQfns_arrgblrX7tg!2m2!1d50.30469138127859!2d127.5330426583126!3f295.4845197453312!4f-7.937552665948502!5f0.7820865974627469"
                 className="w-full h-[320px] md:h-full min-h-[320px] rounded-sm"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
                 title={t.parentCompany.mapTitle}
               />
             </div>
