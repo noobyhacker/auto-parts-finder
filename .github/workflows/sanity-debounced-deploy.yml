@@ -1,0 +1,44 @@
+name: Debounced Vercel rebuild
+
+# Why this exists:
+# The catalog has ~14k parts, so every build pre-renders ~14k static pages
+# (~5 min). Firing a build on every single Sanity change would waste build
+# minutes during a bulk edit. Instead, Sanity sends a repository_dispatch on
+# each change; this workflow waits for a quiet window and only then triggers a
+# SINGLE Vercel build. `cancel-in-progress` restarts the wait on every new
+# change, so a whole burst of edits collapses into one rebuild ~5 min after the
+# last edit.
+#
+# Setup (see DEPLOY_HOOK.md):
+#   - repo secret VERCEL_DEPLOY_HOOK  = the Vercel Deploy Hook URL
+#   - Sanity webhook -> POST https://api.github.com/repos/<owner>/<repo>/dispatches
+#     body: {"event_type":"sanity-change"} with a GitHub token that can dispatch.
+
+on:
+  repository_dispatch:
+    types: [sanity-change]
+  workflow_dispatch: {} # manual "rebuild now" (skips the wait)
+
+concurrency:
+  # A newer change cancels the currently-waiting run and starts a fresh wait,
+  # which is what turns this into a debounce rather than a queue.
+  group: sanity-rebuild
+  cancel-in-progress: true
+
+jobs:
+  debounced-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for a quiet window (debounce)
+        if: github.event_name == 'repository_dispatch'
+        run: sleep 300 # 5 min without another change before we rebuild
+
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::VERCEL_DEPLOY_HOOK secret is not set."
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK" > /dev/null && echo "Vercel rebuild triggered."
