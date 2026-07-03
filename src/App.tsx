@@ -12,6 +12,7 @@ import Lenis from "lenis";
 // Eager-load the homepage so it's part of the initial pre-rendered document.
 import Index from "./pages/Index";
 import { getPartStaticPaths } from "@/lib/catalog-build";
+import { partLoader, catalogLoader } from "./pages/route-loaders";
 
 /**
  * Root layout: all app-wide providers + global smooth-scroll / scroll-reveal.
@@ -117,13 +118,15 @@ function retryImport<T>(fn: () => Promise<T>, attempts = 3, delay = 400): Promis
   });
 }
 
-// Adapter: our page modules export a default component (+ optional `loader`).
-// React Router's `lazy` wants named { Component, loader }, so map them here.
+// Adapter: our page modules export a default component. vite-react-ssg reads
+// each module's `loader`/`getStaticPaths` exports itself for the static-data
+// manifest, so we deliberately DON'T return `loader` here — doing so makes
+// React Router warn that the lazy loader is ignored.
 const page =
-  (importer: () => Promise<{ default: React.ComponentType; loader?: unknown }>) =>
+  (importer: () => Promise<{ default: React.ComponentType }>) =>
   async () => {
     const mod = await retryImport(importer);
-    return { Component: mod.default, loader: mod.loader as never };
+    return { Component: mod.default };
   };
 
 export const routes: RouteRecord[] = [
@@ -133,10 +136,11 @@ export const routes: RouteRecord[] = [
     entry: "src/App.tsx",
     children: [
       { index: true, element: <Index /> },
-      { path: "catalog", lazy: page(() => import("./pages/Catalog")) },
+      { path: "catalog", lazy: page(() => import("./pages/Catalog")), loader: catalogLoader },
       {
         path: "part/:slug",
         lazy: page(() => import("./pages/PartDetail")),
+        loader: partLoader,
         getStaticPaths: getPartStaticPaths,
       },
       { path: "contact", lazy: page(() => import("./pages/Contact")) },

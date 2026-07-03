@@ -8,6 +8,7 @@
     "fetch-data": "node scripts/fetch-sanity-data.mjs",
     "prebuild": "node scripts/fetch-sanity-data.mjs",
     "build": "vite-react-ssg build",
+    "postbuild": "node scripts/postbuild-clean.mjs",
     "build:dev": "vite-react-ssg build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
