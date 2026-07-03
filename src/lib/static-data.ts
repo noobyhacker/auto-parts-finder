@@ -115,8 +115,8 @@ export async function getStaticParts(
   // Sort
   if (sort === "price:asc") filtered.sort((a, b) => a.price - b.price);
   else if (sort === "price:desc") filtered.sort((a, b) => b.price - a.price);
-  else if (sort === "name:asc") filtered.sort((a, b) => a.name.localeCompare(b.name));
-  else if (sort === "name:desc") filtered.sort((a, b) => b.name.localeCompare(a.name));
+  else if (sort === "name:asc") filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  else if (sort === "name:desc") filtered.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
 
   const total = filtered.length;
   const start = (page - 1) * pageSize;
@@ -146,7 +146,7 @@ export async function searchStaticParts(query: string): Promise<{ parts: Part[];
   const scored = data.parts
     .map((p) => ({ p, score: scoreMatch(p, query) }))
     .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.p.name.localeCompare(b.p.name));
+    .sort((a, b) => b.score - a.score || (a.p.name || "").localeCompare(b.p.name || ""));
 
   return { parts: scored.slice(0, 12).map((s) => s.p), total: scored.length };
 }

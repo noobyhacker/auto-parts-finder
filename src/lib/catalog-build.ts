@@ -53,6 +53,6 @@ export async function getPartForBuild(slug: string | undefined): Promise<Part | 
 export async function getCatalogFirstPage(pageSize = 12): Promise<{ parts: Part[]; total: number }> {
   const data = await load();
   if (!data) return { parts: [], total: 0 };
-  const sorted = [...data.parts].sort((a, b) => a.name.localeCompare(b.name));
+  const sorted = [...data.parts].sort((a, b) => (a.name || "").localeCompare(b.name || ""));
   return { parts: sorted.slice(0, pageSize), total: sorted.length };
 }
