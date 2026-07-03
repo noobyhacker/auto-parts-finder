@@ -33,20 +33,14 @@ function RootLayout() {
   );
 
   useEffect(() => {
-    // Smooth scroll
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    // Hydration succeeded — cancel the index.html failsafe; the observer below
+    // now drives scroll reveals. (If we're here, JS works.)
+    if (typeof window !== "undefined" && (window as unknown as { __revealFailsafe?: number }).__revealFailsafe) {
+      clearTimeout((window as unknown as { __revealFailsafe?: number }).__revealFailsafe);
     }
-    requestAnimationFrame(raf);
 
-    // Global scroll-reveal: observe .reveal elements, add .is-visible when in view
+    // Global scroll-reveal: observe .reveal elements, add .is-visible when in view.
+    // Set up BEFORE smooth-scroll so a Lenis failure can never leave content hidden.
     const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -73,8 +67,25 @@ function RootLayout() {
     observeAll();
     mutationObserver.observe(document.body, { childList: true, subtree: true });
 
+    // Smooth scroll — enhancement only; guarded so a failure can't break reveals.
+    let lenis: Lenis | null = null;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        requestAnimationFrame(raf);
+      };
+      requestAnimationFrame(raf);
+    } catch {
+      lenis = null;
+    }
+
     return () => {
-      lenis.destroy();
+      lenis?.destroy();
       revealObserver.disconnect();
       mutationObserver.disconnect();
     };

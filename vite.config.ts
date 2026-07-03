@@ -34,8 +34,13 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
-          if (id.includes("react-dom")) return "react-dom";
-          if (id.includes("react-router") || /[\\/]react[\\/]/.test(id) || id.includes("scheduler"))
+          // React core MUST stay in ONE chunk — react-dom reads React's internal
+          // singleton, so splitting them apart breaks hydration entirely.
+          if (
+            /[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom|@remix-run[\\/]router)[\\/]/.test(
+              id
+            )
+          )
             return "react";
           if (id.includes("@tanstack")) return "react-query";
           if (id.includes("@sanity") || id.includes("groq")) return "sanity";

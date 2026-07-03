@@ -27,3 +27,6 @@ public/data/
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright MCP test artifacts
+.playwright-mcp/

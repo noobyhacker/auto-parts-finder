@@ -3,6 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Enable scroll-reveal animations only when JS is running. If the bundle
+         never hydrates (slow/blocked JS), a failsafe unhides all content so the
+         pre-rendered page is always visible on throttled networks. -->
+    <script>
+      document.documentElement.classList.add("js-reveal");
+      window.__revealFailsafe = setTimeout(function () {
+        document.documentElement.classList.remove("js-reveal");
+      }, 3000);
+    </script>
     
     <!-- Primary Meta Tags -->
     <title>АмурКор - Корейские автозапчасти | Оригинальные запчасти из Кореи</title>
