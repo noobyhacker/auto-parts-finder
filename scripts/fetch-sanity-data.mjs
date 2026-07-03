@@ -13,7 +13,10 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUTPUT_DIR = resolve(__dirname, "../public/data");
+// Full catalog: build-only, NOT served to browsers (read by SSG loaders/getStaticPaths).
+const BUILD_DATA_DIR = resolve(__dirname, "../.data");
+// Lite index: the small file the browser actually downloads (search + catalog + videos).
+const PUBLIC_DIR = resolve(__dirname, "../public");
 
 const projectId = process.env.VITE_SANITY_PROJECT_ID;
 const dataset = process.env.VITE_SANITY_DATASET || "production";
@@ -110,12 +113,8 @@ async function fetchAll() {
     vehiclesByModel[v.modelId].push(v);
   }
 
-  // Write output
-  if (!existsSync(OUTPUT_DIR)) {
-    mkdirSync(OUTPUT_DIR, { recursive: true });
-  }
-
-  const data = {
+  // Full catalog — everything, for build-time pre-rendering only.
+  const fullData = {
     brands,
     modelsByBrand,
     categories,
@@ -125,16 +124,40 @@ async function fetchAll() {
     generatedAt: new Date().toISOString(),
   };
 
-  writeFileSync(resolve(OUTPUT_DIR, "catalog.json"), JSON.stringify(data));
+  // Lite index — only the fields the browser renders (part cards + search +
+  // video carousel). Drops descriptions, images and compatibleVehicles, which
+  // are the heavy bulk of the catalog; those live only in pre-rendered pages.
+  const liteParts = parts.map((p) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    articleNumber: p.articleNumber ?? null,
+    oemNumber: p.oemNumber ?? null,
+    price: p.price ?? null,
+    inStock: !!p.inStock,
+    category: p.category
+      ? { id: p.category.id, name: p.category.name, slug: p.category.slug }
+      : null,
+  }));
 
+  const liteData = {
+    parts: liteParts,
+    videoReviews,
+    generatedAt: fullData.generatedAt,
+  };
+
+  if (!existsSync(BUILD_DATA_DIR)) mkdirSync(BUILD_DATA_DIR, { recursive: true });
+  if (!existsSync(PUBLIC_DIR)) mkdirSync(PUBLIC_DIR, { recursive: true });
+
+  writeFileSync(resolve(BUILD_DATA_DIR, "catalog.json"), JSON.stringify(fullData));
+  writeFileSync(resolve(PUBLIC_DIR, "catalog-lite.json"), JSON.stringify(liteData));
+
+  const liteKb = (Buffer.byteLength(JSON.stringify(liteData)) / 1024).toFixed(1);
   console.log(`✅ Static data generated:`);
-  console.log(`   Brands: ${brands.length}`);
-  console.log(`   Models: ${allModels.length}`);
-  console.log(`   Categories: ${categories.length}`);
-  console.log(`   Vehicles: ${allVehicles.length}`);
-  console.log(`   Parts: ${parts.length}`);
+  console.log(`   Parts: ${parts.length} (full) → ${liteParts.length} (lite)`);
   console.log(`   Video Reviews: ${videoReviews.length}`);
-  console.log(`   Output: ${OUTPUT_DIR}/catalog.json`);
+  console.log(`   Full catalog (build-only): ${BUILD_DATA_DIR}/catalog.json`);
+  console.log(`   Lite index (shipped):      ${PUBLIC_DIR}/catalog-lite.json (${liteKb} kB)`);
 }
 
 fetchAll().catch((err) => {

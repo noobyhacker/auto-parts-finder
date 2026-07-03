@@ -23,9 +23,9 @@ async function load(): Promise<CatalogShape | null> {
   if (cache) return cache;
   const fs = await import("node:fs");
   const path = await import("node:path");
-  const file = path.resolve(process.cwd(), "public/data/catalog.json");
+  const file = path.resolve(process.cwd(), ".data/catalog.json");
   if (!fs.existsSync(file)) {
-    console.warn("[catalog-build] public/data/catalog.json not found — pages will pre-render without data.");
+    console.warn("[catalog-build] .data/catalog.json not found — pages will pre-render without data. Run `npm run fetch-data` first.");
     return null;
   }
   cache = JSON.parse(fs.readFileSync(file, "utf-8"));

@@ -13,6 +13,8 @@ dist-ssr
 *.local
 
 # Generated at build time by scripts/fetch-sanity-data.mjs (regenerated on every deploy)
+.data/
+public/catalog-lite.json
 public/data/
 
 # Editor directories and files
