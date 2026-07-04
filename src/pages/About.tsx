@@ -6,12 +6,15 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { KoreanFlagMini } from "@/components/icons/KoreanFlag";
 
 function useCountUpOnScroll(target: number, duration = 1600) {
-  const [count, setCount] = useState(0);
+  // Default to the final value so the number is correct in the pre-rendered HTML
+  // and without JS. On the client we reset to 0 and animate up when in view.
+  const [count, setCount] = useState(target);
   const ref = useRef<HTMLDivElement | null>(null);
   const started = useRef(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    setCount(0);
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !started.current) {
         started.current = true;
